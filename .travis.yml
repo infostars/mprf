@@ -12,7 +12,7 @@ before_script:
   - echo "extension=memcached.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - ./mongo-php-driver-installer.sh
 
-script: phpunit --configuration phpunit.xml --coverage-text
+script: phpunit --configuration phpunit.xml
 
 notifications:
   xmpp: ostrovskiy@jabber.wiw.ru
