@@ -8,7 +8,7 @@ env:
 
 before_script:
   - php init.phar
-  - apt-get install libmemcached-dev
+  - apt-get install libmemcached-dev -y
   - pecl install memcached
   - echo "extension=memcached.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - ./mongo-php-driver-installer.sh
