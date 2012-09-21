@@ -6,8 +6,13 @@ env:
   # for mpr_db_mongoDb
   - DB=mongodb
 
+services:
+  - mongodb
+  - memcache
+  - memcached
+
 before_script:
-  - apt-get install libmemcached-dev -y
+  - sudo apt-get install -qq libmemcached-dev
   - pecl install memcached
   - echo "extension=memcached.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - mongo-php-driver-installer.sh
