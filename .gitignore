@@ -1,1 +1,4 @@
 .idea/
+Makefile
+init.tar.gz
+update_packages.sh
