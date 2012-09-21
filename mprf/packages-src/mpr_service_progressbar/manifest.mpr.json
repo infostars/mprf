@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_service_progressBar",
+    "description" : "Progress bar for console applications. Also has speedometer and output formatting.",
+    "package" : {
+        "path" : "/mpr/service/",
+        "init" : "progressBar.php",
+        "version" : "0.7"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "progress,bar,progressbar,status,speedometer"
+    },
+    "depends" : [
+
+    ]
+}

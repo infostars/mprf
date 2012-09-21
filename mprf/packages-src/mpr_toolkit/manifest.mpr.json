@@ -1,0 +1,18 @@
+{
+    "name" : "mpr_toolkit",
+    "description" : "toolkit - given access to input and output object instances",
+    "package" : {
+        "path" : "/mpr/",
+        "init" : "toolkit.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "toolkit,input,output"
+    },
+    "depends" : [
+        "mpr_io_input",
+        "mpr_io_output",
+        "mpr_pattern_singleton"
+    ]
+}

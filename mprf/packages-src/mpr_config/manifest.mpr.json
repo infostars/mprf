@@ -1,0 +1,15 @@
+{
+    "name" : "mpr_config",
+    "description" : "Global config for all packages.",
+    "package" : {
+        "path" : "/mpr/",
+        "init" : "_pharinit.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "config",
+        "tags" : "config,configuration,params"
+    },
+    "depends" : [
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_collections_arrayList",
+    "description" : "Array List collection based on ArrayList from C# (.NET)",
+    "package" : {
+        "path" : "/mpr/collections/",
+        "init" : "arrayList.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "array,list,collection"
+    },
+    "depends" : [
+
+    ]
+}

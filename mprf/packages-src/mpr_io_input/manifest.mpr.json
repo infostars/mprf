@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_io_input",
+    "description" : "Input parameters parser. Can parse input from command line interface or from web requests.",
+    "package" : {
+        "path" : "/mpr/io/",
+        "init" : "input.php",
+        "version" : "2.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "input,request,parse"
+    },
+    "depends" : [
+
+    ]
+}

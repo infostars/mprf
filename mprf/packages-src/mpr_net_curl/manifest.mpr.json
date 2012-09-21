@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_net_curl",
+    "description" : "Curl wrapper. Easy way to use curl as object. Can work in pair with mpr_net_multiCurl for multi-threading!",
+    "package" : {
+        "path" : "/mpr/net/",
+        "init" : "curl.php",
+        "version" : "2.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "curl,web,parse,wget"
+    },
+    "depends" : [
+
+    ]
+}

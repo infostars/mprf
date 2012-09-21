@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_io_fileWriter",
+    "description" : "File writer wraps fopen fwrite fclose functions.",
+    "package" : {
+        "path" : "/mpr/io/",
+        "init" : "fileWriter.php",
+        "version" : "0.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "file,write"
+    },
+    "depends" : [
+
+    ]
+}

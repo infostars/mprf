@@ -1,0 +1,17 @@
+{
+    "name" : "sds_twitter_streamClient",
+    "description" : "Client for Twitter Streaming API based on Phirehose lib for SDS",
+    "package" : {
+        "path" : "/sds/twitter/",
+        "init" : "streamClient.php",
+        "version" : "2.2"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "twitter,api,stream,client"
+    },
+    "depends" : [
+        "mpr_debug_log",
+        "mpr_config"
+    ]
+}

@@ -1,0 +1,11 @@
+Add next lines to mpr config
+
+mpr/config::$data['mpr_view_smarty'] = [
+    'compile_dir' => '/tmp/smarty/templates_c/',
+    'config_dir' => '/tmp/smarty/configs/',
+    'cache_dir' => /tmp/smarty/templates_cache/',
+    'cache_lifetime' => 180,
+    'caching' => true,
+    'debugging' => false,
+    'force_compile' => false
+];

@@ -1,0 +1,17 @@
+{
+    "name" : "mpr_system_daemonization",
+    "description" : "Daemonization library. Allow to daemonize your application.",
+    "package" : {
+        "path" : "/mpr/system/",
+        "init" : "daemonization.php",
+        "version" : "2.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "daemon,daemonization,daemonizer"
+    },
+    "depends" : [
+        "mpr_config",
+        "mpr_debug_log"
+    ]
+}

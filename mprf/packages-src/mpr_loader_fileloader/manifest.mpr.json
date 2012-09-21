@@ -1,0 +1,17 @@
+{
+    "name" : "mpr_loader_fileLoader",
+    "description" : "File loader package.",
+    "package" : {
+        "path" : "/mpr/loader/",
+        "init" : "fileLoader.php",
+        "version" : "2.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "load,file,fileloader"
+    },
+    "depends" : [
+        "mpr_debug_log",
+        "mpr_config"
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_threads_threadPool",
+    "description" : "Thread Pool for queued and limited threads. Works in pair with mpr_threads_thread",
+    "package" : {
+        "path" : "/mpr/threads/",
+        "init" : "threadPool.php",
+        "version" : "1.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "threads,threadPool"
+    },
+    "depends" : [
+        "mpr_threads_thread"
+    ]
+}

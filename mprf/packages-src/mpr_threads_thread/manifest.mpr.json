@@ -1,0 +1,17 @@
+{
+    "name" : "mpr_threads_thread",
+    "description" : "Threads implementation using forks. Can work in pair with mpr_threads_threadPool!",
+    "package" : {
+        "path" : "/mpr/threads/",
+        "init" : "thread.php",
+        "version" : "1.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "threads,thread,fork"
+    },
+    "depends" : [
+        "mpr_debug_log",
+        "mpr_config"
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_service_timer",
+    "description" : "Timer. Just timer. Start, stop, getPeriod.",
+    "package" : {
+        "path" : "/mpr/service/",
+        "init" : "timer.php",
+        "version" : "1.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "timer,time"
+    },
+    "depends" : [
+        
+    ]
+}

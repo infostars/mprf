@@ -1,0 +1,12 @@
+ClassLoader Component
+=====================
+
+Add following lines to config:
+
+mpr\config::$package['symfony_component_ClassLoader'] = [
+    'register' => [
+        'Symfony' => '/path/to/symfony2',
+        'Monolog' => '/path/to/vendor/monolog/src',
+        'Any\\Namespace\\Path' => '/path/to/Any/Namespace/Path/src'
+    ]
+];

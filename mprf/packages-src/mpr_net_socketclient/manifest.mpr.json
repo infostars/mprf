@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_net_socketClient",
+    "description" : "TCP socket server client. Works in block and non-block modes.",
+    "package" : {
+        "path" : "/mpr/net/",
+        "init" : "socketClient.php",
+        "version" : "2.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "socket,client,tcp"
+    },
+    "depends" : [
+
+    ]
+}

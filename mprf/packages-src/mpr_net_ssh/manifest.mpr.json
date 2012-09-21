@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_net_ssh",
+    "description" : "SSH client for PHP.",
+    "package" : {
+        "path" : "/mpr/net/",
+        "init" : "ssh.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "ssh,client"
+    },
+    "depends" : [
+
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_db_mongoDb",
+    "description" : "MongoDB driver wrapper.",
+    "package" : {
+        "path" : "/mpr/db/",
+        "init" : "mongoDb.php",
+        "version" : "2.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "db,mongo,database,orm"
+    },
+    "depends" : [
+        "mpr_config"
+    ]
+}

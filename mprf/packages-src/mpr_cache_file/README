@@ -1,0 +1,5 @@
+Add to mpr_config next block
+
+mpr/config::$data['mpr_cache_file'] = [
+    'cache_dir' => '/tmp/'
+];

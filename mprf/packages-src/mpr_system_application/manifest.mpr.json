@@ -1,0 +1,17 @@
+{
+    "name" : "mpr_system_application",
+    "description" : "Runnable application abstraction class.",
+    "package" : {
+        "path" : "/mpr/system/",
+        "init" : "application.php",
+        "version" : "2.0"
+    },
+    "meta" : {
+        "type" : "application",
+        "tags" : "app,application,console,bin"
+    },
+    "depends" : [
+        "mpr_config",
+        "mpr_debug_log"
+    ]
+}

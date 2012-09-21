@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_net_socketServer",
+    "description" : "TCP socket server. Non-block server with callback for every client and every server cycle.",
+    "package" : {
+        "path" : "/mpr/net/",
+        "init" : "socketServer.php",
+        "version" : "3.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "socket,server,tcp"
+    },
+    "depends" : [
+
+    ]
+}

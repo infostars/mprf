@@ -1,0 +1,17 @@
+{
+    "name" : "mpr_cache_file",
+    "description" : "File cache driver for mpr_cache_factory",
+    "package" : {
+        "path" : "/mpr/cache/",
+        "init" : "file.php",
+        "version" : "2.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "cache,filecache,file"
+    },
+    "depends" : [
+        "mpr_cache_factory",
+        "mpr_config"
+    ]
+}

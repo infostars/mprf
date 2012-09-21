@@ -1,0 +1,2 @@
+Abstract class singleton.
+extends and call getInstance()

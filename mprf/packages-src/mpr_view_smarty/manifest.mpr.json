@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_view_smarty",
+    "description" : "Smarty templater.",
+    "package" : {
+        "path" : "/mpr/view/",
+        "init" : "smarty.php",
+        "version" : "3.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "templater,smarty,view,render"
+    },
+    "depends" : [
+
+    ]
+}

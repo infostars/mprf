@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_net_multiCurl",
+    "description" : "Curl_multi wrapper. Works in pair with mpr_net_curl for multi-threading curl requests.",
+    "package" : {
+        "path" : "/mpr/net/",
+        "init" : "multiCurl.php",
+        "version" : "2.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "curl,curl_multi,multi_curl"
+    },
+    "depends" : [
+        "mpr_net_curl"
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_system_core",
+    "description" : "Core library for mpr applications.",
+    "package" : {
+        "path" : "/mpr/system/",
+        "init" : "core.php",
+        "version" : "2.4"
+    },
+    "meta" : {
+        "type" : "application",
+        "tags" : "app,application,core"
+    },
+    "depends" : [
+        "mpr_debug_log"
+    ]
+}

@@ -1,0 +1,7 @@
+Add next lines to config file
+
+mpr/config::$data['mpr_system_daemonization'] = [
+    'stdin' => '/dev/null',
+    'stdout' => '/tmp/application.%pid%.out', // %pid% would be replaced to application pid
+    'stderr' => '/tmp/application.%pid%.err' // %pid% would be replaced to application pid
+];

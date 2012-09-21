@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_io_output",
+    "description" : "Output interface. Write any info to php://stdout or php://output. Also can buffering input info.",
+    "package" : {
+        "path" : "/mpr/io/",
+        "init" : "output.php",
+        "version" : "2.3"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "output,write,stdout,response"
+    },
+    "depends" : [
+
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_service_eventHandler",
+    "description" : "Event machine. You can bind any condition and some callable function when condition returns `true`.",
+    "package" : {
+        "path" : "/mpr/service/",
+        "init" : "eventHandler.php",
+        "version" : "2.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "event,handler"
+    },
+    "depends" : [
+        "mpr_debug_log"
+    ]
+}

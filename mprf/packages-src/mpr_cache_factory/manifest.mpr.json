@@ -1,0 +1,17 @@
+{
+    "name" : "mpr_cache_factory",
+    "description" : "Base cache class. Requires at least one driver (e.g. mpr_cache_memcached)",
+    "package" : {
+        "path" : "/mpr/cache/",
+        "init" : "_pharinit.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "array,list,collection"
+    },
+    "depends" : [
+        "mpr_debug_log",
+        "mpr_config"
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "name" : "symfony_component_ClassLoader",
+    "description" : "Universal Class loader from Symfony2 project.",
+    "package" : {
+        "path" : "/symfony/component/",
+        "init" : "_pharinit.php",
+        "version" : "2.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "autoload,spl,loader,file,class"
+    },
+    "depends" : [
+        "mpr_config"
+    ]
+}

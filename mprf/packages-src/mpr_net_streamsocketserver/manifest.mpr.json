@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_net_streamSocketServer",
+    "description" : "TCP stream socket server. It's analogy for mpr_net_socketServer, but wraps stream_socket_* functions.",
+    "package" : {
+        "path" : "/mpr/net/",
+        "init" : "streamSocketServer.php",
+        "version" : "3.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "stream,socket,server,tcp"
+    },
+    "depends" : [
+
+    ]
+}
