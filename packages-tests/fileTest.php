@@ -47,6 +47,7 @@ class fileTest extends \PHPUnit_Framework_TestCase
      */
     public function testExists()
     {
+        $this->testSet();
         $this->assertTrue($this->object->exists($this->test_key));
     }
 
@@ -56,6 +57,7 @@ class fileTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
+        $this->testExists();
         $this->assertEquals($this->test_value, $this->object->get($this->test_key));
     }
 
@@ -65,6 +67,7 @@ class fileTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemove()
     {
+        $this->testGet();
         $this->object->remove($this->test_key);
         $this->assertFalse($this->object->exists($this->test_key));
     }

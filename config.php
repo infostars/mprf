@@ -30,3 +30,7 @@
         [ 'host' => '127.0.0.1', 'port' => 11211 ]
     ]
 ];
+
+\mpr\config::$package['mpr_cache_file'] = [
+    'cache_dir' => '/tmp/'
+];
