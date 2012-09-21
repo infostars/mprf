@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="" />
+    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_cache_factory" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_cache_file" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_cache_memcached" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_collections_arraylist" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_config" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_db_mongodb" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_debug_log" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_io_filewriter" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_io_input" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_io_output" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_loader_fileloader" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_net_curl" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_net_multicurl" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_net_socketclient" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_net_socketserver" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_net_ssh" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_net_streamsocketserver" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_pattern_singleton" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_service_eventhandler" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_service_phpmailer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_service_progressbar" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_service_timer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_system_application" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_system_core" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_system_daemonization" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_threads_thread" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_threads_threadpool" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_toolkit" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/mpr_view_smarty" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/sds_twitter_streamclient" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/packages-src/symfony_component_classloader" vcs="Git" />
+  </component>
+</project>
+
