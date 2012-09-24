@@ -77,11 +77,8 @@ class ssh
     private function getStreamContent($stream)
     {
         $errorStream = ssh2_fetch_stream($stream, SSH2_STREAM_STDERR);
-        $content  = "=START SESSION=\n";
-        $content .= stream_get_contents($stream);
-        $content .= "=ERRORS=\n";
+        $content = stream_get_contents($stream);
         $content .= stream_get_contents($errorStream);
-        $content .= "=END SESSION=\n";
 
         return trim($content);
     }
