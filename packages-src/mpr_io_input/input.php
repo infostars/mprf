@@ -66,6 +66,18 @@ class input
         return $out;
     }
 
+    public function readLine($requestMessage = "", $defaultValue = "")
+    {
+        if(!empty($defaultValue)) {
+            $requestMessage .= " [{$defaultValue}] :";
+        }
+        $input = trim(readline($requestMessage));
+        if(empty($input)) {
+            $input = $defaultValue;
+        }
+        return $input;
+    }
+
     public function importArguments($request_type = self::SC_REQUEST, $clean = true)
     {
         switch($request_type)

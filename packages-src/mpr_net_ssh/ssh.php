@@ -6,20 +6,14 @@ class ssh
     const SSH_RSA = 1;
     const SSH_DSS = 2;
 
-    /**
-    * Хост, к которому производится подключение
-    *
-    * @var mixed
-    */
     private $host;
-    private $currentConnection; // Текущее соедиение
-    private $connections=array(); // Массив открытых соединений
     private $port;
     private $username;
     private $key_password;
     public $key_public;
     public $key_private;
-    private $host_key = null;
+    private $connection; // Текущее соедиение
+    private $host_key = 'ssh-rsa';
 
     public function __construct($host, $port, $username, $key_password, $key_public, $key_private, $host_key = self::SSH_RSA)
     {
@@ -39,27 +33,26 @@ class ssh
 
     public function connect()
     {
-        $md5Host = md5($this->host);
-        if (!isset($this->connections[$md5Host])) {
-            $connection = ssh2_connect($this->host, $this->port, array('hostkey' => $this->host_key));
-            ssh2_auth_pubkey_file($connection, $this->username,
-                          $this->key_public,
-                          $this->key_private, $this->key_password);
-            $this->connections[$md5Host] = $connection;
-        }
-        $this->currentConnection = $this->connections[$md5Host];
+        $this->connection = ssh2_connect($this->host, $this->port, array('hostkey' => $this->host_key));
+        ssh2_auth_pubkey_file($this->connection, $this->username, $this->key_public, $this->key_private, $this->key_password);
         return $this;
     }
 
-    public function execute($command, $interactive = false)
+    public function executeAsync($command)
     {
-        if($interactive) {
-            $stream = ssh2_shell($this->currentConnection, 'xterm', null, 120, 24, SSH2_TERM_UNIT_CHARS);
-            fwrite($stream, $command . PHP_EOL);
-            sleep(1);
-        } else {
-            $stream = ssh2_exec($this->currentConnection, $command);
+        static $stream;
+        if($stream == null) {
+            $stream = ssh2_shell($this->connection, 'xterm', null, 120, 24, SSH2_TERM_UNIT_CHARS);
+            stream_set_blocking($stream, true);
         }
+        fwrite($stream, $command . PHP_EOL);
+        return $stream;
+    }
+
+    public function execute($command)
+    {
+        $stream = ssh2_exec($this->connection, $command);
+        stream_set_blocking($stream, true);
         $content = $this->getStreamContent($stream);
         fclose($stream);
         return $content;
@@ -68,18 +61,19 @@ class ssh
     public function upload($local_path, $remote_path)
     {
         if (!file_exists($local_path)) { return $local_path." - File not exists!"; }
-        if (ssh2_scp_send($this->currentConnection, $local_path, $remote_path) === false) {
+        if (ssh2_scp_send($this->connection, $local_path, $remote_path) === false) {
             return "Can't send file ".$local_path." to ".$remote_path.". Cancelled.";
         }
         return "OK";
     }
 
-    private function getStreamContent($stream)
+    public function getStreamContent(&$stream)
     {
-        $errorStream = ssh2_fetch_stream($stream, SSH2_STREAM_STDERR);
-        $content = stream_get_contents($stream);
-        $content .= stream_get_contents($errorStream);
+        $content = "";
+        while(is_resource($stream) && !feof($stream)) {
+            $content .= stream_get_line($stream, 512);
+        }
 
-        return trim($content);
+        return $content;
     }
 }
