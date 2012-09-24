@@ -20,7 +20,19 @@
 
     <testsuites>
         <testsuite name="packages-src">
-            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/*/tests/*</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_cache_factory/tests/</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_cache_file/tests/</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_cache_memcached/tests/</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_collections_arraylist/tests/</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_config/tests/</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_db_mongodb/tests/</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_debug_log/tests/</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_io_filewriter/tests/</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_io_input/tests/</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_io_output/tests/</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_loader_fileloader/tests/</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_net_curl/tests/</directory>
+            <directory suffix="Test.php" phpVersion="5.4.4">./packages-src/mpr_net_multicurl/tests/</directory>
         </testsuite>
     </testsuites>
 
