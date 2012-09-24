@@ -69,7 +69,7 @@ class input
     public function readLine($requestMessage = "", $defaultValue = "")
     {
         if(!empty($defaultValue)) {
-            $requestMessage .= " [{$defaultValue}] :";
+            $requestMessage .= " [{$defaultValue}]: ";
         }
         $input = trim(readline($requestMessage));
         if(empty($input)) {
