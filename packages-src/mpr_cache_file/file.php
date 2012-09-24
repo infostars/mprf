@@ -64,7 +64,7 @@ implements \mpr\cache\cache_interface
 
     public function get($key)
     {
-        return $this->data[$key];
+        return isset($this->data[$key]) ? $this->data[$key] : null;
     }
 
     public function exists($key)
