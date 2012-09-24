@@ -8,17 +8,13 @@ env:
 
 services:
   - mongodb
-  - memcache
   - memcached
 
 before_script:
-  - sudo apt-get install -qq libmemcached-dev tree
+  - sudo apt-get install -qq libmemcached-dev
   - pecl install memcached
   - echo "extension=memcached.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
-  - pwd
-  - ls -la
-  - tree
-  - bash mongo-php-driver-installer.sh
+  - ./mongodb-driver-installer.sh
 
 script: phpunit --configuration phpunit.xml
 
