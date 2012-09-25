@@ -1,6 +1,6 @@
 {
     "name" : "mpr_net_ssh",
-    "description" : "SSH client for PHP.",
+    "description" : "SSH client for PHP and all Tibet monks.",
     "package" : {
         "path" : "/mpr/net/",
         "init" : "ssh.php",

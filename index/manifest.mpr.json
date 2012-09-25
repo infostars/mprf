@@ -1,0 +1,18 @@
+{
+    "name" : "init",
+    "description" : "Init file for mpr packages.",
+    "package" : {
+        "path" : "/",
+        "init" : "index.php",
+        "version" : "1.1"
+    },
+    "meta" : {
+        "type" : "application",
+        "tags" : "init,start"
+    },
+    "depends" : [
+        "mpr_loader_fileLoader",
+        "mpr_io_input",
+        "mpr_io_output"
+    ]
+}

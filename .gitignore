@@ -3,3 +3,4 @@ Makefile
 init.tar.gz
 update_packages.sh
 my_application.php
+index.phar
