@@ -71,10 +71,10 @@ class ssh
     {
         $content = "";
         $errorStream = ssh2_fetch_stream($stream, SSH2_STREAM_STDERR);
-        while(is_resource($stream) && !feof($stream)) {
+        while(is_resource($errorStream) && !feof($errorStream)) {
             $content .= stream_get_line($stream, 4096);
         }
-        while(is_resource($errorStream) && !feof($errorStream)) {
+        while(is_resource($stream) && !feof($stream)) {
             $content .= stream_get_line($stream, 4096);
         }
 

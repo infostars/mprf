@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_pattern_abstractFactory",
+    "description" : "Abstract factory pattern",
+    "package" : {
+        "path" : "/mpr/pattern/",
+        "init" : "abstractFactory.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "pattern,abstract,factory"
+    },
+    "depends" : [
+
+    ]
+}

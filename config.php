@@ -34,3 +34,10 @@
 \mpr\config::$package['mpr_cache_file'] = [
     'cache_dir' => '/tmp/'
 ];
+
+\mpr\config::$package['mpr_net_gearmanClient'] = [
+    'default' => [
+        'host' => 'mongo.hostname',
+        //'port' => 1234 //optional
+    ]
+];

@@ -1,0 +1,17 @@
+{
+    "name" : "mpr_net_gearmanClient",
+    "description" : "Gearman queue client",
+    "package" : {
+        "path" : "/mpr/net/",
+        "init" : "gearmanClient.php",
+        "version" : "2.3"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "gearman,client,net"
+    },
+    "depends" : [
+        "mpr_config",
+        "mpr_debug_log"
+    ]
+}

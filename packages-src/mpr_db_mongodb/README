@@ -1,6 +1,6 @@
 Add to mpr_config next block
 
-mpr/config::$data['mpr_db_mongoDb'] = [
-    'host' => 'mongo.hostname',
-    'dbname' => 'mongo.dbname'
+\mpr\config::$package['mpr_db_mongoDb'] = [
+    'host' => '127.0.0.1',
+    'dbname' => 'test'
 ];

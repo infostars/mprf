@@ -61,13 +61,14 @@ class socketClient
 
     public function __destruct()
     {
-        if($this->sock != null) {
-            $this->disconnect();
-        }
+        $this->disconnect();
     }
 
     public function isConnected()
     {
+        if(strtolower(get_resource_type($this->sock)) != 'socket') {
+            return false;
+        }
         $read = array($this->sock);
         $write = array();
         $except = array();
@@ -152,7 +153,9 @@ class socketClient
 
     public function shutdown()
     {
-        socket_close($this->sock);
+        if(strtolower(get_resource_type($this->sock)) != 'socket') {
+            socket_close($this->sock);
+        }
         return true;
     }
 
