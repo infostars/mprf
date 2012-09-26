@@ -18,6 +18,15 @@ abstract class application
 
     abstract public function handle();
 
+    protected function getToolkit()
+    {
+        static $toolkit;
+        if($toolkit == null) {
+            $toolkit = new \mpr\toolkit();
+        }
+        return $toolkit;
+    }
+
     public function run()
     {
         log::put("Starting application...", config::getPackageName(__CLASS__));
