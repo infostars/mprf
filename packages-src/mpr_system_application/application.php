@@ -27,6 +27,11 @@ abstract class application
         return $toolkit;
     }
 
+    protected function getPackageConfig()
+    {
+        return config::getPackageConfig(get_called_class());
+    }
+
     public function run()
     {
         log::put("Starting application...", config::getPackageName(__CLASS__));
