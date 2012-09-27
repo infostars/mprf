@@ -127,7 +127,7 @@ class config
         if(!file_exists($configFilePath)) {
             throw new \Exception("Config file not found in {$configFilePath}!");
         }
-        log::put("Loading config file {$configFilePath}", self::getPackageName(__CLASS__));
         require_once $configFilePath;
+        log::put("Loading config file {$configFilePath}", self::getPackageName(__CLASS__));
     }
 }
