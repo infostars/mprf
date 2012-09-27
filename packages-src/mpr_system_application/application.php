@@ -12,11 +12,9 @@ use \mpr\config;
 abstract class application
 {
 
-    public $app_config;
+    protected $only_one_instance = false;
 
-    public $only_one_instance = false;
-
-    abstract public function handle();
+    abstract protected function handle();
 
     protected function getToolkit()
     {
@@ -37,5 +35,10 @@ abstract class application
         log::put("Starting application...", config::getPackageName(__CLASS__));
         $this->handle();
         log::put("Ending application...", config::getPackageName(__CLASS__));
+    }
+
+    public function isOnlyOneInstanceAllowed()
+    {
+        return $this->only_one_instance;
     }
 }
