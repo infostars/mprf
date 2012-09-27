@@ -37,15 +37,17 @@ class config
     {
         static $path_to_mpr;
         if($path_to_mpr == null) {
-            $path_to_mpr = __DIR__;
+            $current_path = __DIR__;
+            $path_to_mpr = false;
             $found = false;
-            while(!$found && $path_to_mpr != '/') {
-                $found = in_array(self::MPR_ROOT_FILENAME, scandir($path_to_mpr));
-                if(!$found) {
-                    $path_to_mpr = realpath($path_to_mpr . "/..");
+            while($current_path != '/') {
+                $found = in_array(self::MPR_ROOT_FILENAME, scandir($current_path));
+                if($found) {
+                    $path_to_mpr = $current_path;
                 }
+                $current_path = realpath($current_path . "/..");
             }
-            if(!$found) {
+            if(!$path_to_mpr) {
                 return false;
             }
         }
