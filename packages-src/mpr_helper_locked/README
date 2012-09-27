@@ -1,0 +1,7 @@
+Add next lines to config file
+
+\mpr\config::$package['mpr_debug_log'] = [
+    'enabled' => true,
+    'output' => "stdout", // "stdout"|"output"|null
+    'logfile' => "/tmp/mylog.log",
+];

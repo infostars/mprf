@@ -1,0 +1,17 @@
+{
+    "name" : "mpr_helper_locked",
+    "description" : "Semaphore implementation using memcached",
+    "package" : {
+        "path" : "/mpr/helper/",
+        "init" : "locked.php",
+        "version" : "1.1"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "semaphore,locked,lock"
+    },
+    "depends" : [
+        "mpr_cache_factory",
+        "mpr_debug_log"
+    ]
+}
