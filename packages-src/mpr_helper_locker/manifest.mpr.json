@@ -1,16 +1,17 @@
 {
-    "name" : "mpr_helper_locked",
+    "name" : "mpr_helper_locker",
     "description" : "Semaphore implementation using memcached",
     "package" : {
         "path" : "/mpr/helper/",
-        "init" : "locked.php",
+        "init" : "locker.php",
         "version" : "1.1"
     },
     "meta" : {
         "type" : "lib",
-        "tags" : "semaphore,locked,lock"
+        "tags" : "semaphore,locker,lock"
     },
     "depends" : [
+        "mpr_config",
         "mpr_cache_factory",
         "mpr_debug_log"
     ]

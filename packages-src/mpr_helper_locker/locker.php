@@ -5,7 +5,7 @@ use \mpr\cache;
 use \mpr\config;
 use \mpr\debug\log;
 
-class locked
+class locker
 {
     /**
      * Generate cache key
