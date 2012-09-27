@@ -141,7 +141,8 @@ extends \ArrayObject
      * @return int
      */
     public function IndexOf($object) {
-        return array_shift(array_keys($this->ToArray(), $object));
+        $array_keys = array_keys($this->ToArray(), $object);
+        return array_shift($array_keys);
     }
 
     /**
