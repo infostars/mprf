@@ -38,6 +38,7 @@
 
     <logging>
         <log type="junit" target="/tmp/logfile.xml" charset="UTF-8" logIncompleteSkipped="false"/>
+        <log type="json" target="/tmp/jsonlog.json" charset="UTF-8" logIncompleteSkipped="false"/>
         <log type="coverage-html" target="/tmp/report" charset="UTF-8"
              highlight="true" lowUpperBound="35" highLowerBound="70"/>
     </logging>
