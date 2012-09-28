@@ -24,10 +24,10 @@ class locker
      * @param string $method
      * @return mixed
      */
-    public static function lock($method)
+    public static function lock($method, $expire = 10)
     {
         $method = self::getCacheKey($method);
-        return cache\factory::factory()->set("{$method}:lock", true, 10);
+        return cache\factory::factory()->set("{$method}:lock", true, $expire);
     }
 
     /**
