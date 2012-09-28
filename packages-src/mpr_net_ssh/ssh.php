@@ -34,7 +34,11 @@ class ssh
     public function connect()
     {
         $this->connection = ssh2_connect($this->host, $this->port, array('hostkey' => $this->host_key));
-        ssh2_auth_pubkey_file($this->connection, $this->username, $this->key_public, $this->key_private, $this->key_password);
+        if(!empty($this->key_password)) {
+            ssh2_auth_pubkey_file($this->connection, $this->username, $this->key_public, $this->key_private, $this->key_password);
+        } else {
+            ssh2_auth_pubkey_file($this->connection, $this->username, $this->key_public, $this->key_private);
+        }
         return $this;
     }
 
