@@ -2,6 +2,7 @@
 namespace mpr\cache;
 
 use \mpr\config;
+use \mpr\cache;
 
 /**
  * file cache driver for mpr_cache
@@ -9,7 +10,7 @@ use \mpr\config;
  * @author GreeveX <greevex@gmail.com>
  */
 class file
-extends \mpr\cache
+extends cache
 implements \mpr\cache\cache_interface
 {
 
