@@ -4,7 +4,7 @@ namespace mpr\cache;
 use \mpr\config;
 
 /**
- * file cache driver for mpr_cache_factory
+ * file cache driver for mpr_cache
  *
  * @author GreeveX <greevex@gmail.com>
  */

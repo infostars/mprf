@@ -4,12 +4,12 @@ namespace mpr\cache;
 use \mpr\config;
 
 /**
- * Memcached driver wrapper for mpr_cache_factory package
+ * Memcached driver wrapper for mpr_cache package
  *
  * @author GreeveX <greevex@gmail.com>
  */
 class memcached
-extends \mpr\cache\factory
+extends \mpr\cache
 implements \mpr\cache\cache_interface
 {
     
