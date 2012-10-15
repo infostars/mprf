@@ -9,7 +9,7 @@ use \mpr\config;
  * @author GreeveX <greevex@gmail.com>
  */
 class file
-extends factory
+extends \mpr\cache
 implements \mpr\cache\cache_interface
 {
 
