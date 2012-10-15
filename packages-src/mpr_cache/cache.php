@@ -3,9 +3,10 @@ namespace mpr;
 
 use \mpr\debug\log;
 use \mpr\config;
+use \mpr\interfaces\cache as cache_interface;
 
 class cache
-implements \mpr\cache\cache_interface
+implements cache_interface
 {
 
     protected static $instances = array();
@@ -18,7 +19,7 @@ implements \mpr\cache\cache_interface
     /**
      * @static
      * @param null $driver_packageName
-     * @see \mpr\cache\cache_interface
+     * @see \mpr\interfaces\cache
      * @return self
      */
     public static function factory($driver_packageName = null)

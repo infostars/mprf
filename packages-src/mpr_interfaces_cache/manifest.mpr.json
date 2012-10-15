@@ -1,0 +1,15 @@
+{
+    "name" : "mpr_interfaces_cache",
+    "description" : "Cache class interface.",
+    "package" : {
+        "path" : "/mpr/interfaces/",
+        "init" : "cache.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "mpr_interfaces_cache,interfaces,interface,cache"
+    },
+    "depends" : [
+    ]
+}

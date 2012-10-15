@@ -1,12 +1,12 @@
 <?php
-namespace mpr\cache;
+namespace mpr\interfaces;
 
 /**
  * Cache interface for cache factory and drivers
  *
  * @author GreeveX <greevex@gmail.com>
  */
-interface cache_interface
+interface cache
 {
 
     /**

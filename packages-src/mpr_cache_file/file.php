@@ -3,6 +3,7 @@ namespace mpr\cache;
 
 use \mpr\config;
 use \mpr\cache;
+use \mpr\interfaces\cache as cache_interface;
 
 /**
  * file cache driver for mpr_cache
@@ -11,7 +12,7 @@ use \mpr\cache;
  */
 class file
 extends cache
-implements \mpr\cache\cache_interface
+implements cache_interface
 {
 
     private $data = array();

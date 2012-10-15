@@ -12,6 +12,7 @@
     },
     "depends" : [
         "mpr_cache",
-        "mpr_config"
+        "mpr_config",
+        "mpr_interfaces_cache"
     ]
 }

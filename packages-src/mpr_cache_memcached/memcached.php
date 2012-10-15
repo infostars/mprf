@@ -2,6 +2,7 @@
 namespace mpr\cache;
 
 use \mpr\config;
+use \mpr\interfaces\cache as cache_interface;
 
 /**
  * Memcached driver wrapper for mpr_cache package
@@ -10,7 +11,7 @@ use \mpr\config;
  */
 class memcached
 extends \mpr\cache
-implements \mpr\cache\cache_interface
+implements cache_interface
 {
     
     public function commit()

@@ -3,7 +3,7 @@
     "description" : "Base cache class. Requires at least one driver (e.g. mpr_cache_memcached)",
     "package" : {
         "path" : "/mpr/cache/",
-        "init" : "_pharinit.php",
+        "init" : "cache.php",
         "version" : "1.0"
     },
     "meta" : {
@@ -12,6 +12,7 @@
     },
     "depends" : [
         "mpr_debug_log",
-        "mpr_config"
+        "mpr_config",
+        "mpr_interfaces_cache"
     ]
 }
