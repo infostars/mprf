@@ -27,7 +27,7 @@ class locker
     public static function lock($method, $expire = 10)
     {
         $method = self::getCacheKey($method);
-        return cache\factory::factory()->set("{$method}:lock", true, $expire);
+        return cache::factory()->set("{$method}:lock", true, $expire);
     }
 
     /**
@@ -39,7 +39,7 @@ class locker
     public static function unlock($method)
     {
         $method = self::getCacheKey($method);
-        return cache\factory::factory()->set("{$method}:lock", false);
+        return cache::factory()->set("{$method}:lock", false);
     }
 
     /**
@@ -51,7 +51,7 @@ class locker
     public static function locked($method)
     {
         $method = self::getCacheKey($method);
-        return cache\factory::factory()->get("{$method}:lock") == true;
+        return cache::factory()->get("{$method}:lock") == true;
     }
 
     /**
@@ -69,13 +69,13 @@ class locker
     public static function strictLocked($callable, $input, $method_name, $cached = false, $cache_expire = 5)
     {
         $cache_key = self::getCacheKey($method_name);
-        $data = $cached ? cache\factory::factory()->get($cache_key) : null;
+        $data = $cached ? cache::factory()->get($cache_key) : null;
         if(!$cached || $cached && $data == null) {
             while(self::locked($method_name));
             self::lock($method_name);
             $data = call_user_func($callable, $input);
             if($cached) {
-                cache\factory::factory()->set($cache_key, $data, $cache_expire);
+                cache::factory()->set($cache_key, $data, $cache_expire);
             }
             self::unlock($method_name);
         }
@@ -95,7 +95,7 @@ class locker
     public static function cachedLockedFunction($callable, $input, $method_name, $cache_expire = 5)
     {
         $cache_key = self::getCacheKey($method_name);
-        $data = cache\factory::factory()->get($cache_key);
+        $data = cache::factory()->get($cache_key);
         if($data == null) {
             while(self::locked($method_name)) {
                 usleep(100);
@@ -103,7 +103,7 @@ class locker
             self::lock($method_name);
 
             $data = call_user_func($callable, $input);
-            cache\factory::factory()->set($cache_key, $data, $cache_expire);
+            cache::factory()->set($cache_key, $data, $cache_expire);
 
             self::unlock($method_name);
         }

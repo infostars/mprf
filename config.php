@@ -21,7 +21,7 @@
     'dbname' => 'test'
 ];
 
-\mpr\config::$package['mpr_cache_factory'] = [
+\mpr\config::$package['mpr_cache'] = [
     'default' => 'mpr_cache_memcached' // driver package name
 ];
 

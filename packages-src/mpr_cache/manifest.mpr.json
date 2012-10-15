@@ -1,5 +1,5 @@
 {
-    "name" : "mpr_cache_factory",
+    "name" : "mpr_cache",
     "description" : "Base cache class. Requires at least one driver (e.g. mpr_cache_memcached)",
     "package" : {
         "path" : "/mpr/cache/",

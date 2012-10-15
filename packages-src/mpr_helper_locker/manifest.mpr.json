@@ -12,7 +12,7 @@
     },
     "depends" : [
         "mpr_config",
-        "mpr_cache_factory",
+        "mpr_cache",
         "mpr_debug_log"
     ]
 }

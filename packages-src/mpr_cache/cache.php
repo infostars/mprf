@@ -1,11 +1,11 @@
 <?php
-namespace mpr\cache;
+namespace mpr;
 
 use \mpr\debug\log;
 use \mpr\config;
 
-class factory
-implements cache_interface
+class cache
+implements \mpr\cache\cache_interface
 {
 
     protected static $instances = array();
