@@ -2,15 +2,16 @@
 namespace mpr\cache;
 
 use \mpr\config;
+use \mpr\interfaces\cache as cache_interface;
 
 /**
- * Memcached driver wrapper for mpr_cache_factory package
+ * Memcached driver wrapper for mpr_cache package
  *
  * @author GreeveX <greevex@gmail.com>
  */
 class memcached
-extends \mpr\cache\factory
-implements \mpr\cache\cache_interface
+extends \mpr\cache
+implements cache_interface
 {
     
     public function commit()

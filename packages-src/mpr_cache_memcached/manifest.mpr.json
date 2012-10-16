@@ -1,6 +1,6 @@
 {
     "name" : "mpr_cache_memcached",
-    "description" : "Memcached driver wrapper for mpr_cache_factory",
+    "description" : "Memcached driver wrapper for mpr_cache",
     "package" : {
         "path" : "/mpr/cache/",
         "init" : "memcached.php",
@@ -11,7 +11,8 @@
         "tags" : "cache,memcache,memcached"
     },
     "depends" : [
-        "mpr_cache_factory",
-        "mpr_config"
+        "mpr_cache",
+        "mpr_config",
+        "mpr_interfaces_cache"
     ]
 }

@@ -2,27 +2,23 @@
 namespace mpr\cache;
 
 use \mpr\config;
+use \mpr\cache;
+use \mpr\interfaces\cache as cache_interface;
 
 /**
- * file cache driver for mpr_cache_factory
+ * file cache driver for mpr_cache
  *
  * @author GreeveX <greevex@gmail.com>
  */
 class file
-extends \mpr\cache
-implements \mpr\cache\cache_interface
+extends cache
+implements cache_interface
 {
 
-    /**
-     * Cache data
-     *
-     * @var array
-     */
     private $data = array();
 
-    /**
-     * @return string Cache filename
-     */
+    private $autoCommit = true;
+
     private function getCacheFilename()
     {
         static $cache_filename;
