@@ -9,14 +9,20 @@ use \mpr\config;
  * @author GreeveX <greevex@gmail.com>
  */
 class file
-extends factory
+extends \mpr\cache
 implements \mpr\cache\cache_interface
 {
 
+    /**
+     * Cache data
+     *
+     * @var array
+     */
     private $data = array();
 
-    private $autoCommit = true;
-
+    /**
+     * @return string Cache filename
+     */
     private function getCacheFilename()
     {
         static $cache_filename;

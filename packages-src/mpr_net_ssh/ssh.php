@@ -6,15 +6,76 @@ class ssh
     const SSH_RSA = 1;
     const SSH_DSS = 2;
 
+    /**
+     * IP or domain to connect to
+     *
+     * @var string
+     */
     private $host;
+
+    /**
+     * Connect to port
+     *
+     * @var int
+     */
     private $port;
+
+    /**
+     * Username to connect to host as
+     *
+     * @var string
+     */
     private $username;
+
+    /**
+     * Passpharse for ssh key
+     *
+     * @var string
+     */
     private $key_password;
+
+    /**
+     * Path to public ssh key file
+     *
+     * @var string
+     */
     public $key_public;
+
+    /**
+     * Path to private ssh key file
+     *
+     * @var string
+     */
     public $key_private;
-    private $connection; // Текущее соедиение
+
+    /**
+     * SSH connection resource
+     *
+     * @var resource
+     */
+    private $connection;
+
+    /**
+     * Host key type
+     * Allowed ssh-rsa ot ssh-dsa
+     *
+     * @var string
+     */
     private $host_key = 'ssh-rsa';
 
+    /**
+     * Build ssh connection with params
+     * Note: connection wouldn't be established
+     * To connect to server call connect() method
+     *
+     * @param string $host SSH Hostname or IP address
+     * @param int $port SSH Port
+     * @param string $username
+     * @param string $key_password Passphrase for ssh key
+     * @param string $key_public Path to public key
+     * @param string $key_private Path to private key
+     * @param int $host_key SSH key type (SSH_RSA or SSH_DSA)
+     */
     public function __construct($host, $port, $username, $key_password, $key_public, $key_private, $host_key = self::SSH_RSA)
     {
         $this->host = $host;
@@ -31,6 +92,11 @@ class ssh
         }
     }
 
+    /**
+     * Connect to server
+     *
+     * @return ssh
+     */
     public function connect()
     {
         $this->connection = ssh2_connect($this->host, $this->port, array('hostkey' => $this->host_key));
@@ -42,6 +108,12 @@ class ssh
         return $this;
     }
 
+    /**
+     * Execute command in asynchronous (non-block) mode
+     *
+     * @param string $command
+     * @return resource Connection streaming resource
+     */
     public function executeAsync($command)
     {
         static $stream;
@@ -53,6 +125,12 @@ class ssh
         return $stream;
     }
 
+    /**
+     * Execute command and wait result (block-mode)
+     *
+     * @param string $command
+     * @return string result
+     */
     public function execute($command)
     {
         $stream = ssh2_exec($this->connection, $command);
@@ -62,6 +140,13 @@ class ssh
         return $content;
     }
 
+    /**
+     * Upload file to ssh server using scp
+     *
+     * @param string $local_path Local file source path
+     * @param string $remote_path Remote file destination path
+     * @return string Result. (string)"OK" - upload successful
+     */
     public function upload($local_path, $remote_path)
     {
         if (!file_exists($local_path)) { return $local_path." - File not exists!"; }
@@ -71,6 +156,12 @@ class ssh
         return "OK";
     }
 
+    /**
+     * Get content from stream resource
+     *
+     * @param resource $stream Ssh connection
+     * @return string
+     */
     public function getStreamContent(&$stream)
     {
         $content = "";

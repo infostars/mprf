@@ -10,36 +10,36 @@ interface cache_interface
 {
 
     /**
-     * Set value by key into cache
+     * Set value by key
      *
      * @abstract
-     * @param $key
-     * @param $value
-     * @param string $expire
-     * @return mixed
+     * @param string $key
+     * @param mixed $value
+     * @param int $expire
+     * @return mixed result
      */
-    public function set($key, $value, $expire = '600');
+    public function set($key, $value, $expire = 600);
 
     /**
-     * Get value from cache by key
+     * Get value by key
      *
      * @abstract
-     * @param $key
-     * @return mixed
+     * @param string $key
+     * @return mixed result
      */
     public function get($key);
 
     /**
-     * Remove value from cache by key
+     * Remove record by key
      *
      * @abstract
-     * @param $key
-     * @return mixed
+     * @param string $key
+     * @return mixed result
      */
     public function remove($key);
 
     /**
-     * Check key exists in cache
+     * Checks is key exists in cache
      *
      * @abstract
      * @param $key
@@ -49,39 +49,37 @@ interface cache_interface
 
 
     /**
-     * DANGER! Clear all cache !!!
+     * Flush all
      *
      * @abstract
-     * @return mixed
+     * @return mixed result
      */
     public function clear();
 
     /**
      * Enable auto-commit
-     * It's means that every command sends operation to cache
-     * If auto commit disabled it works like a transaction
+     * Non-transaction mode
      *
      * @abstract
-     * @return mixed
+     * @return mixed result
      */
     public function enableAutoCommit();
 
     /**
      * Disable auto-commit
-     * It's means that every command sends operation to cache
-     * If auto commit disabled it works like a transaction
+     * Transaction mode
      *
      * @abstract
-     * @return mixed
+     * @return mixed result
      */
     public function disableAutoCommit();
 
     /**
      * Commit data to cache
-     * Like end of transaction started by enableAutoCommit()
+     * End of transaction
      *
      * @abstract
-     * @return mixed
+     * @return mixed result
      */
     public function commit();
 }
