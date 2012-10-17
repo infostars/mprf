@@ -1,0 +1,15 @@
+{
+    "name" : "mpr_helper_ipselect",
+    "description" : "ipselect package can return local `venet0:{N}` network interfaces array and get local network interfaces count",
+    "package" : {
+        "path" : "/mpr/helper/",
+        "init" : "ipselect.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "mpr_helper_ipselect,mpr_helper,ipselect"
+    },
+    "depends" : [
+    ]
+}
