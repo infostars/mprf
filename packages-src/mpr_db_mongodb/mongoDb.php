@@ -12,14 +12,29 @@ class mongoDb
 {
 
     /**
+     * Instance of this object for singleton
+     *
      * @var \mpr\db\mongoDb
      */
     private static $instance;
 
+    /**
+     * Native mongo driver instance
+     *
+     * @var \Mongo
+     */
     private $mongo;
+
+    /**
+     * Instance of database in mongo
+     *
+     * @var \MongoDB
+     */
     private $db;
 
     /**
+     * Get instance of singleton object
+     *
      * @static
      * @return mongoDb
      */
@@ -31,6 +46,9 @@ class mongoDb
         return self::$instance;
     }
 
+    /**
+     * Construct new object
+     */
     public function __construct()
     {
         $packageConfig = config::getPackageConfig(__CLASS__);
@@ -39,12 +57,26 @@ class mongoDb
                 ->selectDB($packageConfig['dbname']);
     }
 
+    /**
+     * Reconnect to mongo server
+     *
+     * @return bool
+     */
     public function reconnect()
     {
         $this->mongo->connect();
         $this->db->resetError();
+        return true;
     }
 
+    /**
+     * Insert new object in collection
+     *
+     * @param string $collection Collection name
+     * @param array $data Data to save
+     * @param array $options MongoDB options
+     * @return array|bool Result
+     */
     public function insert($collection, &$data, $options = [])
     {
         if(!isset($data['_id'])) {
@@ -58,12 +90,12 @@ class mongoDb
     }
 
     /**
-    * select data from Mongo
+    * Select array of data from collection
     *
-    * @param string $collection
-    * @param array $criteria
-    * @param array $fields
-    * @return \MongoCursor
+    * @param string $collection Collection name
+    * @param array $criteria Criteria for select by
+    * @param array $fields Needle fields of object
+    * @return \MongoCursor Native mongocursor object
     */
     public function select($collection, $criteria = [], $fields = [])
     {
@@ -73,6 +105,14 @@ class mongoDb
         return $data;
     }
 
+    /**
+     * Select one row from collection
+     *
+     * @param string $collection Collection name
+     * @param array $criteria Criteria for select by
+     * @param array $fields Needle fields of object
+     * @return array|null Result
+     */
     public function selectOne($collection, $criteria = [], $fields = [])
     {
 
@@ -82,7 +122,15 @@ class mongoDb
         return $data;
     }
 
-    public function update($collection, $criteria = [], $update_data = [], $createIfNonExists = false)
+    /**
+     * Update data in collection
+     *
+     * @param string $collection Collection name
+     * @param array $criteria Criteria for update by
+     * @param array $update_data New data
+     * @return bool Result
+     */
+    public function update($collection, $criteria = [], $update_data = [])
     {
         $data = $this->db
                     ->selectCollection($collection)
@@ -90,6 +138,14 @@ class mongoDb
         return $data;
     }
 
+    /**
+     * Remove data from collection
+     *
+     * @param string $collection Collection name
+     * @param array $criteria Criteria to remove by
+     * @param array $options MongoDB options
+     * @return mixed
+     */
     public function remove($collection, $criteria, $options = [])
     {
         $data = $this->db
@@ -98,22 +154,34 @@ class mongoDb
         return $data;
     }
 
+    /**
+     * Get count objects for collection
+     *
+     * @param string $collection Collection name
+     * @return int Count
+     */
     public function getCount($collection)
     {
-        try {
-            return $this->db
-                ->selectCollection($collection)
-                ->count();
-        } catch(\Exception $e) {
-            return false;
-        }
+        return $this->db->selectCollection($collection)->count();
     }
 
+    /**
+     * Get count objects for collection by criteria
+     *
+     * @param string $collection Collection name
+     * @param array $criteria Criteria for count by
+     * @return int Count
+     */
     public function getCountBy($collection, $criteria)
     {
         return $this->select($collection, $criteria)->count();
     }
 
+    /**
+     * Get native driver of database
+     *
+     * @return \MongoDB
+     */
     public function getDatabase()
     {
         return $this->db;
