@@ -5,28 +5,47 @@ use \mpr\config;
 use \mpr\io\output;
 use \mpr\io\fileWriter;
 
+/**
+ * Log package
+ *
+ * Debug all that you need
+ */
 class log
 {
     /**
+     * Is log already initialized
+     *
      * @var bool
      */
     private static $initialized = false;
 
     /**
+     * Is log enabled
+     *
      * @var bool
      */
     private static $enabled;
 
     /**
+     * Output object
+     *
      * @var \mpr\io\output
      */
     private static $output;
 
     /**
+     * fileWriter object to write log to file
+     *
      * @var \mpr\io\fileWriter
      */
     private static $logfile;
 
+    /**
+     * Initialize resources by config
+     *
+     * @param array $config
+     * @return bool is initialized
+     */
     protected static function initResources($config)
     {
         static $initialized;
@@ -42,6 +61,11 @@ class log
         return $initialized;
     }
 
+    /**
+     * Initialize debug
+     *
+     * @return bool Result
+     */
     public static function init()
     {
         $config = config::getPackageConfig(__CLASS__);
@@ -49,9 +73,17 @@ class log
         if(self::$enabled) {
             self::initResources($config);
         }
-        self::$initialized = true;
+        return self::$initialized = true;
     }
 
+    /**
+     * Put message to log
+     *
+     * @param string $comment Your text to log
+     * @param string $prefix Your log message prefix
+     * @warning if log disabled will be (bool)false
+     * @return bool true if logged, false if not logged
+     */
     public static function put($comment, $prefix)
     {
         if(!self::$initialized) {
@@ -67,6 +99,8 @@ class log
             if(self::$output) {
                 self::$output->writeLn($string);
             }
+            return true;
         }
+        return false;
     }
 }
