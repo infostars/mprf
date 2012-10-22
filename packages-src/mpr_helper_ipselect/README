@@ -1,0 +1,2 @@
+ipselect package can return local `venet0:{N}` network interfaces array and get local network interfaces count.
+Not works on local machine, because local machine do not have `venet0:{N}` network interface.
