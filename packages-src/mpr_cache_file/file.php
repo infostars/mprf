@@ -6,7 +6,7 @@ use \mpr\cache;
 use \mpr\interfaces\cache as cache_interface;
 
 /**
- * file cache driver for mpr_cache
+ * File cache driver wrapper for mpr_cache package
  *
  * @author GreeveX <greevex@gmail.com>
  */
