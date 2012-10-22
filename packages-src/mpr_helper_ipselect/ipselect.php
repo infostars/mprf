@@ -1,10 +1,16 @@
 <?php
 namespace mpr\helper;
 
+/**
+ * Look up local ip list
+ *
+ * @author Petr Demin <demin@infostars.ru>
+ * @author Ostrovskiy Grigoriy <greevex@gmail.com>
+ */
 class ipselect
 {
     /**
-     * @var $ip_select_command - shell command
+     * @var string $ip_select_command - shell command
      */
     private static $ip_select_command = 'ifconfig | grep venet0:';
 
@@ -33,7 +39,7 @@ class ipselect
     /**
      * Return ip count on local machine
      *
-     * @return integer
+     * @return int Count
      */
     public static function getCount()
     {
