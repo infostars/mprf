@@ -5,6 +5,13 @@ use \mpr\cache;
 use \mpr\config;
 use \mpr\debug\log;
 
+/**
+ * Locker package
+ *
+ * Semaphore implementation using cache
+ *
+ * @author Ostrovskiy Grigoriy <greevex@gmail.com>
+ */
 class locker
 {
     /**

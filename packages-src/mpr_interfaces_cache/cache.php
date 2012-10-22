@@ -2,9 +2,10 @@
 namespace mpr\interfaces;
 
 /**
- * Cache interface for cache factory and drivers
+ * Cache interface for package mpr_cache and cache drivers packages
  *
- * @author GreeveX <greevex@gmail.com>
+ * @author Ostrovskiy Grigoriy <greevex@gmail.com>
+ * @author Demin Petr <demin@infostars.ru>
  */
 interface cache
 {
