@@ -21,6 +21,10 @@ extends \ArrayObject
      */
     public $Capacity = PHP_INT_MAX;
 
+    /**
+     * @param $property
+     * @return int|mixed
+     */
     public function __get($property)
     {
         switch($property) {
@@ -31,6 +35,11 @@ extends \ArrayObject
         }
     }
 
+    /**
+     * Construct new object
+     *
+     * @param array|null $input Array to use as arrayList
+     */
     public function __construct($input = null)
     {
         if($input != null) {

@@ -11,6 +11,9 @@ use \mpr\debug\log;
  */
 class config
 {
+    /**
+     * Filename to detect mpr root directory
+     */
     const MPR_ROOT_FILENAME = ".mprroot";
 
     /**
