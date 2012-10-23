@@ -108,7 +108,10 @@ implements cache_interface
      */
     public function set($key, $value, $expire = 0)
     {
-        $this->data[$key] = $value;
+        $this->data[$key] = [
+            'e' => time() + $expire,
+            'v' => $value
+        ];
         if($this->autoCommit) {
             $this->commit();
         }
@@ -123,8 +126,9 @@ implements cache_interface
      */
     public function get($key)
     {
-        return isset($this->data[$key]) ? $this->data[$key] : null;
+        return $this->exists($key) ? $this->data[$key]['v'] : null;
     }
+
 
     /**
      * Check is key exists
@@ -134,7 +138,14 @@ implements cache_interface
      */
     public function exists($key)
     {
-        return isset($this->data[$key]);
+        if(isset($this->data[$key])) {
+            if(time() >= $this->data[$key]['e']) {
+                $this->remove($key);
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
