@@ -12,9 +12,17 @@ class memcachedTest extends \PHPUnit_Framework_TestCase
     protected $object;
 
     /**
+     * Test key
+     *
      * @var string
      */
     protected $test_key = "I'am:test_key";
+
+    /**
+     * Test value
+     *
+     * @var string
+     */
     protected $test_value = "I'am test value";
 
     /**
