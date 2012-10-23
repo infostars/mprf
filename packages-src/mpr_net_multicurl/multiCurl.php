@@ -29,10 +29,11 @@ class multiCurl
      * Set callback on success
      *
      * @param callable $callback
+     * @return callable
      */
     public function setCallback($callback)
     {
-        $this->callback = $callback;
+        return $this->callback = $callback;
     }
 
     /**
@@ -49,20 +50,29 @@ class multiCurl
      *
      * @param string $output Curl content result
      * @param array $info Meta info
+     * @return bool
      */
     public function callback($output, $info)
     {
-        echo ".";
+        echo json_encode(
+            [
+                'output' => $output,
+                'info'   => $info
+            ]
+        );
+
+        return true;
     }
 
     /**
      * Add curl to multicurl
      *
      * @param curl $curl
+     * @return int
      */
     public function add($curl)
     {
-        curl_multi_add_handle($this->multi_curl, $curl);
+        return curl_multi_add_handle($this->multi_curl, $curl);
     }
 
     /**
@@ -92,7 +102,9 @@ class multiCurl
                 curl_multi_select($this->multi_curl, 10);
             }
         } while ($running);
+
         curl_multi_close($this->multi_curl);
+
         return true;
     }
 }

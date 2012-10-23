@@ -7,15 +7,25 @@ namespace mpr\net;
 class multiCurlTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * multiCurl object
+     *
      * @var multiCurl
      */
     protected $object;
 
+    /**
+     * callback function
+     *
+     * @var callable $callback
+     */
     protected $callback;
 
-    protected $result;
-
-    protected $testfile = '/tmp/curl.test';
+    /**
+     * file name where put content
+     *
+     * @var string
+     */
+    protected $test_file = '/tmp/curl.test';
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -25,9 +35,8 @@ class multiCurlTest extends \PHPUnit_Framework_TestCase
     {
         $this->tearDown();
         $this->object = new multiCurl();
-        $file = $this->testfile;
+        $file = $this->test_file;
         $this->callback = function($output, $info) use ($file) { file_put_contents($file, $output); };
-        $this->result = null;
     }
 
     /**
@@ -36,8 +45,8 @@ class multiCurlTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        if(file_exists($this->testfile)) {
-            unlink($this->testfile);
+        if(file_exists($this->test_file)) {
+            unlink($this->test_file);
         }
     }
 
@@ -52,9 +61,9 @@ class multiCurlTest extends \PHPUnit_Framework_TestCase
         $this->object->add($curl);
         $this->object->execute();
         $wait = time() + 3;
-        while(!file_exists($this->testfile) && $wait > time()) {
+        while(!file_exists($this->test_file) && $wait > time()) {
             usleep(250000);
         }
-        $this->assertContains("yandex", file_get_contents($this->testfile));
+        $this->assertContains("yandex", file_get_contents($this->test_file));
     }
 }
