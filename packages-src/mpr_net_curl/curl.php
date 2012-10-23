@@ -3,14 +3,24 @@
 namespace mpr\net;
 
 /**
- * Curl driver for HTTP Request class
+ * Curl wrapper
  *
  * @author GreeveX <greevex@gmail.com>
  */
 class curl
 {
+    /**
+     * initialized curl resource
+     *
+     * @var resource
+     */
     private $curl;
 
+    /**
+     * Default options array
+     *
+     * @var array
+     */
     private $_defaultoptions = array(
         CURLOPT_VERBOSE             => 0,
         CURLOPT_RETURNTRANSFER      => true,
@@ -25,35 +35,76 @@ class curl
         CURLOPT_COOKIEFILE          => '/tmp/global_cookie.sds',
     );
 
+    /**
+     * Current options array
+     *
+     * @var array
+     */
     private $options = array();
 
+    /**
+     * Verbosity flag
+     *
+     * @param int $verbose
+     * @return int verbosity
+     */
     public function setVerbose($verbose = 1)
     {
-        $this->options[CURLOPT_VERBOSE] = $verbose;
+        return $this->options[CURLOPT_VERBOSE] = $verbose;
     }
 
+    /**
+     * Construct new object
+     */
     public function __construct()
     {
         $this->reset();
     }
 
+    /**
+     * Initialize new curl object and apply default options
+     *
+     * @return bool
+     */
     public function reset()
     {
         $this->curl = curl_init();
         $this->options = $this->_defaultoptions;
+        return true;
     }
 
+    /**
+     * Set file path for cookie file
+     *
+     * @param string $path Cookie file path
+     */
     public function setCookieFile($path)
     {
         $this->options[CURLOPT_COOKIEJAR] = $path;
         $this->options[CURLOPT_COOKIEFILE] = $path;
     }
 
+    /**
+     * Select output interface
+     * For example ip-address or interface name (127.0.0.1 eth0 ...)
+     *
+     * @param string $interface
+     * @return bool
+     */
     public function selectInterface($interface)
     {
         $this->options[CURLOPT_INTERFACE] = $interface;
+        return bool;
     }
 
+    /**
+     * Prepare new curl request
+     *
+     * @param string $url
+     * @param array|null $params
+     * @param string|null $method null = default (GET)
+     * @return resource Curl object
+     */
     public function prepare($url, $params = null, $method = null)
     {
         if($method === null) {
@@ -98,11 +149,24 @@ class curl
         return $this->curl;
     }
 
+    /**
+     * Add some curl options to current request
+     *
+     * @param array $options
+     * @return bool
+     */
     public function addOptions(array $options)
     {
         $this->options = array_merge($this->options, $options);
+        return true;
     }
 
+    /**
+     * Execute request
+     *
+     * @return string|bool string result (CURLOPT_RETURNTRANSFER = 1), bool (CURLOPT_RETURNTRANSFER = 0)
+     * @throws CurlException
+     */
     public function execute()
     {
         $result = curl_exec($this->curl);
@@ -131,15 +195,28 @@ class curl
         return $result;
     }
 
+    /**
+     * Set connect timeout seconds
+     *
+     * @param $seconds
+     */
     public function setConnectTimeout($seconds)
     {
         $this->options[CURLOPT_CONNECTTIMEOUT] = intval($seconds);
     }
 
+    /**
+     * Set timeout seconds
+     *
+     * @param $seconds
+     */
     public function setTimeout($seconds)
     {
         $this->options[CURLOPT_TIMEOUT] = intval($seconds);
     }
 }
 
+/**
+ * Curl exception object
+ */
 class CurlException extends \Exception {}

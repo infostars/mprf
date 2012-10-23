@@ -4,6 +4,15 @@ namespace mpr\loader;
 use \mpr\debug\log;
 use \mpr\config;
 
+/**
+ * fileLoader class
+ *
+ * Searching and loading files
+ * Can get contents and require
+ * Also can load json files
+ *
+ * @author Ostrovskiy Grigoriy <greevex@gmail.com>
+ */
 class fileLoader
 {
 
