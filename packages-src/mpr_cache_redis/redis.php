@@ -2,24 +2,24 @@
 namespace mpr\cache;
 
 use \mpr\config;
-use \mpr\interfaces\cache as cache_interface;
+use \mpr\interfaces;
 
 /**
- * Memcached driver wrapper for mpr_cache package
+ * Redis driver wrapper for mpr_cache package
  *
  * @author GreeveX <greevex@gmail.com>
  */
-class memcached
+class redis
 extends \mpr\cache
-implements cache_interface
+implements interfaces\cache
 {
 
     /**
-     * Memcached native driver instance
+     * Instance of native Redis driver
      *
-     * @var \Memcached
+     * @var \Redis
      */
-    protected $memcached;
+    protected $instance;
 
     /**
      * Commit changes
@@ -60,10 +60,10 @@ implements cache_interface
     public function __construct()
     {
         $config = config::getPackageConfig(__CLASS__);
-        $this->memcached = new \Memcached();
-        foreach($config['servers'] as $server) {
-            $this->memcached->addServer($server['host'], $server['port']);
-        }
+        $this->instance = new \Redis();
+        $this->instance->pconnect($config['server']['host'], $config['server']['port'], $config['server']['timeout']);
+        $this->instance->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP);
+        $this->instance->setOption(\Redis::OPT_PREFIX, $config['server']['prefix']);
     }
 
     /**
@@ -76,7 +76,7 @@ implements cache_interface
      */
     public function set($key, $value, $expire = 60)
     {
-        return $this->memcached->set($key, $value, $expire);
+        return $this->instance->setex($key, $expire, $value);
     }
 
     /**
@@ -87,7 +87,7 @@ implements cache_interface
      */
     public function get($key)
     {
-        return $this->memcached->get($key);
+        return $this->instance->get($key);
     }
 
     /**
@@ -98,8 +98,7 @@ implements cache_interface
      */
     public function exists($key)
     {
-        $data = $this->memcached->get($key);
-        return !($data === false || $data === null);
+        return $this->instance->exists($key);
     }
 
     /**
@@ -110,7 +109,7 @@ implements cache_interface
      */
     public function remove($key)
     {
-        return $this->memcached->delete($key);
+        return $this->instance->delete($key);
     }
 
     /**
@@ -120,6 +119,6 @@ implements cache_interface
      */
     public function clear()
     {
-        return $this->memcached->flush();
+        return $this->instance->flushDB();
     }
 }
