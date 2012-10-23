@@ -9,13 +9,38 @@ use \mpr\cache;
 class cacheTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var factory
+     * Base instance of object
+     *
+     * @var cache
      */
     protected $object;
 
+    /**
+     * Test driver name
+     *
+     * @var string
+     */
     protected $driver_name = "mpr_cache_memcached";
+
+    /**
+     * Base class name
+     *
+     * @var string
+     */
     protected $class_name = "\\mpr\\cache";
+
+    /**
+     * Test key
+     *
+     * @var string
+     */
     protected $test_key = "I'am:test_key";
+
+    /**
+     * Test value
+     *
+     * @var string
+     */
     protected $test_value = "I'am test value";
 
     /**

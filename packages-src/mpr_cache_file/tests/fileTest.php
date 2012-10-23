@@ -7,11 +7,24 @@ namespace mpr\cache;
 class fileTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * Base instance of object
+     *
      * @var file
      */
     protected $object;
 
+    /**
+     * Test key
+     *
+     * @var string
+     */
     protected $test_key = "I'am:test_key";
+
+    /**
+     * Test value
+     *
+     * @var string
+     */
     protected $test_value = "I'am test value";
 
     /**
