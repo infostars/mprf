@@ -6,11 +6,18 @@ use \mpr\config;
 use \mpr\debug\log;
 use \mpr\pattern\abstractFactory;
 
+/**
+ * Client for Gearman queue server
+ *
+ * @author Ostrovskiy Grigoriy <greevex@gmail.com>
+ */
 class gearmanClient
 extends abstractFactory
 {
 
     /**
+     * Gearman client instance
+     *
      * @var \GearmanClient
      */
     private $gearmanInstance;

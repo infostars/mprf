@@ -11,20 +11,45 @@ use \mpr\net\curl;
  */
 class multiCurl
 {
+    /**
+     * curl_multi resource instance
+     *
+     * @var resource
+     */
     private $multi_curl;
-    private $callback = null;
 
+    /**
+     * Callback callable
+     *
+     * @var callable
+     */
+    private $callback;
+
+    /**
+     * Set callback on success
+     *
+     * @param callable $callback
+     */
     public function setCallback($callback)
     {
         $this->callback = $callback;
     }
 
+    /**
+     * Construct new object of multiCurl
+     */
     public function __construct()
     {
         $this->multi_curl = curl_multi_init();
-        $this->callback = array($this, 'callback');
+        $this->setCallback([$this, 'callback']);
     }
 
+    /**
+     * Example of callback function
+     *
+     * @param string $output Curl content result
+     * @param array $info Meta info
+     */
     public function callback($output, $info)
     {
         echo ".";
@@ -40,6 +65,11 @@ class multiCurl
         curl_multi_add_handle($this->multi_curl, $curl);
     }
 
+    /**
+     * Execute all curl object added in multiCurl
+     *
+     * @return bool
+     */
     public function execute()
     {
         do {
@@ -63,5 +93,6 @@ class multiCurl
             }
         } while ($running);
         curl_multi_close($this->multi_curl);
+        return true;
     }
 }
