@@ -9,35 +9,75 @@ namespace mpr\io;
 class output
 {
 
+    /**
+     * Opened output connection
+     *
+     * @var resource
+     */
     private $outputResource;
 
+    /**
+     * Output buffering flag
+     *
+     * @var bool|null
+     */
     private $outputBuffering = false;
 
+    /**
+     * Output type OUT_OUTPUT|OUT_STDOUT
+     *
+     * @var bool|int
+     */
     private $outputType = false;
 
+    /**
+     * In-memory buffer
+     *
+     * @var string
+     */
     private $buffer = "";
 
+    /**
+     * Output type php://output
+     */
     const OUT_OUTPUT = 89;
+
+    /**
+     * Output type php://stdout
+     */
     const OUT_STDOUT = 91;
 
-    public function __construct($buffering = null, $type = self::OUT_STDOUT)
+    /**
+     * Construct new object instance
+     *
+     * @param bool $buffering
+     * @param int $type
+     */
+    public function __construct($buffering = false, $type = self::OUT_STDOUT)
     {
-        $this->outputBuffering = ($buffering == null ? false : $buffering);
+        $this->outputBuffering = $buffering;
         $this->outputType = in_array($type, [self::OUT_OUTPUT, self::OUT_STDOUT]) ? $type : self::OUT_STDOUT;
         $this->outputResource = fopen($this->outputType == self::OUT_STDOUT ? 'php://stdout' : 'php://output', 'w');
-
     }
 
+    /**
+     * Commit changes to output
+     *
+     * @return bool
+     */
     public function commit()
     {
         if($this->outputBuffering) {
             fwrite($this->outputResource, $this->buffer);
             $this->buffer = "";
         }
+        return true;
     }
 
     /**
-     * @param $string
+     * Write data to output
+     *
+     * @param string $string
      * @return \mpr\io\output
      */
     public function write($string)
@@ -54,7 +94,9 @@ class output
     }
 
     /**
-     * @param $string
+     * Write data on single line to output
+     *
+     * @param string $string
      * @return \mpr\io\output
      */
     public function writeLn($string)
@@ -75,15 +117,24 @@ class output
         return $this;
     }
 
+    /**
+     * Set custom output resource
+     *
+     * @param resource $resource
+     * @return bool
+     */
     public function setOutputResource($resource)
     {
         if(is_resource($this->outputResource)) {
             fclose($this->outputResource);
         }
         $this->outputResource = $resource;
+        return true;
     }
 
     /**
+     * Get current output resource
+     *
      * @return resource
      */
     public function getOutputResource()
@@ -91,14 +142,23 @@ class output
         return $this->outputResource;
     }
 
+    /**
+     * Close opened output resource
+     *
+     * @return bool
+     */
     public function close()
     {
         $this->commit();
         if(is_resource($this->outputResource)) {
             fclose($this->outputResource);
         }
+        return true;
     }
 
+    /**
+     * Destruct object
+     */
     public function __destruct()
     {
         $this->close();
