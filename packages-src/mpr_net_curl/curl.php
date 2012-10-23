@@ -94,7 +94,7 @@ class curl
     public function selectInterface($interface)
     {
         $this->options[CURLOPT_INTERFACE] = $interface;
-        return bool;
+        return true;
     }
 
     /**
@@ -165,7 +165,7 @@ class curl
      * Execute request
      *
      * @return string|bool string result (CURLOPT_RETURNTRANSFER = 1), bool (CURLOPT_RETURNTRANSFER = 0)
-     * @throws CurlException
+     * @throws curlException
      */
     public function execute()
     {
@@ -188,7 +188,7 @@ class curl
             } else {
                 curl_close($this->curl);
                 $this->curl = null;
-                throw new CurlException($curl_error, $curl_errno);
+                throw new curlException($curl_error, $curl_errno);
             }
         }
 
@@ -199,24 +199,21 @@ class curl
      * Set connect timeout seconds
      *
      * @param $seconds
+     * @return int seconds
      */
     public function setConnectTimeout($seconds)
     {
-        $this->options[CURLOPT_CONNECTTIMEOUT] = intval($seconds);
+        return $this->options[CURLOPT_CONNECTTIMEOUT] = intval($seconds);
     }
 
     /**
      * Set timeout seconds
      *
      * @param $seconds
+     * @return int seconds
      */
     public function setTimeout($seconds)
     {
-        $this->options[CURLOPT_TIMEOUT] = intval($seconds);
+        return $this->options[CURLOPT_TIMEOUT] = intval($seconds);
     }
 }
-
-/**
- * Curl exception object
- */
-class CurlException extends \Exception {}

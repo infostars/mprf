@@ -170,6 +170,7 @@ class input
      *
      * @param array $array
      * @param bool $clean Clear already exists data
+     * @return bool
      */
     public function setArguments($array, $clean = true)
     {
@@ -178,6 +179,7 @@ class input
         } else {
             self::$INTERNAL = array_merge_recursive(self::$INTERNAL, $array);
         }
+        return true;
     }
 
     /**

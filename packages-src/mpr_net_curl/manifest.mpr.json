@@ -3,7 +3,7 @@
     "description" : "Curl wrapper. Easy way to use curl as object. Can work in pair with mpr_net_multiCurl for multi-threading!",
     "package" : {
         "path" : "/mpr/net/",
-        "init" : "curl.php",
+        "init" : "_pharinit.php",
         "version" : "2.1"
     },
     "meta" : {
