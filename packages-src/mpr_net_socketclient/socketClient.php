@@ -1,28 +1,98 @@
 <?php
+
 namespace mpr\net;
 
 use \mpr\debug\log;
 
 /**
+ * Socket client class
  *
  */
 class socketClient
 {
+    /**
+     * Host param
+     * default '127.0.0.1'
+     *
+     * @var string
+     */
     private $host = '127.0.0.1';
+
+    /**
+     * Port param
+     * default 65455
+     *
+     * @var int
+     */
     private $port = 65455;
+
+    /**
+     * Pause param
+     * default 1000 microseconds
+     *
+     * @var int
+     */
     private $pause = 1000;
+
+    /**
+     * Call function if connect successful
+     *
+     * @var callable
+     */
     private $onConnect;
+
+    /**
+     * Call function if connect successful
+     *
+     * @var callable
+     */
     private $onEveryCycle;
+
+    /**
+     * Socket client name
+     *
+     * @var string
+     */
     private $name = "SockClient";
+
+    /**
+     * ???
+     *
+     * @var
+     */
     private $sock;
+
+    /**
+     * Timeout on reading
+     *
+     * @var int
+     */
     private $timeout_read = 1;
+
+    /**
+     * Timeout on writing
+     *
+     * @var int
+     */
     private $timeout_write = 1;
 
+    /**
+     * Set socket client name
+     *
+     * @param string $name
+     * @return string
+     */
     public function setName($name)
     {
-        $this->name = $name;
+        return $this->name = $name;
     }
 
+    /**
+     * Initialize socket client object with host and port params
+     *
+     * @param string|null $host
+     * @param int|null $port
+     */
     public function __construct($host = null, $port = null)
     {
         if(!is_null($host)) {
@@ -34,36 +104,70 @@ class socketClient
         ob_implicit_flush();
     }
 
+    /**
+     * Set reading timeout
+     *
+     * @param int $timeout_read
+     * @return int
+     */
     public function setReadTimeout($timeout_read)
     {
-        $this->timeout_read = $timeout_read;
+        return $this->timeout_read = $timeout_read;
     }
 
+    /**
+     * Set writing timeout
+     *
+     * @param int $timeout_write
+     * @return int
+     */
     public function setWriteTimeout($timeout_write)
     {
-        $this->timeout_write = $timeout_write;
+        return $this->timeout_write = $timeout_write;
     }
 
+    /**
+     * Close connection
+     *
+     * @return bool
+     */
     public function disconnect()
     {
         try {
-            $this->shutdown();
+            return $this->shutdown();
         } catch(\Exception $e) {
             // Already down
+            log::put("Already down", __METHOD__);
         }
+        return true;
     }
 
+    /**
+     * Try to reconnect
+     *
+     * @return bool
+     */
     public function reconnect()
     {
         $this->disconnect();
         $this->connect();
+
+        return true;
     }
 
+    /**
+     * Disconnect when object destructed
+     */
     public function __destruct()
     {
         $this->disconnect();
     }
 
+    /**
+     * Check if socket client object connected
+     *
+     * @return bool
+     */
     public function isConnected()
     {
         if(strtolower(get_resource_type($this->sock)) != 'socket') {
@@ -92,6 +196,7 @@ class socketClient
     /**
      * Creates a server socket and listens for incoming client connections
      *
+     * @return bool
      */
     public function connect()
     {
@@ -114,13 +219,28 @@ class socketClient
         }
         log::put("Client [{$this->name}] created![{$attempt}]", __METHOD__);
         self::setBlocking($this->sock, false);
+
+        return $connected;
     }
 
+    /**
+     * Get peer name
+     *
+     * @return bool|string
+     */
     public function getPeerName()
     {
         return socket_getpeername($this->sock, $ip, $port) ? "{$ip}:{$port}" : false;
     }
 
+    /**
+     * Send data in socket and return how much bites we are sent
+     *
+     * @param string $data
+     * @param null $length
+     * @param bool $force
+     * @return int|bool how much bites we are sent
+     */
     public function sendData($data, $length = null, $force = false)
     {
         if($force) {
@@ -134,8 +254,18 @@ class socketClient
         } else {
             return socket_send($this->sock, $data, strlen($data), 0);
         }
+
+        return false;
     }
 
+    /**
+     * Write data in socket and return how much bites we are write
+     *
+     * @param string $data
+     * @param null $length
+     * @param bool $force
+     * @return int|bool how much bites we are write
+     */
     public function writeData($data, $length = null, $force = false)
     {
         if($force) {
@@ -149,8 +279,15 @@ class socketClient
         } else {
             return socket_write($this->sock, $data, strlen($data));
         }
+
+        return false;
     }
 
+    /**
+     * Shutdown connection on socket
+     *
+     * @return bool
+     */
     public function shutdown()
     {
         if(strtolower(get_resource_type($this->sock)) != 'socket') {
@@ -159,59 +296,126 @@ class socketClient
         return true;
     }
 
+    /**
+     * Get data from a connected socket
+     *
+     * @param int $length
+     * @param bool $wait
+     * @return mixed
+     */
     public function recvData($length, $wait = false)
     {
         socket_recv($this->sock, $data, $length, $wait ? MSG_WAITALL : MSG_DONTWAIT);
         return $data;
     }
 
+    /**
+     * Reads a string of bytes maximum length length of the socket
+     *
+     * @param int $length
+     * @param bool $binary
+     * @return string
+     */
     public function readData($length, $binary = true)
     {
         return socket_read($this->sock, $length, $binary ? PHP_BINARY_READ : PHP_NORMAL_READ);
     }
 
+    /**
+     * Sets blocking or unblocking mode on a socket resource
+     *
+     * @param bool $isBlocked
+     * @return bool
+     */
     public function setBlocking($isBlocked = true)
     {
         return $isBlocked ? socket_set_block($this->sock) : socket_set_nonblock($this->sock);
     }
 
+    /**
+     * Set host
+     *
+     * @param string $host
+     * @return string $host
+     */
     public function setHost($host)
     {
-        $this->host = $host;
+        return $this->host = $host;
     }
 
+    /**
+     * Get host
+     *
+     * @return string
+     */
     public function getHost()
     {
         return $this->host;
     }
 
+    /**
+     * Set port
+     *
+     * @param int $port
+     * @return int $port
+     */
     public function setPort($port)
     {
-        $this->port = $port;
+        return $this->port = $port;
     }
 
+    /**
+     * Get port
+     *
+     * @return int
+     */
     public function getPort()
     {
         return $this->port;
     }
 
+    /**
+     * Set pause in microseconds
+     *
+     * @param int $pause
+     * @return int $pause
+     */
     public function setPause($pause)
     {
-        $this->pause = $pause;
+        return $this->pause = $pause;
     }
 
+    /**
+     * Get pause in microseconds
+     *
+     * @return int
+     */
     public function getPause()
     {
         return $this->pause;
     }
 
+    /**
+     * Set on connect callable function
+     *
+     * @param callable $onConnect
+     * @return bool
+     */
     public function setOnConnect($onConnect)
     {
         $this->onConnect = $onConnect;
+        return true;
     }
 
+    /**
+     * Set callable function to call on every cycle
+     *
+     * @param callable $onEveryCycle
+     * @return bool
+     */
     public function setOnEveryCycle($onEveryCycle)
     {
         $this->onEveryCycle = $onEveryCycle;
+        return true;
     }
 }
