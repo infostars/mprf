@@ -17,42 +17,149 @@ use \mpr\config;
 class streamClient
 {
     /**
-     * Class constants
+     * Base twitter api url
      */
     const URL_BASE = 'https://stream.twitter.com/1/statuses/';
-    const FORMAT_JSON = 'json';
-    const FORMAT_XML = 'xml';
-    const METHOD_FILTER = 'filter';
-    const METHOD_SAMPLE = 'sample';
-    const METHOD_RETWEET = 'retweet';
-    const METHOD_FIREHOSE = 'firehose';
-    const EARTH_RADIUS_KM = 6371;
-
-    protected $out_address = null;
-
-    public function setOutputAddress($out_address)
-    {
-        $this->out_address = $out_address;
-    }
 
     /**
-     * Member Attribs
+     * Format json
+     */
+    const FORMAT_JSON = 'json';
+
+    /**
+     * Format xml
+     */
+    const FORMAT_XML = 'xml';
+
+    /**
+     * Method filter
+     */
+    const METHOD_FILTER = 'filter';
+
+    /**
+     * Method sample
+     */
+    const METHOD_SAMPLE = 'sample';
+
+    /**
+     * Method retweet
+     */
+    const METHOD_RETWEET = 'retweet';
+
+    /**
+     * Method firehose
+     */
+    const METHOD_FIREHOSE = 'firehose';
+
+    /**
+     * Earth radius
+     */
+    const EARTH_RADIUS_KM = 6371;
+
+    /**
+     * Ip address for output interface
+     *
+     * @var string
+     */
+    protected $out_address = null;
+
+    /**
+     * Twitter username
+     *
+     * @var string
      */
     protected $username;
+
+    /**
+     * Twitter password
+     *
+     * @var string
+     */
     protected $password;
+
+    /**
+     * Streaming API method
+     *
+     * @var string
+     */
     protected $method;
+
+    /**
+     * Streaming API format
+     *
+     * @var string
+     */
     protected $format;
-    protected $count; //Can be -150,000 to 150,000. @see http://dev.twitter.com/pages/streaming_api_methods#count
+
+    /**
+     * Count messages
+     * Can be -150,000 to 150,000. @see http://dev.twitter.com/pages/streaming_api_methods#count
+     *
+     * @var int
+     */
+    protected $count;
+
+    /**
+     * Follow twitter user id-s
+     *
+     * @var array
+     */
     protected $followIds;
+
+    /**
+     * Track keywords
+     *
+     * @var array
+     */
     protected $trackWords;
+
+    /**
+     * Geo-location coordinate boxes
+     *
+     * @var array
+     */
     protected $locationBoxes;
+
+    /**
+     * Connection to twitter
+     *
+     * @var resource
+     */
     protected $conn;
+
+    /**
+     * Connection pool for select
+     *
+     * @var array
+     */
     protected $fdrPool;
+
+    /**
+     * Buffer
+     *
+     * @var string
+     */
     protected $buff;
-    // State vars
+
+    /**
+     * Is filter changed flag
+     *
+     * @var bool
+     */
     protected $filterChanged;
+
+    /**
+     * Is reconnect flag
+     *
+     * @var bool
+     */
     protected $reconnect;
 
+    /**
+     * Max bytes to read from stream per cycle
+     *
+     * @var int
+     */
     protected $max_bytes_read;
 
     /**
@@ -64,7 +171,19 @@ class streamClient
      * @var integer
      */
     protected $statusRate;
+
+    /**
+     * Last error number
+     *
+     * @var int
+     */
     protected $lastErrorNo;
+
+    /**
+     * Last error message
+     *
+     * @var string
+     */
     protected $lastErrorMsg;
 
     /**
@@ -89,21 +208,6 @@ class streamClient
     protected $filterCheckCount = 0;
 
     /**
-     * Total number of seconds (fractional) spent in the enqueueStatus() calls (i.e. the customized
-     * function that handles each received tweet).
-     *
-     * @var float
-     */
-    protected $enqueueSpent = 0;
-
-    /**
-     * Total number of seconds (fractional) spent in the checkFilterPredicates() calls
-     *
-     * @var float
-     */
-    protected $filterCheckSpent = 0;
-
-    /**
      * Number of seconds since the last tweet arrived (or the keep-alive newline)
      *
      * @var integer
@@ -118,45 +222,77 @@ class streamClient
     protected $maxIdlePeriod = 0;
 
     /**
-     * Time spent on each call to enqueueStatus() (i.e. average time spent, in milliseconds,
-     * spent processing received tweet).
+     * Connect failures max limit
      *
-     * Simply: enqueueSpent divided by statusCount
-     * Note: by default, calculated fresh for past 60 seconds, every 60 seconds.
-     *
-     * @var float
+     * @var int
      */
-    protected $enqueueTimeMS = 0;
-
-    /**
-     * Like $enqueueTimeMS but for the checkFilterPredicates() function.
-     * @var float
-     */
-    protected $filterCheckTimeMS = 0;
-
-    /**
-     * Seconds since the last call to statusUpdate()
-     *
-     * Reset to zero after each call to statusUpdate()
-     * Highest value it should ever reach is $this->avgPeriod
-     *
-     * @var integer
-     */
-    protected $avgElapsed = 0;
-    // Config type vars - override in subclass if desired
     protected $connectFailuresMax = 20;
+
+    /**
+     * Connect timeout in seconds
+     *
+     * @var int seconds
+     */
     protected $connectTimeout = 5;
+
+    /**
+     * Read timeout
+     *
+     * @var int seconds
+     */
     protected $readTimeout = 5;
+
+    /**
+     * Idle timeout before reconnect
+     *
+     * @var int seconds
+     */
     protected $idleReconnectTimeout = 90;
-    protected $avgPeriod = 60;
-    protected $status_length_base = 10;
+
+    /**
+     * HTTP user-agent for connection
+     *
+     * @var string
+     */
     protected $userAgent = 'streamClient/0.9';
-    protected $filterCheckMin = 5;
-    protected $filterUpdMin = 120;
+
+    /**
+     * TCP backoff
+     *
+     * @var int
+     */
     protected $tcpBackoff = 1;
+
+    /**
+     * TCP backoff max limit
+     *
+     * @var int
+     */
     protected $tcpBackoffMax = 16;
+
+    /**
+     * HTTP backoff
+     *
+     * @var int
+     */
     protected $httpBackoff = 10;
+
+    /**
+     * HTTP backoff max limit
+     *
+     * @var int
+     */
     protected $httpBackoffMax = 240;
+
+    /**
+     * Set output ip-address
+     *
+     * @param string $out_address ip-address
+     */
+    public function setOutputAddress($out_address)
+    {
+        $this->out_address = $out_address;
+    }
 
     /**
      * Create a new streamClient object attached to the appropriate twitter stream method.
@@ -405,8 +541,16 @@ class streamClient
         log::put('Exiting.', config::getPackageName(__CLASS__));
     }
 
+    /**
+     * @var array
+     */
     private $method_to_call;
 
+    /**
+     * Set callback method on every message
+     *
+     * @param $callback
+     */
     public function setCallbackMethod($callback)
     {
         $this->method_to_call = $callback;
@@ -432,6 +576,10 @@ class streamClient
         return $this->lastErrorNo;
     }
 
+    /**
+     * @param $users
+     * @return array
+     */
     protected function convertUsers2Ids($users)
     {
         $url = "http://api.twitter.com/1/users/lookup.json?screen_name=";
@@ -452,6 +600,38 @@ class streamClient
     }
 
     /**
+     * Handle errors
+     *
+     * @param float $tcpRetry
+     * @param string $errStr
+     * @param int $errNo
+     * @param int $connectFailures
+     * @return bool
+     * @throws streamClientConnectLimitExceeded
+     */
+    protected function handleErrors(&$tcpRetry, &$errStr, &$errNo, &$connectFailures)
+    {
+        // No go - handle errors/backoff
+        if (!$this->conn || !is_resource($this->conn)) {
+            $this->lastErrorMsg = $errStr;
+            $this->lastErrorNo = $errNo;
+            $connectFailures++;
+            if ($connectFailures > $this->connectFailuresMax) {
+                $msg = 'TCP failure limit exceeded with ' . $connectFailures . ' failures. Last error: ' . $errStr;
+                log::put($msg, 'error');
+                throw new streamClientConnectLimitExceeded($msg, $errNo); // Throw an exception for other code to handle
+            }
+            // Increase retry/backoff up to max
+            $tcpRetry = ($tcpRetry < $this->tcpBackoffMax) ? $tcpRetry * 2 : $this->tcpBackoffMax;
+            log::put('TCP failure ' . $connectFailures . ' of ' . $this->connectFailuresMax . ' connecting to stream: ' .
+                $errStr . ' (' . $errNo . '). Sleeping for ' . $tcpRetry . ' seconds.', config::getPackageName(__CLASS__));
+            sleep($tcpRetry);
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Connects to the stream URL using the configured method.
      * 
      * @throws streamClientConnectLimitExceeded
@@ -460,12 +640,12 @@ class streamClient
     protected function connect() {
         log::put("Connecting to twitter streaming api...", config::getPackageName(__CLASS__));
         // Init state
-        $connectFailures = 0;
         $tcpRetry = $this->tcpBackoff / 2;
         $httpRetry = $this->httpBackoff / 2;
 
         // Keep trying until connected (or max connect failures exceeded)
         do {
+            $connectFailures = 0;
             log::put("Constructing connection...", config::getPackageName(__CLASS__));
             // Check filter predicates for every connect (for filter method)
             if ($this->method == self::METHOD_FILTER) {
@@ -477,22 +657,7 @@ class streamClient
             $urlParts = parse_url($url);
 
             // Setup params appropriately
-            //$requestParams = array('delimited' => 'length');
-            $requestParams = array();
-
-            // Filter takes additional parameters
-            if (count($this->trackWords)) {
-                $requestParams['track'] = implode(',', $this->trackWords);
-            }
-            if (count($this->followIds)) {
-                $requestParams['follow'] = implode(',', $this->convertUsers2Ids($this->followIds));
-            }
-            if (count($this->locationBoxes)) {
-                $requestParams['locations'] = implode(',', $this->locationBoxes);
-            }
-            if ($this->count <> 0) {
-                $requestParams['count'] = $this->count;
-            }
+            $requestParams = $this->buildRequestParams();
 
             // Debugging is useful
             log::put("Connecting to twitter stream: {$url} with params: " .
@@ -529,21 +694,7 @@ class streamClient
             $context = stream_context_create($context_options);
             $this->conn = stream_socket_client("{$scheme}{$streamIP}:{$port}", $errNo, $errStr, $this->connectTimeout, STREAM_CLIENT_CONNECT, $context);
 
-            // No go - handle errors/backoff
-            if (!$this->conn || !is_resource($this->conn)) {
-                $this->lastErrorMsg = $errStr;
-                $this->lastErrorNo = $errNo;
-                $connectFailures++;
-                if ($connectFailures > $this->connectFailuresMax) {
-                    $msg = 'TCP failure limit exceeded with ' . $connectFailures . ' failures. Last error: ' . $errStr;
-                    log::put($msg, 'error');
-                    throw new streamClientConnectLimitExceeded($msg, $errNo); // Throw an exception for other code to handle
-                }
-                // Increase retry/backoff up to max
-                $tcpRetry = ($tcpRetry < $this->tcpBackoffMax) ? $tcpRetry * 2 : $this->tcpBackoffMax;
-                log::put('TCP failure ' . $connectFailures . ' of ' . $this->connectFailuresMax . ' connecting to stream: ' .
-                        $errStr . ' (' . $errNo . '). Sleeping for ' . $tcpRetry . ' seconds.', config::getPackageName(__CLASS__));
-                sleep($tcpRetry);
+            if(!$this->handleErrors($tcpRetry, $errStr, $errNo, $connectFailures)) {
                 continue;
             }
 
@@ -586,10 +737,9 @@ class streamClient
             try {
                 $line = trim(fgets($this->conn, 4096));
                 list($httpVer, $httpCode, $httpMessage) = preg_split('/\s+/', $line, 3);
+                unset($httpVer, $httpMessage);
             } catch(\Exception $e) {
-                $httpVer = 'HTTP/1.0';
                 $httpCode = 200;
-                $httpMessage = 'Twitter is empty!?';
             }
 
             // Response buffers
@@ -602,38 +752,14 @@ class streamClient
             log::put("Response Headers:", config::getPackageName(__CLASS__));
             log::put($respHeaders, config::getPackageName(__CLASS__));
 
-            // If we got a non-200 response, we need to backoff and retry
-            if ($httpCode != 200) {
-                $connectFailures++;
-
-                // Twitter will disconnect on error, but we want to consume the rest of the response body (which is useful)
-                $respBody = trim(stream_get_line($this->conn, 10000000, "\n"));
-
-                // Construct error
-                $errStr = "HTTP ERROR $httpCode: $respBody";
-
-                log::put(">>> ERROR-CODE:{$httpCode}", config::getPackageName(__CLASS__));
-                log::put(">>> ERROR-MSG :{$errStr}", config::getPackageName(__CLASS__));
-
-                // Set last error state
-                $this->lastErrorMsg = $errStr;
-                $this->lastErrorNo = $httpCode;
-
-                // Have we exceeded maximum failures?
-                if ($connectFailures > $this->connectFailuresMax) {
-                    $msg = 'Connection failure limit exceeded with ' . $connectFailures . ' failures. Last error: ' . $errStr;
-                    throw new streamClientConnectLimitExceeded($msg, $httpCode); // We eventually throw an exception for other code to handle
-                }
-                // Increase retry/backoff up to max
-                $httpRetry = ($httpRetry < $this->httpBackoffMax) ? $httpRetry * 2 : $this->httpBackoffMax;
-                sleep($httpRetry);
+            if(!$this->checkHttpCode($httpCode, $connectFailures, $httpRetry)) {
                 continue;
-            } // End if not http 200
+            }
+
             stream_set_blocking($this->conn, 0);
         } while (!is_resource($this->conn) || $httpCode != 200);
 
         // Connected OK, reset connect failures
-        $connectFailures = 0;
         $this->lastErrorMsg = NULL;
         $this->lastErrorNo = NULL;
 
@@ -648,7 +774,54 @@ class streamClient
         $this->buff = '';
     }
 
-    protected function getAuthorizationHeader() {
+    /**
+     * Check http response meta information
+     *
+     * @param int $httpCode
+     * @param int $connectFailures
+     * @param float $httpRetry
+     * @return bool
+     * @throws streamClientConnectLimitExceeded
+     */
+    protected function checkHttpCode(&$httpCode, &$connectFailures, &$httpRetry)
+    {
+        // If we got a non-200 response, we need to backoff and retry
+        if ($httpCode != 200) {
+            $connectFailures++;
+
+            // Twitter will disconnect on error, but we want to consume the rest of the response body (which is useful)
+            $respBody = trim(stream_get_line($this->conn, 10000000, "\n"));
+
+            // Construct error
+            $errStr = "HTTP ERROR $httpCode: $respBody";
+
+            log::put(">>> ERROR-CODE:{$httpCode}", config::getPackageName(__CLASS__));
+            log::put(">>> ERROR-MSG :{$errStr}", config::getPackageName(__CLASS__));
+
+            // Set last error state
+            $this->lastErrorMsg = $errStr;
+            $this->lastErrorNo = $httpCode;
+
+            // Have we exceeded maximum failures?
+            if ($connectFailures > $this->connectFailuresMax) {
+                $msg = 'Connection failure limit exceeded with ' . $connectFailures . ' failures. Last error: ' . $errStr;
+                throw new streamClientConnectLimitExceeded($msg, $httpCode); // We eventually throw an exception for other code to handle
+            }
+            // Increase retry or backoff up to max
+            $httpRetry = ($httpRetry < $this->httpBackoffMax) ? $httpRetry * 2 : $this->httpBackoffMax;
+            sleep($httpRetry);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Get authorization header
+     *
+     * @return string
+     */
+    protected function getAuthorizationHeader()
+    {
         $authCredentials = base64_encode($this->username . ':' . $this->password);
         return "Basic: " . $authCredentials;
     }
@@ -670,8 +843,9 @@ class streamClient
      * @see setFollow()
      * @see streamClient::METHOD_FILTER
      */
-    protected function checkFilterPredicates() {
-        // Override in subclass
+    protected function checkFilterPredicates()
+    {
+        return false;
     }
 
     /**
@@ -686,14 +860,16 @@ class streamClient
      *     'error' is for exceptional conditions that may need human intervention. (For instance, emailing
      *          them to a system administrator may make sense.)
      */
-    protected function log($message, $level = 'notice') {
+    protected function log($message, $level = 'notice')
+    {
         log::put($message, config::getPackageName(__CLASS__));
     }
 
     /**
      * Performs forcible disconnect from stream (if connected) and cleanup.
      */
-    protected function disconnect() {
+    protected function disconnect()
+    {
         if (is_resource($this->conn)) {
             log::put('Closing streamClient connection.', config::getPackageName(__CLASS__));
             fclose($this->conn);
@@ -706,7 +882,8 @@ class streamClient
      * Reconnects as quickly as possible. Should be called whenever a reconnect is required rather that connect/disconnect
      * to preserve streams reconnect state
      */
-    private function reconnect() {
+    private function reconnect()
+    {
         $reconnect = $this->reconnect;
         log::put("disconnecting...", config::getPackageName(__CLASS__));
         $this->disconnect(); // Implicitly sets reconnect to FALSE
@@ -730,24 +907,35 @@ class streamClient
     /**
      * Reports a periodic heartbeat. Keep execution time minimal.
      *
-     * @return NULL
+     * @return int
      */
-    public function heartbeat() {
-
+    public function heartbeat()
+    {
+        return 1;
     }
 
-}
-
-// End of class
-
-class streamClientException extends \Exception {
-
-}
-
-class streamClientNetworkException extends streamClientException {
-
-}
-
-class streamClientConnectLimitExceeded extends streamClientException {
+    /**
+     * Build request params
+     *
+     * @return array
+     */
+    private function buildRequestParams()
+    {
+        $requestParams = [];
+        // Filter takes additional parameters
+        if (count($this->trackWords)) {
+            $requestParams['track'] = implode(',', $this->trackWords);
+        }
+        if (count($this->followIds)) {
+            $requestParams['follow'] = implode(',', $this->convertUsers2Ids($this->followIds));
+        }
+        if (count($this->locationBoxes)) {
+            $requestParams['locations'] = implode(',', $this->locationBoxes);
+        }
+        if ($this->count <> 0) {
+            $requestParams['count'] = $this->count;
+        }
+        return $requestParams;
+    }
 
 }

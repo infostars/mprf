@@ -3,8 +3,8 @@
     "description" : "Client for Twitter Streaming API based on Phirehose lib for SDS",
     "package" : {
         "path" : "/sds/twitter/",
-        "init" : "streamClient.php",
-        "version" : "2.2"
+        "init" : "_pharinit.php",
+        "version" : "2.3"
     },
     "meta" : {
         "type" : "lib",
