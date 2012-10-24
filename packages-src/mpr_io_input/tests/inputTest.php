@@ -11,7 +11,18 @@ class inputTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
 
+    /**
+     * Test $argv array
+     *
+     * @var array
+     */
     protected $test_argv = ['argv', '--foo=bar', '--lol', '--int=15', '--float=15.2', '--string=20'];
+
+    /**
+     * Test arguments array
+     *
+     * @var array
+     */
     protected $test_arguments = [
         "foo" => "bar",
         "lol" => true,
@@ -19,6 +30,12 @@ class inputTest extends \PHPUnit_Framework_TestCase
         "float" => 15.2,
         "string" => "20"
     ];
+
+    /**
+     * Test array arguments (means that a[]=1&a[]=2&a[]=3)
+     *
+     * @var array
+     */
     protected $test_array_arguments = [
         "array" => ["some", "data", "in", "array"]
     ];
@@ -30,14 +47,6 @@ class inputTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new input();
-    }
-
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
     }
 
     /**

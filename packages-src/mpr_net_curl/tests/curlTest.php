@@ -11,7 +11,18 @@ class curlTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
 
+    /**
+     * The string to search for in google
+     *
+     * @var string
+     */
     protected $search_string = 'blablatest';
+
+    /**
+     * The url to test for
+     *
+     * @var string
+     */
     protected $test_url = "http://www.google.com";
 
     /**
@@ -21,14 +32,6 @@ class curlTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new curl();
-    }
-
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
     }
 
     /**

@@ -28,14 +28,6 @@ class ipselectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
-    }
-
-    /**
      * Check on which machine test was runned and checks ip data by machine
      */
     public function testCheckOnWichMachineRunTest()

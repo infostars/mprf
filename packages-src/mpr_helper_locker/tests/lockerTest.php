@@ -7,6 +7,11 @@ namespace mpr\helper;
 class lockerTest extends \PHPUnit_Framework_TestCase
 {
 
+    /**
+     * Test method name
+     *
+     * @var string
+     */
     protected static $test_method_name = "test_method_name";
 
     /**
@@ -43,30 +48,47 @@ class lockerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Check is function locked
+     *
+     * @param string $method_name
+     * @return bool
+     */
+    public function checkFuncLocked($method_name)
+    {
+        return locker::locked($method_name);
+    }
+
+    /**
+     * Check is function returns false
+     *
+     * @param string $method_name
+     * @return bool
+     */
+    public function checkFuncFalse($method_name)
+    {
+        unset($method_name);
+        return false;
+    }
+
+    /**
      * @covers mpr\helper\locker::strictLocked
      */
     public function testStrictLocked()
     {
         $method_name = self::$test_method_name;
         $expire = 5;
-        $check_func_locked = function($method_name) {
-            return locker::locked($method_name);
-        };
-        $check_func_false = function($method_name) {
-            return false;
-        };
-        $this->assertFalse($check_func_locked($method_name));
-        $result1 = locker::strictLocked($check_func_locked, $method_name, $method_name, false, $expire);
+        $this->assertFalse($this->checkFuncLocked($method_name));
+        $result1 = locker::strictLocked([$this, 'checkFuncLocked'], $method_name, $method_name, false, $expire);
         $this->assertTrue($result1);
-        $this->assertFalse($check_func_locked($method_name));
-        $result2 = locker::strictLocked($check_func_locked, $method_name, $method_name, true, $expire);
-        $this->assertFalse($check_func_locked($method_name));
+        $this->assertFalse($this->checkFuncLocked($method_name));
+        $result2 = locker::strictLocked([$this, 'checkFuncLocked'], $method_name, $method_name, true, $expire);
+        $this->assertFalse($this->checkFuncLocked($method_name));
         $this->assertTrue($result2);
         sleep(1);
-        $result3 = locker::strictLocked($check_func_false, $method_name, $method_name, true, $expire);
+        $result3 = locker::strictLocked([$this, 'checkFuncFalse'], $method_name, $method_name, true, $expire);
         $this->assertTrue($result3);
         sleep($expire);
-        $result4 = locker::strictLocked($check_func_false, $method_name, $method_name, true, $expire);
+        $result4 = locker::strictLocked([$this, 'checkFuncFalse'], $method_name, $method_name, true, $expire);
         $this->assertFalse($result4);
     }
 
@@ -77,21 +99,15 @@ class lockerTest extends \PHPUnit_Framework_TestCase
     {
         $method_name = self::$test_method_name;
         $expire = 5;
-        $check_func_locked = function($method_name) {
-            return locker::locked($method_name);
-        };
-        $check_func_false = function($method_name) {
-            return false;
-        };
-        $this->assertFalse($check_func_locked($method_name));
-        $result2 = locker::cachedLockedFunction($check_func_locked, $method_name, $method_name, $expire);
-        $this->assertFalse($check_func_locked($method_name));
+        $this->assertFalse($this->checkFuncLocked($method_name));
+        $result2 = locker::cachedLockedFunction([$this, 'checkFuncLocked'], $method_name, $method_name, $expire);
+        $this->assertFalse($this->checkFuncLocked($method_name));
         $this->assertTrue($result2);
         sleep(1);
-        $result3 = locker::cachedLockedFunction($check_func_false, $method_name, $method_name, $expire);
+        $result3 = locker::cachedLockedFunction([$this, 'checkFuncFalse'], $method_name, $method_name, $expire);
         $this->assertTrue($result3);
         sleep($expire);
-        $result4 = locker::cachedLockedFunction($check_func_false, $method_name, $method_name, $expire);
+        $result4 = locker::cachedLockedFunction([$this, 'checkFuncFalse'], $method_name, $method_name, $expire);
         $this->assertFalse($result4);
     }
 
@@ -101,12 +117,9 @@ class lockerTest extends \PHPUnit_Framework_TestCase
     public function testLockedFunction()
     {
         $method_name = self::$test_method_name;
-        $check_func = function($method_name) {
-            return locker::locked($method_name);
-        };
-        $this->assertFalse($check_func($method_name));
-        $result1 = locker::lockedFunction($check_func, $method_name, $method_name);
-        $this->assertFalse($check_func($method_name));
+        $this->assertFalse($this->checkFuncLocked($method_name));
+        $result1 = locker::lockedFunction([$this, 'checkFuncLocked'], $method_name, $method_name);
+        $this->assertFalse($this->checkFuncLocked($method_name));
         $this->assertTrue($result1);
     }
 }

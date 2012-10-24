@@ -7,10 +7,17 @@ namespace mpr\io;
 class fileWriterTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * Instance of fileWriter object
+     *
      * @var fileWriter
      */
     protected $object;
 
+    /**
+     * Path to test file
+     *
+     * @var string
+     */
     protected $filename = "/tmp/test_file_name.test";
 
     /**

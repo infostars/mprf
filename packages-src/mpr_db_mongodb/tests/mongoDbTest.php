@@ -11,16 +11,27 @@ class mongoDbTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
 
+    /**
+     * Test object
+     *
+     * @var array
+     */
     protected $testObject = [
         "key" => "test_blabla",
         "value" => "some_value"
     ];
 
+    /**
+     * Set up object
+     */
     public function setUp()
     {
         $this->object = mongoDb::getInstance();
     }
 
+    /**
+     * Tear down object
+     */
     public function tearDown()
     {
         mongoDb::getInstance()->remove('test', []);

@@ -11,7 +11,18 @@ class arrayListTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
 
+    /**
+     * Test object 1
+     *
+     * @var array
+     */
     protected $testObject1 = ["this", "is", "test", "object", "number", "1"];
+
+    /**
+     * Test object 2
+     *
+     * @var array
+     */
     protected $testObject2 = ["this", "is", "test", "object", "number", "2"];
 
     /**
