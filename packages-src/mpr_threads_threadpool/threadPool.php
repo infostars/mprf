@@ -83,7 +83,6 @@ class threadPool
         foreach($this->pool as $thread_key => $thread) {
             if(!$thread->isAlive()) {
                 $thread->kill();
-                //$this->result[$thread_key] = $thread->getResult();
                 unset($this->pool[$thread_key]);
             }
         }
