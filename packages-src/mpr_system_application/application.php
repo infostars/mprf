@@ -41,6 +41,8 @@ abstract class application
     }
 
     /**
+     * Get package config data
+     *
      * @return mixed
      */
     protected function getPackageConfig()
