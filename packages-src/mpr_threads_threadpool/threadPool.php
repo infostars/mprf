@@ -181,7 +181,7 @@ class threadPool
     /**
      * Get threads work results
      *
-     * @return mixed threads work results
+     * @return array threads work results
      */
     public function getResults()
     {
