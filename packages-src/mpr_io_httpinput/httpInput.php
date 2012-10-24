@@ -36,13 +36,13 @@ class httpInput
     }
 
     /**
-     * Get current HTTP method
+     * Get current HTTP method in lower case
      *
      * @return string
      */
     public function getHttpMethod()
     {
-        return $this->httpMethod;
+        return mb_strtolower($this->httpMethod);
     }
 
     /**
