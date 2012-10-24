@@ -5,9 +5,15 @@ use mpr\config;
 
 require_once __DIR__ . '/Smarty/libs/Smarty.class.php';
 
+/**
+ * Smarty template engine driver wrapper
+ */
 class smarty
 extends \Smarty
 {
+    /**
+     * Construct new object of template engine
+     */
     public function __construct()
     {
         parent::__construct();
@@ -22,6 +28,14 @@ extends \Smarty
         $this->smarty->setCacheDir($options['cache_dir']);
     }
 
+    /**
+     * Render page by template file path
+     *
+     * @param string $template Path to template
+     * @param bool $asString Return result as string
+     * @param null|string $cache_id ID of template cache
+     * @return bool|string
+     */
     public function render($template, $asString = true, $cache_id = null)
     {
         if($asString) {
