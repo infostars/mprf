@@ -9,6 +9,12 @@ namespace mpr\pattern;
  */
 abstract class singleton
 {
+    /**
+     * Class instance
+     *
+     * @static
+     * @var object class instance
+     */
     private static $instance;
 
     /**
