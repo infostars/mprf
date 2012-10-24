@@ -37,11 +37,11 @@ class multiCurlTest extends \PHPUnit_Framework_TestCase
         $this->tearDown();
         $this->object = new multiCurl();
         $file = $this->test_file;
-        $this->callback =
-            function($output, $info) use ($file)
-            {
-                file_put_contents($file, json_encode(['output' => $output, 'info' => $info]));
-            };
+        $this->callback =   function($output, $info) use ($file)
+                            {
+                                file_put_contents($file, json_encode(['output' => $output, 'info' => $info]));
+                            };
+        unset($file);
     }
 
     /**
