@@ -1,8 +1,11 @@
 <?php
+
 namespace mpr\service;
 
+use \mpr\toolkit;
+
 /**
- * consoleTimer: Таймер и прогрессбар для консольных приложений
+ * consoleTimer: Timer and progressbar for console applications
  *
  * @package system
  * @subpackage service
@@ -11,65 +14,68 @@ namespace mpr\service;
  */
 class progressBar
 {
-
     /**
-     * Общее количество данных
+     * Total amount of data
      *
      * @var int
      */
     protected $data_counter = 0;
 
     /**
-     * Длина прогресс бара для прорисовки
+     * The length of the progress bar to draw
      *
      * @var int
      */
     protected $pb_width = 60;
 
     /**
-     * Время начала отсчета
+     * Time when progressbar starts
      *
      * @var float
      */
     protected $time_start = 0;
 
     /**
-     * Время последнего обновления
+     * Last progressbar update time
      *
      * @var float
      */
     protected $last_update = 0;
 
     /**
-     * Сколько времени прошло с начала работы
+     * Elapsed time when progressbar starts
      *
      * @var float
      */
     protected $time_elapsed = 0;
 
     /**
-     * Сколько процентов обработки уже закончено
+     * What percentage of processing is completed
      *
      * @var float
      */
     protected $stat_percent = 0;
 
     /**
-     * Сколько секунд осталось ждать
+     * How many seconds are left to wait
      *
      * @var float
      */
     protected $stat_estimatedTime = 0;
 
+    /**
+     * Output progressbar format
+     *
+     * @var string
+     */
     protected $output_format = '[{progress}] | {done}% | {speed} p/s | te {time} | r {ram}';
 
     /**
      * Construct method
-     * Как входящий параметр вносим общее количество данных по которым у нас будет проходить обработка
+     * Send how mush data in progressbar and progressbar width
      *
-     * @param int $data_counter - Сколько всего данных будет
-     * @param int $pb_width - Длина прогрессбара
-     * @return consoleTimer
+     * @param int $data_counter - the amount of data
+     * @param int $pb_width - progressbar width
      */
     public function __construct($data_counter, $pb_width = 60) {
         $this->time_start = microtime(true);
@@ -80,9 +86,9 @@ class progressBar
     }
 
     /**
-     * Обновление данных у таймера для рассчета прогрессбара и скорости
+     * Update progressbar for calculating elapsed time, statistics percent, speed, esimated time and last update time
      *
-     * @param int $curr_element - сколько элементов уже прошло
+     * @param int $curr_element - how many items already passed
      */
     public function update($curr_element) {
         if($this->data_counter < 1) {
@@ -96,12 +102,12 @@ class progressBar
     }
 
     /**
-     * Получение рассчетных данных для предоставления пользователю
+     * Progressbar data
      * Ключи массива:
-     *   done => (float)процент завершенности
-     *   time_elapsed => (float unix_timestamp)прошедшее время
-     *   time_estimated => (float unix_timestamp)примерное время до окончания работы
-     *   speed => (float)количество обрабатываемых элементов в секунду
+     *   done => (float) percentage of completion
+     *   time_elapsed => (float unix_timestamp) elapsed time
+     *   time_estimated => (float unix_timestamp) estimated time for completion
+     *   speed => (float) how much elements completed in one second
      *
      * @return array
      */
@@ -115,8 +121,8 @@ class progressBar
     }
 
     /**
-     * Рисуем прогрессбар в консоли, не должно быть переносов строк между "кадрами"!
-     * Перед каждым новым "кадром" нужно вызывать обновление для получения актуальной информации
+     * Draw a progressbar in the console, there should be no line breaks between "frames"!
+     * Before each new "frame" call an update to the latest information
      */
     public function draw() {
         $data = $this->getData();
@@ -142,11 +148,14 @@ class progressBar
             round(memory_get_usage(true)/1024/1024, 4)
         );
         $string = str_replace($search, $replace, $this->output_format);
-        \grunge\system\systemToolkit::getInstance()
-                ->getResponse()
-                ->write("\r{$string}");
+        toolkit::getInstance()->getOutput()->write("\r{$string}");
     }
 
+    /**
+     * Set output format for progressbar
+     *
+     * @param string $string
+     */
     public function setOutputFormat($string)
     {
         $this->output_format = $string;
