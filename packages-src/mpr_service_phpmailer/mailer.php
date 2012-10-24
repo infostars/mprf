@@ -1,4 +1,5 @@
 <?php
+
 namespace mpr\service;
 
 /**
@@ -8,7 +9,12 @@ namespace mpr\service;
  */
 class mailer
 {
-    
+    /**
+     * mailer class instance
+     *
+     * @static
+     * @var object class instance
+     */
     private static $instance;
     
     /**
@@ -28,5 +34,4 @@ class mailer
         }
         return self::$instance;
     }
-    
 }
