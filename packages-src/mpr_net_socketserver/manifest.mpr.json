@@ -11,6 +11,6 @@
         "tags" : "socket,server,tcp"
     },
     "depends" : [
-
+        "mpr_debug_log"
     ]
 }

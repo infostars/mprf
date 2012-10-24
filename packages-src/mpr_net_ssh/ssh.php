@@ -28,7 +28,7 @@ class ssh
     private $username;
 
     /**
-     * Passpharse for ssh key
+     * Password for ssh key
      *
      * @var string
      */
@@ -61,34 +61,56 @@ class ssh
      *
      * @var string
      */
-    private $host_key = 'ssh-rsa';
+    private $key_type = 'ssh-rsa';
 
     /**
-     * Build ssh connection with params
-     * Note: connection wouldn't be established
-     * To connect to server call connect() method
+     * Set host for connection
      *
      * @param string $host SSH Hostname or IP address
-     * @param int $port SSH Port
-     * @param string $username
-     * @param string $key_password Passphrase for ssh key
-     * @param string $key_public Path to public key
-     * @param string $key_private Path to private key
-     * @param int $host_key SSH key type (SSH_RSA or SSH_DSA)
      */
-    public function __construct($host, $port, $username, $key_password, $key_public, $key_private, $host_key = self::SSH_RSA)
+    public function setHost($host)
     {
         $this->host = $host;
+    }
+
+    /**
+     * Set port for connection
+     *
+     * @param int $port SSH Port
+     */
+    public function setPort($port)
+    {
         $this->port = $port;
+    }
+
+    /**
+     * Set user name for connection
+     *
+     * @param string $username
+     */
+    public function setUsername($username)
+    {
         $this->username = $username;
+    }
+
+    /**
+     * Set key password, key public, key private, host key
+     *
+     * @param string $key_password password for ssh key
+     * @param string $key_public Path to public key
+     * @param string $key_private Path to private key
+     * @param int $key_type SSH key type (SSH_RSA or SSH_DSA)
+     */
+    public function setKeyData($key_password, $key_public, $key_private, $key_type = self::SSH_RSA)
+    {
         $this->key_password = $key_password;
         $this->key_public = $key_public;
         $this->key_private = $key_private;
-        if ($host_key == self::SSH_RSA) {
-            $this->host_key = 'ssh-rsa';
+        if ($key_type == self::SSH_RSA) {
+            $this->key_type = 'ssh-rsa';
         }
-        if ($host_key == self::SSH_DSS) {
-            $this->host_key = 'ssh-dss';
+        if ($key_type == self::SSH_DSS) {
+            $this->key_type = 'ssh-dss';
         }
     }
 
@@ -99,7 +121,7 @@ class ssh
      */
     public function connect()
     {
-        $this->connection = ssh2_connect($this->host, $this->port, array('hostkey' => $this->host_key));
+        $this->connection = ssh2_connect($this->host, $this->port, array('hostkey' => $this->key_type));
         if(!empty($this->key_password)) {
             ssh2_auth_pubkey_file($this->connection, $this->username, $this->key_public, $this->key_private, $this->key_password);
         } else {
