@@ -285,6 +285,13 @@ class streamClient
     protected $httpBackoffMax = 240;
 
     /**
+     * Method to call
+     *
+     * @var callable
+     */
+    private $method_to_call;
+
+    /**
      * Set output ip-address
      *
      * @param string $out_address ip-address
@@ -306,7 +313,8 @@ class streamClient
      * @param string $method
      * @param string $format
      */
-    public function __construct($username, $password, $method = streamClient::METHOD_SAMPLE, $format = self::FORMAT_JSON) {
+    public function __construct($username, $password, $method = streamClient::METHOD_SAMPLE, $format = self::FORMAT_JSON)
+    {
         $this->username = $username;
         $this->password = $password;
         $this->method = $method;
@@ -322,7 +330,8 @@ class streamClient
      *
      * @param array $userIds Array of Twitter integer userIDs
      */
-    public function setFollow($userIds) {
+    public function setFollow($userIds)
+    {
         $userIds = ($userIds === NULL) ? array() : $userIds;
         sort($userIds); // Non-optimal but necessary
         if ($this->followIds != $userIds) {
@@ -336,7 +345,8 @@ class streamClient
      *
      * @return array
      */
-    public function getFollow() {
+    public function getFollow()
+    {
         return $this->followIds;
     }
 
@@ -349,7 +359,8 @@ class streamClient
      *
      * @param array $trackWords
      */
-    public function setTrack($trackWords) {
+    public function setTrack($trackWords)
+    {
         $trackWords = ($trackWords === NULL) ? array() : $trackWords;
         sort($trackWords); // Non-optimal, but necessary
         if ($this->trackWords != $trackWords) {
@@ -363,7 +374,8 @@ class streamClient
      *
      * @return array
      */
-    public function getTrack() {
+    public function getTrack()
+    {
         return $this->trackWords;
     }
 
@@ -388,7 +400,8 @@ class streamClient
      *
      * @param array $boundingBoxes
      */
-    public function setLocations($boundingBoxes) {
+    public function setLocations($boundingBoxes)
+    {
         $boundingBoxes = ($boundingBoxes === NULL) ? array() : $boundingBoxes;
         // Flatten to single dimensional array
         $locationBoxes = array();
@@ -417,7 +430,8 @@ class streamClient
      * @see setLocations()
      * @return array
      */
-    public function getLocations() {
+    public function getLocations()
+    {
         if ($this->locationBoxes == NULL) {
             return NULL;
         }
@@ -446,7 +460,8 @@ class streamClient
      * @see setLocations()
      * @param array
      */
-    public function setLocationsByCircle($locations) {
+    public function setLocationsByCircle($locations)
+    {
         $boundingBoxes = array();
         foreach ($locations as $locTriplet) {
             // Sanity check
@@ -477,7 +492,8 @@ class streamClient
      *
      * @param integer $count
      */
-    public function setCount($count) {
+    public function setCount($count)
+    {
         $this->count = $count;
     }
 
@@ -487,7 +503,8 @@ class streamClient
      *
      * @param bool $reconnect
      */
-    public function consume($reconnect = TRUE) {
+    public function consume($reconnect = TRUE)
+    {
         // Persist connection?
         $this->reconnect = $reconnect;
         log::put("Consuming", config::getPackageName(__CLASS__));
@@ -542,11 +559,6 @@ class streamClient
     }
 
     /**
-     * @var array
-     */
-    private $method_to_call;
-
-    /**
      * Set callback method on every message
      *
      * @param $callback
@@ -560,7 +572,8 @@ class streamClient
      * successful reconnect
      * @return string
      */
-    public function getLastErrorMsg() {
+    public function getLastErrorMsg()
+    {
         return $this->lastErrorMsg;
     }
 
@@ -572,7 +585,8 @@ class streamClient
      *
      * @return string
      */
-    public function getLastErrorNo() {
+    public function getLastErrorNo()
+    {
         return $this->lastErrorNo;
     }
 
@@ -637,7 +651,8 @@ class streamClient
      * @throws streamClientConnectLimitExceeded
      * @throws streamClientNetworkException
      */
-    protected function connect() {
+    protected function connect()
+    {
         log::put("Connecting to twitter streaming api...", config::getPackageName(__CLASS__));
         // Init state
         $tcpRetry = $this->tcpBackoff / 2;
@@ -709,17 +724,16 @@ class streamClient
             // Encode request data
             $postData = http_build_query($requestParams, NULL, '&');
             $postData = str_replace('+', '%20', $postData);
-            $authCredentials = $this->getAuthorizationHeader();
 
             log::put("Sending headers...", config::getPackageName(__CLASS__));
-            log::put("Auth: {$authCredentials}", config::getPackageName(__CLASS__));
+            log::put("Auth: {$this->getAuthorizationHeader()}", config::getPackageName(__CLASS__));
             // Do it
             fwrite($this->conn, "POST " . $urlParts['path'] . " HTTP/1.0\r\n");
             fwrite($this->conn, "Host: " . $urlParts['host'] . ':' . $port . "\r\n");
             fwrite($this->conn, "Content-type: application/x-www-form-urlencoded\r\n");
             fwrite($this->conn, "Content-length: " . strlen($postData) . "\r\n");
             fwrite($this->conn, "Accept: */*\r\n");
-            fwrite($this->conn, 'Authorization: ' . $authCredentials . "\r\n");
+            fwrite($this->conn, 'Authorization: ' . $this->getAuthorizationHeader() . "\r\n");
             fwrite($this->conn, 'User-Agent: ' . $this->userAgent . "\r\n");
             fwrite($this->conn, "\r\n");
             fwrite($this->conn, $postData . "\r\n");
@@ -730,7 +744,7 @@ class streamClient
             log::put("Content-type: application/x-www-form-urlencoded", config::getPackageName(__CLASS__));
             log::put("Content-length: " . strlen($postData), config::getPackageName(__CLASS__));
             log::put("Accept: */*", config::getPackageName(__CLASS__));
-            log::put('Authorization: ' . $authCredentials, config::getPackageName(__CLASS__));
+            log::put('Authorization: ' . $this->getAuthorizationHeader(), config::getPackageName(__CLASS__));
             log::put('User-Agent: ' . $this->userAgent, config::getPackageName(__CLASS__));
             log::put("Reading response...", config::getPackageName(__CLASS__));
             // First line is response
@@ -743,7 +757,7 @@ class streamClient
             }
 
             // Response buffers
-            $respHeaders = $respBody = '';
+            $respHeaders = '';
 
             // Consume each header response line until we get to body
             while ($hLine = trim(fgets($this->conn, 4096))) {
@@ -862,7 +876,7 @@ class streamClient
      */
     protected function log($message, $level = 'notice')
     {
-        log::put($message, config::getPackageName(__CLASS__));
+        log::put("{[{$level}] {$message}]", config::getPackageName(__CLASS__));
     }
 
     /**
