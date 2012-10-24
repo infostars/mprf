@@ -1,4 +1,5 @@
 <?php
+
 namespace mpr\pattern;
 
 /**
@@ -9,7 +10,12 @@ namespace mpr\pattern;
  */
 abstract class abstractFactory
 {
+    /**
+     * @static
+     * @var array classes instances by configuration name
+     */
     private static $instances;
+
     /**
      * @static
      */
