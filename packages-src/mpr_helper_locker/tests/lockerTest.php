@@ -66,6 +66,7 @@ class lockerTest extends \PHPUnit_Framework_TestCase
      */
     public function checkFuncFalse($method_name)
     {
+        unset($method_name);
         return false;
     }
 
@@ -98,21 +99,15 @@ class lockerTest extends \PHPUnit_Framework_TestCase
     {
         $method_name = self::$test_method_name;
         $expire = 5;
-        $check_func_locked = function($method_name) {
-            return locker::locked($method_name);
-        };
-        $check_func_false = function($method_name) {
-            return false;
-        };
-        $this->assertFalse($check_func_locked($method_name));
-        $result2 = locker::cachedLockedFunction($check_func_locked, $method_name, $method_name, $expire);
-        $this->assertFalse($check_func_locked($method_name));
+        $this->assertFalse($this->checkFuncLocked($method_name));
+        $result2 = locker::cachedLockedFunction([$this, 'checkFuncLocked'], $method_name, $method_name, $expire);
+        $this->assertFalse($this->checkFuncLocked($method_name));
         $this->assertTrue($result2);
         sleep(1);
-        $result3 = locker::cachedLockedFunction($check_func_false, $method_name, $method_name, $expire);
+        $result3 = locker::cachedLockedFunction([$this, 'checkFuncFalse'], $method_name, $method_name, $expire);
         $this->assertTrue($result3);
         sleep($expire);
-        $result4 = locker::cachedLockedFunction($check_func_false, $method_name, $method_name, $expire);
+        $result4 = locker::cachedLockedFunction([$this, 'checkFuncFalse'], $method_name, $method_name, $expire);
         $this->assertFalse($result4);
     }
 
@@ -122,12 +117,9 @@ class lockerTest extends \PHPUnit_Framework_TestCase
     public function testLockedFunction()
     {
         $method_name = self::$test_method_name;
-        $check_func = function($method_name) {
-            return locker::locked($method_name);
-        };
-        $this->assertFalse($check_func($method_name));
-        $result1 = locker::lockedFunction($check_func, $method_name, $method_name);
-        $this->assertFalse($check_func($method_name));
+        $this->assertFalse($this->checkFuncLocked($method_name));
+        $result1 = locker::lockedFunction([$this, 'checkFuncLocked'], $method_name, $method_name);
+        $this->assertFalse($this->checkFuncLocked($method_name));
         $this->assertTrue($result1);
     }
 }
