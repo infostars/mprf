@@ -11,8 +11,16 @@ class fileLoaderTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
 
+    /**
+     * Test file to load for
+     *
+     * @var string
+     */
     protected $somefile = '/tmp/fileLoader.test';
 
+    /**
+     * Set up object
+     */
     protected function setUp()
     {
         if(file_exists($this->somefile)) {
@@ -20,6 +28,9 @@ class fileLoaderTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Tear down object
+     */
     protected function tearDown()
     {
         if(file_exists($this->somefile)) {

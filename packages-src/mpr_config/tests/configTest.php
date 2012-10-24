@@ -11,16 +11,19 @@ class configTest extends \PHPUnit_Framework_TestCase
      */
     protected $object;
 
+    /**
+     * Package name
+     *
+     * @var string
+     */
     protected $packageName = "mpr_io_input";
-    protected $packageClass = "\\mpr\\io\\input";
 
     /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
+     * Package class
+     *
+     * @var string
      */
-    protected function tearDown()
-    {
-    }
+    protected $packageClass = "\\mpr\\io\\input";
 
     /**
      * @covers mpr\config::getPackageName
@@ -39,6 +42,9 @@ class configTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->packageClass, config::getClassName($this->packageName));
     }
 
+    /**
+     * @covers mpr\config::getPackageConfig
+     */
     public function testGetPackageConfig()
     {
         try {
