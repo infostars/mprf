@@ -1,11 +1,10 @@
 <?php
 namespace mpr\net;
 
-    /**
-     *
-     */
 /**
+ * Socket server class
  *
+ * @author Ostrovskiy Grigoriy <greevex@gmail.com>
  */
 class socketServer
 {
@@ -152,10 +151,11 @@ class socketServer
     }
 
     /**
-     * Creates a server socket and listens for incoming client connections
-     * Infinite cycle
+     * Bind socket server
+     *
+     * @return bool|resource
      */
-    private function loop()
+    protected function bindSocket()
     {
         $try_counter = 0;
         do {
@@ -172,28 +172,47 @@ class socketServer
                 echo "Error! Code: {$e->getCode()} / Message: {$e->getMessage()} in {$e->getFile()}:{$e->getLine()}\n";
             }
         } while(!$sock && $try_counter < 5);
+        return $sock;
+    }
+
+    /**
+     * Get new client connection
+     *
+     * @param resource $sock
+     * @return bool|resource false if no new client
+     */
+    protected function getNewConnection($sock)
+    {
+        $connection = false;
+        try {
+            $select = array($sock);
+            $p2 = null;
+            $p3 = null;
+            if(socket_select($select, $p2, $p3, 0, 50)) {
+                $connection = socket_accept($sock);
+            }
+        } catch(\Exception $e) {
+            $connection = false;
+        }
+        return $connection;
+    }
+
+    /**
+     * Creates a server socket and listens for incoming client connections
+     * Infinite cycle
+     */
+    private function loop()
+    {
+        $sock = $this->bindSocket();
         if(!$sock) {
             return;
         }
-        echo "\rServer [{$this->name}] created! [$try_counter]\n";
+        echo "\rServer [{$this->name}] created!\n";
 
-        if($this->blocking) {
-            socket_set_block($sock);
-        } else {
-            socket_set_nonblock($sock);
-        }
+        $this->blocking ? socket_set_block($sock) : socket_set_nonblock($sock);
+
         while ($this->__server_listening) {
-            $connection = false;
-            try {
-                $select = array($sock);
-                $p2 = null;
-                $p3 = null;
-                if(socket_select($select, $p2, $p3, 0, 50)) {
-                    $connection = socket_accept($sock);
-                }
-            } catch(\Exception $e) {
-                $connection = false;
-            }
+            $connection = $this->getNewConnection($sock);
             if($connection !== false && $this->onConnect) {
                 call_user_func_array($this->onConnect, array($sock, $connection));
             }
