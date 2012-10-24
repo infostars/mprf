@@ -11,8 +11,39 @@ use \mpr\config;
  */
 class daemonization
 {
+    /**
+     * Is current process is daemonized
+     *
+     * @var bool
+     */
     protected static $daemonized = false;
 
+    /**
+     * STDIN
+     *
+     * @var resource
+     */
+    protected static $STDIN;
+
+    /**
+     * STDOUT
+     *
+     * @var resource
+     */
+    protected static $STDOUT;
+
+    /**
+     * STDERR
+     *
+     * @var resource
+     */
+    protected static $STDERR;
+
+    /**
+     * Daemonize current process
+     *
+     * @throws \Exception
+     */
     public static function daemonize()
     {
         self::$daemonized = false;
@@ -40,13 +71,18 @@ class daemonization
         fclose(STDIN);
         fclose(STDOUT);
         fclose(STDERR);
-        $STDIN = fopen($options['stdin'], 'r');
-        $STDOUT = fopen($options['stdout'], 'ab');
-        $STDERR = fopen($options['stderr'], 'ab');
+        self::$STDIN = fopen($options['stdin'], 'r');
+        self::$STDOUT = fopen($options['stdout'], 'ab');
+        self::$STDERR = fopen($options['stderr'], 'ab');
 
         self::$daemonized = true;
     }
 
+    /**
+     * Is current process daemonized
+     *
+     * @return bool
+     */
     public function isDaemonized()
     {
         return self::$daemonized;
