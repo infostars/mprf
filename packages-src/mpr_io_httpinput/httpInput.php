@@ -77,7 +77,7 @@ class httpInput
                 $this->httpParams = $_GET;
                 break;
             case 'cli':
-                $this->httpParams = $this->request->export();
+                $this->httpParams = toolkit::getInstance()->getInput()->export();
                 $this->httpMethod = isset($this->httpParams['m']) ? $this->httpParams : 'get';
                 break;
             case 'put':
