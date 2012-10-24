@@ -11,8 +11,7 @@
         "tags" : "toolkit,input,output"
     },
     "depends" : [
-        "mpr_io_input",
-        "mpr_io_output",
-        "mpr_pattern_singleton"
+        "mpr_pattern_singleton",
+        "mpr_toolkit"
     ]
 }
