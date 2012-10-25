@@ -15,16 +15,7 @@ namespace mpr\ConsoleKit;
  *
  * Text can be colorized (foreground only) by using a static method named after the color code.
  *
- * <code>
- *      $text = Colors::colorize('hello world', Colors::RED)
- *      $text = Colors::colorize('hello world', 'red')
- *      $text = Colors::colorize('hello world', Colors::RED | Colors::BOLD)
- *      $text = Colors::colorize('hello world', 'red+bold')
- *      $text = Colors::red('hello world');
- * </code>
- */
-/**
- *
+ * @author Ostrovskiy Grigoriy <greevex@gmail.com>
  */
 class Colors
 {
