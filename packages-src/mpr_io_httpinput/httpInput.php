@@ -52,7 +52,7 @@ class httpInput
      */
     public function getInputParams()
     {
-        return toolkit::getInstance()->getInput()->export();
+        return $this->httpParams;
     }
 
     /**
