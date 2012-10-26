@@ -93,12 +93,12 @@ class thread
      * class constructor - you can pass
      * the callback function as an argument
      *
-     * @param callable $_threadStart
+     * @param callable $callable
      */
-    public function __construct($_threadStart = null)
+    public function __construct($callable = null)
     {
-        if($_threadStart !== null) {
-            $this->setRunnable($_threadStart);
+        if($callable !== null) {
+            $this->setRunnable($callable);
         }
     }
 

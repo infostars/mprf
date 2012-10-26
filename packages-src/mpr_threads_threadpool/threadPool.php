@@ -119,7 +119,7 @@ class threadPool
         if(count($this->pool) >= $this->max_threads && count($this->queue) >= $this->max_queue) {
             return false;
         }
-        $this->queue[] = array($thread, $arguments);
+        $this->queue[] = array(new thread($thread), $arguments);
         $this->refresh();
 
         return true;
@@ -133,7 +133,7 @@ class threadPool
      */
     public function setMaxQueue($max_queue)
     {
-       return $this->max_queue = $max_queue;
+        return $this->max_queue = $max_queue;
     }
 
     /**
