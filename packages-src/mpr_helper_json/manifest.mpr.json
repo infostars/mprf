@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_helper_json",
+    "description" : "",
+    "package" : {
+        "path" : "/mpr/helper/",
+        "init" : "json.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "json,encode,decode"
+    },
+    "depends" : [
+
+    ]
+}
