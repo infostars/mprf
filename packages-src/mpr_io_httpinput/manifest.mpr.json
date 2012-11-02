@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_io_httpInput",
+    "description" : "HTTP request parser. Usefull for REST applications.",
+    "package" : {
+        "path" : "/mpr/io/",
+        "init" : "httpInput.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "input,request,parse,http"
+    },
+    "depends" : [
+        "mpr_toolkit"
+    ]
+}

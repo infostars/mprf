@@ -31,6 +31,15 @@
     ]
 ];
 
+\mpr\config::$package['mpr_cache_redis'] = [
+    'server' => [
+        'host' => '127.0.0.1',
+        'port' => 6379,
+        'timeout' => 0,
+        'prefix' => 'test:'
+    ]
+];
+
 \mpr\config::$package['mpr_cache_file'] = [
     'cache_dir' => '/tmp/'
 ];

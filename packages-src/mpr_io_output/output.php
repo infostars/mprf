@@ -53,7 +53,7 @@ class output
      * @param bool $buffering
      * @param int $type
      */
-    public function __construct($buffering = false, $type = self::OUT_STDOUT)
+    public function __construct($buffering = false, $type = self::OUT_OUTPUT)
     {
         $this->outputBuffering = $buffering;
         $this->outputType = in_array($type, [self::OUT_OUTPUT, self::OUT_STDOUT]) ? $type : self::OUT_STDOUT;
