@@ -94,6 +94,7 @@ class curl
     public function selectInterface($interface)
     {
         $this->options[CURLOPT_INTERFACE] = $interface;
+        curl_setopt($this->curl, CURLOPT_INTERFACE, $interface);
         return true;
     }
 
