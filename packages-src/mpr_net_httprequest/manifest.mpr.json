@@ -1,0 +1,15 @@
+{
+    "name" : "mpr_net_httprequest",
+    "description" : "",
+    "package" : {
+        "path" : "/mpr/net/",
+        "init" : "httpRequest.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "mpr_net_httprequest,net,httprequest"
+    },
+    "depends" : [
+    ]
+}

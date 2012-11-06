@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_net_client",
+    "description" : "",
+    "package" : {
+        "path" : "/mpr/net/",
+        "init" : "client.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "mpr_net_client,net_client"
+    },
+    "depends" : [
+      "mpr_net_curl"
+    ]
+}
