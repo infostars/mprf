@@ -1,6 +1,6 @@
 {
     "name" : "mpr_net_httprequest",
-    "description" : "",
+    "description" : "NOT USED, BECAUSE HttpRequest not in the standard package, and must be installed separately!",
     "package" : {
         "path" : "/mpr/net/",
         "init" : "httpRequest.php",

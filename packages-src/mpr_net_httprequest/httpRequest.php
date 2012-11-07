@@ -3,6 +3,8 @@
 namespace mpr\net;
 
 /**
+ * NOT USED, BECAUSE HttpRequest not in the standard package, and must be installed separately
+ *
  * HttpRequest driver for HTTP Request class
  */
 class httpRequest
