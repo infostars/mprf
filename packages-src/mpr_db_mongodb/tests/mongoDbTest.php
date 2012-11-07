@@ -34,7 +34,7 @@ class mongoDbTest extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        mongoDb::getInstance()->remove('test', []);
+        mongoDb::factory()->remove('test', []);
     }
 
     /**
