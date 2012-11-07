@@ -73,7 +73,7 @@ class locker
      * @param int $cache_expire Cache expire seconds
      * @return mixed
      */
-    public static function strictLocked($callable, $input, $method_name, $cached = false, $cache_expire = 5)
+    public static function strictLocked($callable, &$input, $method_name, $cached = false, $cache_expire = 5)
     {
         $cache_key = self::getCacheKey($method_name);
         $data = $cached ? cache::factory()->get($cache_key) : null;
@@ -99,7 +99,7 @@ class locker
      * @param string $method_name name of locked function
      * @return mixed
      */
-    public static function cachedLockedFunction($callable, $input, $method_name, $cache_expire = 5)
+    public static function cachedLockedFunction($callable, &$input, $method_name, $cache_expire = 5)
     {
         $cache_key = self::getCacheKey($method_name);
         $data = cache::factory()->get($cache_key);
@@ -125,7 +125,7 @@ class locker
      * @param string $method_name name of locked function
      * @return mixed
      */
-    public static function lockedFunction($callable, $input, $method_name)
+    public static function lockedFunction($callable, &$input, $method_name)
     {
         while(self::locked($method_name)) {
             usleep(100);
