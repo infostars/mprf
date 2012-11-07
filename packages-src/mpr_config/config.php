@@ -134,5 +134,29 @@ class config
         }
         require_once $configFilePath;
         log::put("Loading config file {$configFilePath}", self::getPackageName(__CLASS__));
+        $localConfigFilePath = self::locateLocalConfigFile();
+        if(file_exists($localConfigFilePath)) {
+            require_once $localConfigFilePath;
+            log::put("Loading local config file {$localConfigFilePath}", self::getPackageName(__CLASS__));
+        }
+    }
+
+    /**
+     * Locate config file
+     *
+     * @static
+     * @return bool
+     */
+    protected static function locateLocalConfigFile()
+    {
+        static $localConfigFilePath;
+        if($localConfigFilePath == null) {
+            $mprRootPath = self::findMprRoot();
+            if(!$mprRootPath) {
+                return false;
+            }
+            $localConfigFilePath = "{$mprRootPath}/config.local.php";
+        }
+        return $localConfigFilePath;
     }
 }
