@@ -17,8 +17,10 @@
 ];
 
 \mpr\config::$package['mpr_db_mongoDb'] = [
-    'host' => '127.0.0.1',
-    'dbname' => 'test'
+    'default' => [
+        'host' => '127.0.0.1',
+        'dbname' => 'test'
+    ]
 ];
 
 \mpr\config::$package['mpr_cache'] = [

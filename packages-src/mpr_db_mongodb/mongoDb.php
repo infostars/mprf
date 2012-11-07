@@ -12,13 +12,6 @@ class mongoDb
 {
 
     /**
-     * Instance of this object for singleton
-     *
-     * @var \mpr\db\mongoDb
-     */
-    private static $instance;
-
-    /**
      * Native mongo driver instance
      *
      * @var \Mongo
@@ -33,28 +26,35 @@ class mongoDb
     private $db;
 
     /**
-     * Get instance of singleton object
+     * Factory object with config
      *
-     * @static
-     * @return mongoDb
+     * @param string $configName `default` - is default value
+     * @return mixed
      */
-    public static function getInstance()
+    public static function factory($configName = 'default')
     {
-        if(self::$instance == null) {
-            self::$instance = new self();
+        static $instances = [];
+        if(!isset($instances[$configName])) {
+            $instances[$configName] = new self($configName);
         }
-        return self::$instance;
+        return $instances[$configName];
     }
 
     /**
      * Construct new object
      */
-    public function __construct()
+    public function __construct($configName = 'default')
     {
         $packageConfig = config::getPackageConfig(__CLASS__);
-        $this->mongo = new \Mongo($packageConfig['host']);
+        if(!isset($packageConfig[$configName])) {
+            $packageName = config::getPackageName(__CLASS__);
+            \mpr\debug\log::put("Config section for package `{$configName}` not found in config!", $packageName);
+            throw new \Exception("[{$packageName}] Config section for package `{$configName}` not found in config!");
+        }
+        $config = $packageConfig[$configName];
+        $this->mongo = new \Mongo($config['host']);
         $this->db = $this->mongo
-                ->selectDB($packageConfig['dbname']);
+                ->selectDB($config['dbname']);
     }
 
     /**

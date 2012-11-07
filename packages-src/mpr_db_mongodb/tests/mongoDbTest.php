@@ -26,7 +26,7 @@ class mongoDbTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->object = mongoDb::getInstance();
+        $this->object = mongoDb::factory();
     }
 
     /**
@@ -34,13 +34,13 @@ class mongoDbTest extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        mongoDb::getInstance()->remove('test', []);
+        mongoDb::factory()->remove('test', []);
     }
 
     /**
-     * @covers mpr\db\mongoDb::getInstance
+     * @covers mpr\db\mongoDb::factory
      */
-    public function testGetInstance()
+    public function testFactory()
     {
         $this->assertInstanceOf('\\mpr\\db\\mongoDb', $this->object);
     }
