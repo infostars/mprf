@@ -15,6 +15,13 @@ class lockerTest extends \PHPUnit_Framework_TestCase
     protected static $test_method_name = "test_method_name";
 
     /**
+     * Test expire seconds
+     *
+     * @var int seconds
+     */
+    protected static $test_expire = 2;
+
+    /**
      * @covers mpr\helper\locker::lock
      */
     public function testLock()
@@ -76,19 +83,18 @@ class lockerTest extends \PHPUnit_Framework_TestCase
     public function testStrictLocked()
     {
         $method_name = self::$test_method_name;
-        $expire = 5;
         $this->assertFalse($this->checkFuncLocked($method_name));
-        $result1 = locker::strictLocked([$this, 'checkFuncLocked'], $method_name, $method_name, false, $expire);
+        $result1 = locker::strictLocked([$this, 'checkFuncLocked'], $method_name, $method_name, false, self::$test_expire);
         $this->assertTrue($result1);
         $this->assertFalse($this->checkFuncLocked($method_name));
-        $result2 = locker::strictLocked([$this, 'checkFuncLocked'], $method_name, $method_name, true, $expire);
+        $result2 = locker::strictLocked([$this, 'checkFuncLocked'], $method_name, $method_name, true, self::$test_expire);
         $this->assertFalse($this->checkFuncLocked($method_name));
         $this->assertTrue($result2);
         sleep(1);
-        $result3 = locker::strictLocked([$this, 'checkFuncFalse'], $method_name, $method_name, true, $expire);
+        $result3 = locker::strictLocked([$this, 'checkFuncFalse'], $method_name, $method_name, true, self::$test_expire);
         $this->assertTrue($result3);
-        sleep($expire);
-        $result4 = locker::strictLocked([$this, 'checkFuncFalse'], $method_name, $method_name, true, $expire);
+        sleep(self::$test_expire);
+        $result4 = locker::strictLocked([$this, 'checkFuncFalse'], $method_name, $method_name, true, self::$test_expire);
         $this->assertFalse($result4);
     }
 
@@ -98,16 +104,15 @@ class lockerTest extends \PHPUnit_Framework_TestCase
     public function testCachedLockedFunction()
     {
         $method_name = self::$test_method_name;
-        $expire = 5;
         $this->assertFalse($this->checkFuncLocked($method_name));
-        $result2 = locker::cachedLockedFunction([$this, 'checkFuncLocked'], $method_name, $method_name, $expire);
+        $result2 = locker::cachedLockedFunction([$this, 'checkFuncLocked'], $method_name, $method_name, self::$test_expire);
         $this->assertFalse($this->checkFuncLocked($method_name));
         $this->assertTrue($result2);
         sleep(1);
-        $result3 = locker::cachedLockedFunction([$this, 'checkFuncFalse'], $method_name, $method_name, $expire);
+        $result3 = locker::cachedLockedFunction([$this, 'checkFuncFalse'], $method_name, $method_name, self::$test_expire);
         $this->assertTrue($result3);
-        sleep($expire);
-        $result4 = locker::cachedLockedFunction([$this, 'checkFuncFalse'], $method_name, $method_name, $expire);
+        sleep(self::$test_expire);
+        $result4 = locker::cachedLockedFunction([$this, 'checkFuncFalse'], $method_name, $method_name, self::$test_expire);
         $this->assertFalse($result4);
     }
 
