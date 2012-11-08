@@ -1,0 +1,17 @@
+{
+    "name" : "mpr_loader_preLoader",
+    "description" : "PreLoader package. Preloading selected classes and packages.",
+    "package" : {
+        "path" : "/mpr/loader/",
+        "init" : "preLoader.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "load,loader,preload"
+    },
+    "depends" : [
+        "mpr_debug_log",
+        "mpr_config"
+    ]
+}

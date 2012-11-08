@@ -53,9 +53,9 @@ spl_autoload_register(function ($package) {
     }
     if(file_exists($packagePath)) {
         require_once $packagePath;
-        \mpr\debug\log::put("Loaded {$package}", "init");
+        \mpr\debug\log::put("Loaded {$package} ({$packagePath})", "init");
     } else {
-        \mpr\debug\log::put("Skipped {$package}", "init");
+        \mpr\debug\log::put("Skipped {$package} ({$packagePath})", "init");
     }
 });
 
