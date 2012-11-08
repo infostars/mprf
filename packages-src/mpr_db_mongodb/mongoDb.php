@@ -29,7 +29,7 @@ class mongoDb
      * Factory object with config
      *
      * @param string $configName `default` - is default value
-     * @return mixed
+     * @return self
      */
     public static function factory($configName = 'default')
     {
