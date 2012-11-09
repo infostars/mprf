@@ -3,12 +3,12 @@
 namespace mpr\pattern;
 
 /**
- * Singleton pattern class
+ * Abstract factory pattern trait
  *
  * @version 1.0
  * @author greevex <greevex@gmail.com>
  */
-abstract class abstractFactory
+trait abstractFactory
 {
     /**
      * @static
@@ -22,8 +22,7 @@ abstract class abstractFactory
     final public static function factory($configName = 'default')
     {
         if(!isset(self::$instances[$configName])) {
-            $class = get_called_class();
-            self::$instances[$configName] = new $class($configName);
+            self::$instances[$configName] = new self($configName);
         }
         return self::$instances[$configName];
     }

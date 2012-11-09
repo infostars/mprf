@@ -12,8 +12,8 @@ use \mpr\pattern\abstractFactory;
  * @author Ostrovskiy Grigoriy <greevex@gmail.com>
  */
 class gearmanClient
-extends abstractFactory
 {
+    use abstractFactory;
 
     /**
      * Gearman client instance
