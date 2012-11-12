@@ -1,6 +1,6 @@
 {
     "name" : "mpr_helper_json",
-    "description" : "",
+    "description" : "Json converter. Wrapper for json_encode | json_decode functions with params.",
     "package" : {
         "path" : "/mpr/helper/",
         "init" : "json.php",
