@@ -1,6 +1,6 @@
 {
     "name" : "mpr_net_request",
-    "description" : "",
+    "description" : "Request class for net request queries. Works with drivers such as `mpr_net_curl`.",
     "package" : {
         "path" : "/mpr/net/",
         "init" : "request.php",

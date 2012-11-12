@@ -1,6 +1,6 @@
 {
     "name" : "mpr_net_client",
-    "description" : "",
+    "description" : "API client based on curl. Deprecated version, new version in package `api_client`.",
     "package" : {
         "path" : "/mpr/net/",
         "init" : "client.php",
@@ -8,7 +8,7 @@
     },
     "meta" : {
         "type" : "lib",
-        "tags" : "mpr_net_client,net_client"
+        "tags" : "api,client,curl"
     },
     "depends" : [
       "mpr_net_curl"
