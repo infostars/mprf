@@ -29,10 +29,12 @@ class httpInput
 
     /**
      * Construct new HTTP request parser and parse input
+     *
+     * @param bool $parseAll
      */
-    public function __construct()
+    public function __construct($parseAll = false)
     {
-        $this->parseInput();
+        $this->parseInput($parseAll);
     }
 
     /**
