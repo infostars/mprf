@@ -60,7 +60,7 @@ class httpInput
      *
      * @return bool
      */
-    protected function parseInput()
+    protected function parseInput($all = false)
     {
         if(isset($_SERVER['REQUEST_METHOD'])) {
             $this->httpMethod = mb_strtolower($_SERVER['REQUEST_METHOD']);
@@ -69,28 +69,41 @@ class httpInput
         } else {
             $this->httpMethod = 'get';
         }
-        switch ($this->httpMethod) {
-            case 'post':
-                $this->httpParams = $_POST;
-                break;
-            case 'get':
-                $this->httpParams = $_GET;
-                break;
-            case 'cli':
-                $this->httpParams = toolkit::getInstance()->getInput()->export();
-                $this->httpMethod = isset($this->httpParams['m']) ? $this->httpParams : 'get';
-                break;
-            case 'put':
-            case 'delete':
-            default:
-                foreach(explode('&', file_get_contents('php://input')) as $pair) {
-                    $item = explode('=', $pair);
-                    if(count($item) == 2) {
-                        $this->httpParams[urldecode($item[0])] = urldecode($item[1]);
-                    }
+        if($all) {
+            $this->httpParams = [];
+            foreach(explode('&', file_get_contents('php://input')) as $pair) {
+                $item = explode('=', $pair);
+                if(count($item) == 2) {
+                    $this->httpParams[urldecode($item[0])] = urldecode($item[1]);
                 }
-                break;
+            }
+            array_merge($_REQUEST, $_GET, $_POST, $this->httpParams, toolkit::getInstance()->getInput()->export());
+        } else {
+            switch ($this->httpMethod) {
+                case 'post':
+                    $this->httpParams = $_POST;
+                    break;
+                case 'get':
+                    $this->httpParams = $_GET;
+                    break;
+                case 'put':
+                case 'delete':
+                    foreach(explode('&', file_get_contents('php://input')) as $pair) {
+                        $item = explode('=', $pair);
+                        if(count($item) == 2) {
+                            $this->httpParams[urldecode($item[0])] = urldecode($item[1]);
+                        }
+                    }
+                    break;
+                default:
+                case 'cli':
+                    $this->httpParams = toolkit::getInstance()->getInput()->export();
+                    if(isset($this->httpParams['httpMethod'])) {
+                        $this->httpMethod = $this->httpParams['httpMethod'];
+                    }
+                    break;
 
+            }
         }
         return true;
     }
