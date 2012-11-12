@@ -82,6 +82,7 @@ class httpInput
                 break;
             case 'put':
             case 'delete':
+            default:
                 foreach(explode('&', file_get_contents('php://input')) as $pair) {
                     $item = explode('=', $pair);
                     if(count($item) == 2) {
