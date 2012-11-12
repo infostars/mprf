@@ -79,7 +79,9 @@ class httpInput
                     $this->httpParams[urldecode($item[0])] = urldecode($item[1]);
                 }
             }
-            array_merge($_REQUEST, $_GET, $_POST, $this->httpParams, toolkit::getInstance()->getInput()->export());
+            $this->httpParams = array_merge(
+                $_REQUEST, $_GET, $_POST, $this->httpParams, toolkit::getInstance()->getInput()->export()
+            );
         } else {
             switch ($this->httpMethod) {
                 case 'post':
