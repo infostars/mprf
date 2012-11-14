@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_queue_lifo",
+    "description" : "LIFO (last input first output) class.",
+    "package" : {
+        "path" : "/mpr/queue/",
+        "init" : "lifo.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "queue,fifo,lifo"
+    },
+    "depends" : [
+
+    ]
+}
