@@ -1,5 +1,5 @@
 <?php
-namespace mpr;
+namespace mpr\queue;
 
 /**
  * LIFO class
