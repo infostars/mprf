@@ -1,54 +1,23 @@
 <?php
 /**
+ * Config file
+ *
  * @author greevex
  * @date: 9/20/12 4:27 PM
  */
 
-\mpr\config::$package['symfony_component_ClassLoader'] = [
-    'register' => [
+// Path to app root
+define('APP_ROOT', __DIR__);
 
-    ]
-];
+// dev | prod
+$GLOBALS['APP_ENV'] = 'dev';
 
-\mpr\config::$package['mpr_debug_log'] = [
-    'enabled' => true,
-    'output' => 'stdout', // "stdout"|"output"|null
-    'logfile' => "/tmp/mylog.log",
-];
+// src | phar
+$GLOBALS['PACKAGES_TYPE'] = 'src';
 
-\mpr\config::$package['mpr_db_mongoDb'] = [
-    'default' => [
-        'host' => '127.0.0.1',
-        'dbname' => 'test'
-    ]
-];
+$GLOBALS['PACKAGES_CACHE_EXPIRE'] = 3600;
 
-\mpr\config::$package['mpr_cache'] = [
-    'default' => 'mpr_cache_memcached' // driver package name
-];
-
-\mpr\config::$package['mpr_cache_memcached'] = [
-    'servers' => [
-        [ 'host' => '127.0.0.1', 'port' => 11211 ]
-    ]
-];
-
-\mpr\config::$package['mpr_cache_redis'] = [
-    'server' => [
-        'host' => '127.0.0.1',
-        'port' => 6379,
-        'timeout' => 0,
-        'prefix' => 'test:'
-    ]
-];
-
-\mpr\config::$package['mpr_cache_file'] = [
-    'cache_dir' => '/tmp/'
-];
-
-\mpr\config::$package['mpr_net_gearmanClient'] = [
-    'default' => [
-        'host' => 'mongo.hostname',
-        //'port' => 1234 //optional
-    ]
+// only if PACKAGES_TYPE = src
+$GLOBALS['PACKAGES_PATH'] = [
+    APP_ROOT . '/packages-src'
 ];

@@ -66,8 +66,8 @@ class config
      */
     public static function getPackageName($class)
     {
-        if(strpos($class, '\\') === 0) {
-            $class = substr($class, 1);
+        if(mb_strpos($class, '\\') === 0) {
+            $class = mb_substr($class, 1);
         }
         return str_replace('\\', '_', $class);
     }
@@ -102,25 +102,6 @@ class config
     }
 
     /**
-     * Locate config file
-     *
-     * @static
-     * @return bool
-     */
-    protected static function locateConfigFile()
-    {
-        static $configFilePath;
-        if($configFilePath == null) {
-            $mprRootPath = self::findMprRoot();
-            if(!$mprRootPath) {
-                return false;
-            }
-            $configFilePath = "{$mprRootPath}/config.php";
-        }
-        return $configFilePath;
-    }
-
-    /**
      * Load user config and init configuration
      *
      * @static
@@ -128,16 +109,17 @@ class config
      */
     public static function init()
     {
-        $configFilePath = self::locateConfigFile();
-        if(!file_exists($configFilePath)) {
-            throw new \Exception("Config file not found in {$configFilePath}!");
-        }
-        require_once $configFilePath;
-        log::put("Loading config file {$configFilePath}", self::getPackageName(__CLASS__));
-        $localConfigFilePath = self::locateLocalConfigFile();
-        if(file_exists($localConfigFilePath)) {
-            require_once $localConfigFilePath;
-            log::put("Loading local config file {$localConfigFilePath}", self::getPackageName(__CLASS__));
+        static $init_complete = false;
+        if(!$init_complete) {
+            //echo "Initializing config...", PHP_EOL;
+            $localConfigFilePath = self::locateLocalConfigFile();
+            //echo "Checking local config {$localConfigFilePath} ...", PHP_EOL;
+            if(file_exists($localConfigFilePath)) {
+                //echo "Local config {$localConfigFilePath} found, loading...", PHP_EOL;
+                require_once $localConfigFilePath;
+            }
+            self::loadAdditionalConfigs();
+            $init_complete = true;
         }
     }
 
@@ -158,5 +140,49 @@ class config
             $localConfigFilePath = "{$mprRootPath}/config.local.php";
         }
         return $localConfigFilePath;
+    }
+
+    /**
+     * Load additional configs
+     *
+     * @return bool
+     */
+    protected static function loadAdditionalConfigs()
+    {
+        $mprRootPath = self::findMprRoot();
+        if(!$mprRootPath) {
+            return false;
+        }
+        $additionalConfigsPath = "{$mprRootPath}/config.d/";
+        //echo "Loading configs in {$additionalConfigsPath}...", PHP_EOL;
+        self::loadConfigsByPath($additionalConfigsPath);
+        $envConfigsPath = "{$mprRootPath}/config.{$GLOBALS['APP_ENV']}.d/";
+        //echo "Loading configs in {$envConfigsPath}...", PHP_EOL;
+        self::loadConfigsByPath($envConfigsPath);
+        return true;
+    }
+
+    /**
+     * Load additional configs in specific path
+     *
+     * @param string $additionalConfigsPath
+     * @return bool
+     */
+    protected static function loadConfigsByPath($additionalConfigsPath)
+    {
+        if(!file_exists($additionalConfigsPath)) {
+            //echo "Path doesn't exists {$additionalConfigsPath}...", PHP_EOL;
+            return false;
+        }
+        foreach(scandir($additionalConfigsPath) as $file) {
+            if(mb_substr($file, -4, 4) != '.php') {
+                //echo "Skipping file {$file} ...", PHP_EOL;
+                continue;
+            }
+            $pathToLoad = "{$additionalConfigsPath}/{$file}";
+            //echo "Loading file {$pathToLoad} ...", PHP_EOL;
+            require_once $pathToLoad;
+        }
+        return true;
     }
 }
