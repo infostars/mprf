@@ -11,6 +11,7 @@ use \mpr\interfaces;
  * Semaphore implementation using cache
  *
  * @author Ostrovskiy Grigoriy <greevex@gmail.com>
+ * @author Diomin Piotr <demin@infostars.ru>
  */
 class cache
 extends \mpr\cache
