@@ -1,0 +1,15 @@
+{
+    "name" : "mpr_interfaces_cache",
+    "description" : "Locker class interface.",
+    "package" : {
+        "path" : "/mpr/interfaces/",
+        "init" : "locker.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "interfaces,locker"
+    },
+    "depends" : [
+    ]
+}

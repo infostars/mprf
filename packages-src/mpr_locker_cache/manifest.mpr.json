@@ -1,0 +1,19 @@
+{
+    "name" : "mpr_locker_cache",
+    "description" : "Locker on cache",
+    "package" : {
+        "path" : "/mpr/locker/",
+        "init" : "cache.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "semaphore,locker,cache"
+    },
+    "depends" : [
+        "mpr_config",
+        "mpr_cache",
+        "mpr_debug_log",
+        "mpr_interfaces_locker"
+    ]
+}

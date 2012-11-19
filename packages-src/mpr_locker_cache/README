@@ -1,0 +1,11 @@
+Add next lines to config file
+
+\mpr\config::$package['mpr_locker_cache'] = [
+    'servers' => [
+        [
+            //'host' => 'memcached01.sdstream.ru',
+            'host' => 'localhost',
+            'port' => 11211
+        ]
+    ]
+];
