@@ -33,6 +33,7 @@ class request
      */
     public function makeRequest($url, $params = array(), $method = 'GET')
     {
+        $this->instance->reset();
         $this->instance->prepare($url, $params, $method);
 
         return $this->instance->execute();
