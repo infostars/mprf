@@ -42,8 +42,8 @@ class lockerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        $this->object = locker::factory();
         $this->object = locker::factory($this->driver_name);
-        //$this->object = locker::factory();
     }
 
     /**
@@ -68,7 +68,6 @@ class lockerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers mpr\helper\locker->locked
-     * @depends testUnlock
      */
     public function testLocked()
     {
@@ -123,33 +122,33 @@ class lockerTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($result4);
     }
 
-//    /**
-//     * @covers mpr\helper\locker->cachedLockedFunction
-//     */
-//    public function testCachedLockedFunction()
-//    {
-//        $method_name = $this->test_method_name;
-//        $this->assertFalse($this->checkFuncLocked($method_name));
-//        $result2 = $this->object->cachedLockedFunction([$this, 'checkFuncLocked'], $method_name, $method_name, self::$test_expire);
-//        $this->assertFalse($this->checkFuncLocked($method_name));
-//        $this->assertTrue($result2);
-//        sleep(1);
-//        $result3 = $this->object->cachedLockedFunction([$this, 'checkFuncFalse'], $method_name, $method_name, self::$test_expire);
-//        $this->assertTrue($result3);
-//        sleep(self::$test_expire);
-//        $result4 = $this->object->cachedLockedFunction([$this, 'checkFuncFalse'], $method_name, $method_name, self::$test_expire);
-//        $this->assertFalse($result4);
-//    }
-//
-//    /**
-//     * @covers mpr\helper\locker->lockedFunction
-//     */
-//    public function testLockedFunction()
-//    {
-//        $method_name = $this->test_method_name;
-//        $this->assertFalse($this->checkFuncLocked($method_name));
-//        $result1 = $this->object->lockedFunction([$this, 'checkFuncLocked'], $method_name, $method_name);
-//        $this->assertFalse($this->checkFuncLocked($method_name));
-//        $this->assertTrue($result1);
-//    }
+    /**
+     * @covers mpr\helper\locker->cachedLockedFunction
+     */
+    public function testCachedLockedFunction()
+    {
+        $method_name = $this->test_method_name;
+        $this->assertFalse($this->checkFuncLocked($method_name));
+        $result2 = $this->object->cachedLockedFunction([$this, 'checkFuncLocked'], $method_name, $method_name, self::$test_expire);
+        $this->assertFalse($this->checkFuncLocked($method_name));
+        $this->assertTrue($result2);
+        sleep(1);
+        $result3 = $this->object->cachedLockedFunction([$this, 'checkFuncFalse'], $method_name, $method_name, self::$test_expire);
+        $this->assertTrue($result3);
+        sleep(self::$test_expire);
+        $result4 = $this->object->cachedLockedFunction([$this, 'checkFuncFalse'], $method_name, $method_name, self::$test_expire);
+        $this->assertFalse($result4);
+    }
+
+    /**
+     * @covers mpr\helper\locker->lockedFunction
+     */
+    public function testLockedFunction()
+    {
+        $method_name = $this->test_method_name;
+        $this->assertFalse($this->checkFuncLocked($method_name));
+        $result1 = $this->object->lockedFunction([$this, 'checkFuncLocked'], $method_name, $method_name);
+        $this->assertFalse($this->checkFuncLocked($method_name));
+        $this->assertTrue($result1);
+    }
 }

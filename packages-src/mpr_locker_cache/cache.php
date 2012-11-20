@@ -61,8 +61,8 @@ implements interfaces\locker
      */
     public function locked($method)
     {
-        $method = self::getLockKey($method);
-        return $this->get("{$method}:lock") == true;
+        $lock_key = self::getLockKey($method);
+        return $this->get("{$lock_key}:lock") == true;
     }
 
     /**
@@ -83,7 +83,7 @@ implements interfaces\locker
      * @param mixed $data
      * @param int $lock_expire
      */
-    public function storeLockedData($lock_key, $data, $lock_expire)
+    public function storeLockedData($lock_key, $data, $lock_expire = 10)
     {
         $this->set($lock_key, $data, $lock_expire);
     }

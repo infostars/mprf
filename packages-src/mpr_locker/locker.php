@@ -129,7 +129,7 @@ implements interfaces\locker
      * @param mixed $data
      * @param int $lock_expire
      */
-    public function storeLockedData($lock_key, $data, $lock_expire)
+    public function storeLockedData($lock_key, $data, $lock_expire = 10)
     {
         log::put("Store data by key {$lock_key}", config::getPackageName(__CLASS__));
         $this->backend->storeLockedData($lock_key, $data, $lock_expire);

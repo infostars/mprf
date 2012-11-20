@@ -19,5 +19,10 @@
         // driver package name
         'driver' => 'mpr_locker_cache',
         'backend_section' => 'mpr_cache_redis'
+    ],
+    'cache_semaphore' => [
+        // driver package name
+        'driver' => 'mpr_locker_phpsemaphore',
+        'backend_section' => ''
     ]
 ];

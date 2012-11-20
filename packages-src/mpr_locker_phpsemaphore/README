@@ -1,0 +1,9 @@
+Add next lines to config file
+
+\mpr\config::$package['mpr_locker'] = [
+    'cache_semaphore' => [
+        // driver package name
+        'driver' => 'mpr_locker_phpsemaphore',
+        'backend_section' => ''
+    ]
+];

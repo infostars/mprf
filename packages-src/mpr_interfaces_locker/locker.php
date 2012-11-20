@@ -47,15 +47,6 @@ interface locker
     public function locked($method);
 
     /**
-     * Get data by lock key
-     *
-     * @static
-     * @param string $lock_key
-     * @return mixed
-     */
-    public function getLockedData($lock_key);
-
-    /**
      * Store data by lock key
      *
      * @static
@@ -63,5 +54,14 @@ interface locker
      * @param mixed $data
      * @param int $lock_expire
      */
-    public function storeLockedData($lock_key, $data, $lock_expire);
+    public function storeLockedData($lock_key, $data, $lock_expire = 10);
+
+    /**
+     * Get data by lock key
+     *
+     * @static
+     * @param string $lock_key
+     * @return mixed
+     */
+    public function getLockedData($lock_key);
 }
