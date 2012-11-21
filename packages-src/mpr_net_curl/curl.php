@@ -122,24 +122,18 @@ class curl
                     $url .= strpos($url, '?') === false ? "?$params" : "&$params";
                 }
                 break;
-            case 'PUT':
-                $this->options[CURLOPT_CUSTOMREQUEST] = 'PUT';
-                if($params !== null) {
-                    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
-                }
-                break;
-            case 'DELETE':
-                $this->options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
-                if($params !== null) {
-                    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
-                }
-                break;
             case 'POST':
                 $this->options[CURLOPT_CUSTOMREQUEST] = 'POST';
                 if($params !== null) {
                     curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
                 }
                 curl_setopt($this->curl, CURLOPT_POST, 1);
+                break;
+            default:
+                $this->options[CURLOPT_CUSTOMREQUEST] = strtoupper($method);
+                if($params !== null) {
+                    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
+                }
                 break;
         }
 
