@@ -36,7 +36,7 @@ implements interfaces\locker
      * Factory locker by driver package name
      *
      * @static
-     * @param null $configSection
+     * @param string|null $configSection
      * @see \mpr\interfaces\locker
      * @return self
      */
@@ -83,7 +83,7 @@ implements interfaces\locker
     public function lock($method, $expire = 10)
     {
         log::put("Lock method {$method}", config::getPackageName(__CLASS__));
-        return $this->backend->lock($method);
+        return $this->backend->lock($method, $expire);
     }
 
     /**
@@ -171,6 +171,7 @@ implements interfaces\locker
      * @param callable $callable closure, function or method
      * @param mixed|null $input params
      * @param string $method_name name of locked function
+     * @param int $lock_expire
      * @return mixed
      */
     public function cachedLockedFunction($callable, &$input, $method_name, $lock_expire = 5)

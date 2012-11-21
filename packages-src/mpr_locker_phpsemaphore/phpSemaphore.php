@@ -52,6 +52,7 @@ implements interfaces\locker
      */
     public function lock($key, $expire = 10)
     {
+        log::put("lock expire {$expire} in phpSemaphore not used", config::getPackageName(__CLASS__));
         $shm_id = self::getLockKey($key);
         return shm_put_var($shm_id, $this->shm_int_key, $key);
     }
@@ -91,6 +92,7 @@ implements interfaces\locker
      */
     public function storeLockedData($lock_key, $data, $lock_expire = 10)
     {
+        log::put("storeLockedData expire {$lock_expire} in phpSemaphore not used", config::getPackageName(__CLASS__));
         return shm_put_var($lock_key, $this->shm_int_key, $data);
     }
 
