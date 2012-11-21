@@ -95,4 +95,14 @@ class gearmanClient
         }
         return $result;
     }
+
+    /**
+     * Get gearmanClient backend
+     *
+     * @return \GearmanClient
+     */
+    public function getBackend()
+    {
+        return $this->gearmanInstance;
+    }
 }
