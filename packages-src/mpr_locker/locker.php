@@ -42,7 +42,6 @@ implements interfaces\locker
      */
     public static function factory($configSection = 'default')
     {
-        log::put("Locker factory {$configSection}", config::getPackageName(__CLASS__));
         if(!isset(self::$instances[$configSection])) {
             self::$instances[$configSection] = new self($configSection);
         }
@@ -69,7 +68,6 @@ implements interfaces\locker
      */
     public function getLockKey($key)
     {
-        log::put("Get lock key {$key}", config::getPackageName(__CLASS__));
         return $this->backend->getLockKey($key);
     }
 
@@ -106,7 +104,6 @@ implements interfaces\locker
      */
     public function locked($method)
     {
-        log::put("Is locked method {$method}", config::getPackageName(__CLASS__));
         return $this->backend->locked($method);
     }
 
@@ -118,7 +115,6 @@ implements interfaces\locker
      */
     public function getLockedData($lock_key)
     {
-        log::put("Get data by key {$lock_key}", config::getPackageName(__CLASS__));
         return $this->backend->getLockedData($lock_key);
     }
 
@@ -131,7 +127,6 @@ implements interfaces\locker
      */
     public function storeLockedData($lock_key, $data, $lock_expire = 10)
     {
-        log::put("Store data by key {$lock_key}", config::getPackageName(__CLASS__));
         $this->backend->storeLockedData($lock_key, $data, $lock_expire);
     }
 
@@ -203,7 +198,7 @@ implements interfaces\locker
     public function lockedFunction($callable, &$input, $method_name)
     {
         while(self::locked($method_name)) {
-            usleep(100);
+            usleep(10000);
         }
         self::lock($method_name);
 

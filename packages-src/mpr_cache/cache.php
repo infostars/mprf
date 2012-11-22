@@ -44,7 +44,6 @@ implements interfaces\cache
         if($driver_packageName == null) {
             $driver_packageName = config::getPackageConfig(__CLASS__)['default'];
         }
-        log::put("Cache factory {$driver_packageName}", config::getPackageName(__CLASS__));
         if(!isset(self::$instances[$driver_packageName])) {
             self::$instances[$driver_packageName] = new self($driver_packageName);
         }
@@ -72,7 +71,6 @@ implements interfaces\cache
      */
     public function set($key, $value, $expire = 3600)
     {
-        log::put("Set {$key}", config::getPackageName(__CLASS__));
         return $this->backend->set($key, $value, $expire);
     }
 
@@ -84,7 +82,6 @@ implements interfaces\cache
      */
     public function get($key)
     {
-        log::put("Get {$key}", config::getPackageName(__CLASS__));
         return $this->backend->get($key);
     }
 
@@ -97,7 +94,6 @@ implements interfaces\cache
     public function exists($key)
     {
         $exists = $this->backend->exists($key);
-        log::put("Exists {$key}: " . ($exists ? 'true' : 'false'), config::getPackageName(__CLASS__));
         return $exists;
     }
 
@@ -109,7 +105,6 @@ implements interfaces\cache
      */
     public function remove($key)
     {
-        log::put("Remove {$key}", config::getPackageName(__CLASS__));
         return $this->backend->remove($key);
     }
 

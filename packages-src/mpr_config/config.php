@@ -185,4 +185,13 @@ class config
         }
         return true;
     }
+
+    /**
+     * Save config to files
+     */
+    protected static function save()
+    {
+        usleep(50000);
+        //@todo implement this
+    }
 }

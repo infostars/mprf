@@ -74,6 +74,23 @@ class curl
     }
 
     /**
+     * @param string        $type       http - for HTTP type & socks5 for SOCKS5 proxy type
+     * @param string        $ip
+     * @param int           $port
+     * @param null|string   $user
+     * @param null|string   $pass
+     * @param string        $auth_type  ntlm - use NTLM auth type, otherwise basic being used
+     */
+    public function useProxy($initial, $proxy_type = 'http', $auth_type = 'basic')
+    {
+        $this->options[CURLOPT_PROXYTYPE] = $proxy_type == 'socks5' ? CURLPROXY_SOCKS5 : CURLPROXY_HTTP;
+        $this->options[CURLOPT_PROXY] = $initial;
+        if(strpos($initial, '@') !== false) {
+            $this->options[CURLOPT_PROXYAUTH] = $auth_type == 'ntlm' ? CURLAUTH_NTLM : CURLAUTH_BASIC;
+        }
+    }
+
+    /**
      * Set file path for cookie file
      *
      * @param string $path Cookie file path
@@ -122,24 +139,18 @@ class curl
                     $url .= strpos($url, '?') === false ? "?$params" : "&$params";
                 }
                 break;
-            case 'PUT':
-                $this->options[CURLOPT_CUSTOMREQUEST] = 'PUT';
-                if($params !== null) {
-                    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
-                }
-                break;
-            case 'DELETE':
-                $this->options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
-                if($params !== null) {
-                    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
-                }
-                break;
             case 'POST':
                 $this->options[CURLOPT_CUSTOMREQUEST] = 'POST';
                 if($params !== null) {
                     curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
                 }
                 curl_setopt($this->curl, CURLOPT_POST, 1);
+                break;
+            default:
+                $this->options[CURLOPT_CUSTOMREQUEST] = strtoupper($method);
+                if($params !== null) {
+                    curl_setopt($this->curl, CURLOPT_POSTFIELDS, $params);
+                }
                 break;
         }
 
