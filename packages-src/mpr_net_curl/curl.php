@@ -74,6 +74,24 @@ class curl
     }
 
     /**
+     * @param string        $type       http - for HTTP type & socks5 for SOCKS5 proxy type
+     * @param string        $ip
+     * @param int           $port
+     * @param null|string   $user
+     * @param null|string   $pass
+     * @param string        $auth_type  ntlm - use NTLM auth type, otherwise basic being used
+     */
+    public function useProxy($ip, $port, $type = 'http', $user = null, $pass = null, $auth_type = 'basic')
+    {
+        $this->options[CURLOPT_PROXYTYPE] = $type == 'socks5' ? CURLPROXY_SOCKS5 : CURLPROXY_HTTP;
+        $this->options[CURLOPT_PROXY] = "{$ip}:{$port}";
+        if(isset($user, $pass, $auth_type)) {
+            $this->options[CURLOPT_PROXYAUTH] = $auth_type == 'ntlm' ? CURLAUTH_NTLM : CURLAUTH_BASIC;
+            $this->options[CURLOPT_PROXYUSERPWD] = "{$user}:{$pass}";
+        }
+    }
+
+    /**
      * Set file path for cookie file
      *
      * @param string $path Cookie file path
