@@ -94,6 +94,21 @@ class phpSemaphoreTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers mpr\locker\phpSemaphore::locked
+     * @depends testLock
+     */
+    public function testSelfUnlock()
+    {
+        $this->testLock();
+        $counter = 0;
+        while($this->object->locked($this->test_key_id)) {
+            sleep(10);
+            $this->assertLessThanOrEqual(2, $counter);
+            $counter++;
+        }
+    }
+
+    /**
      * @covers mpr\locker\phpSemaphore::storeLockedData
      */
     public function testStoreLockedData()

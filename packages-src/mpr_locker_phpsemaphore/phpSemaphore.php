@@ -13,24 +13,21 @@ use \mpr\interfaces;
  * @author Diomin Piotr <demin@infostars.ru>
  */
 class phpSemaphore
-implements interfaces\locker
+    implements interfaces\locker
 {
     /**
      * PHP shared memory resource id
      *
      * @var int
      */
-    private $shm_int_key = 1;
+    private $shm_variable_key = 1;
 
     /**
-     * Set shared memory integer identifier
+     * Expire time
      *
-     * @param int $shm_key
+     * @var int
      */
-    public function __construct($shm_key = 1)
-    {
-        $this->shm_int_key = $shm_key;
-    }
+    private $expire_time = 0;
 
     /**
      * Generate shared memory resource
@@ -40,6 +37,7 @@ implements interfaces\locker
      */
     public function getLockKey($key)
     {
+        $this->shm_variable_key = intval($key);
         return shm_attach($key);
     }
 
@@ -52,9 +50,10 @@ implements interfaces\locker
      */
     public function lock($key, $expire = 10)
     {
-        log::put("lock expire {$expire} in phpSemaphore not used", config::getPackageName(__CLASS__));
+        $this->expire_time = time() + $expire;
+
         $shm_id = self::getLockKey($key);
-        return shm_put_var($shm_id, $this->shm_int_key, $key);
+        return shm_put_var($shm_id, $this->shm_variable_key, $key);
     }
 
     /**
@@ -66,7 +65,10 @@ implements interfaces\locker
     public function unlock($key)
     {
         $shm_id = self::getLockKey($key);
-        shm_remove_var($shm_id, $this->shm_int_key);
+        if(shm_has_var($shm_id, $this->shm_variable_key)) {
+            log::put("Has var - remove var {$this->shm_variable_key} from {$shm_id}", config::getPackageName(__CLASS__));
+            shm_remove_var($shm_id, $this->shm_variable_key);
+        }
         return shm_remove($shm_id);
     }
 
@@ -79,7 +81,13 @@ implements interfaces\locker
     public function locked($key)
     {
         $shm_id = self::getLockKey($key);
-        return shm_has_var($shm_id, $this->shm_int_key);
+        $has_var = shm_has_var($shm_id, $this->shm_variable_key);
+
+        if($has_var && $this->expire_time < time()) {
+            return $this->unlock($key);
+        }
+
+        return $has_var;
     }
 
     /**
@@ -93,7 +101,7 @@ implements interfaces\locker
     public function storeLockedData($lock_key, $data, $lock_expire = 10)
     {
         log::put("storeLockedData expire {$lock_expire} in phpSemaphore not used", config::getPackageName(__CLASS__));
-        return shm_put_var($lock_key, $this->shm_int_key, $data);
+        return shm_put_var($lock_key, $this->shm_variable_key, $data);
     }
 
     /**
@@ -104,6 +112,6 @@ implements interfaces\locker
      */
     public function getLockedData($lock_key)
     {
-        return shm_get_var($lock_key, $this->shm_int_key);
+        return shm_get_var($lock_key, $this->shm_variable_key);
     }
 }
