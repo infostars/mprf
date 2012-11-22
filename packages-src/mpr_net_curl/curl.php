@@ -81,13 +81,12 @@ class curl
      * @param null|string   $pass
      * @param string        $auth_type  ntlm - use NTLM auth type, otherwise basic being used
      */
-    public function useProxy($ip, $port, $type = 'http', $user = null, $pass = null, $auth_type = 'basic')
+    public function useProxy($initial, $proxy_type = 'http', $auth_type = 'basic')
     {
-        $this->options[CURLOPT_PROXYTYPE] = $type == 'socks5' ? CURLPROXY_SOCKS5 : CURLPROXY_HTTP;
-        $this->options[CURLOPT_PROXY] = "{$ip}:{$port}";
-        if(isset($user, $pass, $auth_type)) {
+        $this->options[CURLOPT_PROXYTYPE] = $proxy_type == 'socks5' ? CURLPROXY_SOCKS5 : CURLPROXY_HTTP;
+        $this->options[CURLOPT_PROXY] = $initial;
+        if(strpos($initial, '@') !== false) {
             $this->options[CURLOPT_PROXYAUTH] = $auth_type == 'ntlm' ? CURLAUTH_NTLM : CURLAUTH_BASIC;
-            $this->options[CURLOPT_PROXYUSERPWD] = "{$user}:{$pass}";
         }
     }
 
