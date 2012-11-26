@@ -26,7 +26,7 @@ implements interfaces\locker
      */
     public function getLockKey($key)
     {
-        return "locked:{$key}";
+        return "lck:{$key}";
     }
 
     /**
@@ -38,7 +38,7 @@ implements interfaces\locker
     public function lock($method, $expire = 10)
     {
         $method = self::getLockKey($method);
-        return $this->set("{$method}:lock", true, $expire);
+        return $this->set("{$method}:l", true, $expire);
     }
 
     /**
@@ -50,7 +50,7 @@ implements interfaces\locker
     public function unlock($method)
     {
         $method = self::getLockKey($method);
-        return $this->set("{$method}:lock", false);
+        return $this->set("{$method}:l", false);
     }
 
     /**
@@ -62,7 +62,7 @@ implements interfaces\locker
     public function locked($method)
     {
         $lock_key = self::getLockKey($method);
-        return $this->get("{$lock_key}:lock") == true;
+        return $this->get("{$lock_key}:l") == true;
     }
 
     /**

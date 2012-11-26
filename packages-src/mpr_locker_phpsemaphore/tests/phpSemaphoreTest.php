@@ -21,21 +21,21 @@ class phpSemaphoreTest extends \PHPUnit_Framework_TestCase
     protected $driver_name = "cache_semaphore";
 
     /**
-     * Test method name
+     * Test memory address
      *
      * @var int
      */
-    protected $test_key_id = 111;
+    protected $test_mem_address = 1;
 
     /**
-     * Test lock key
+     * Test key
      *
      * @var int
      */
-    protected $test_lock_key = 10;
+    protected $test_key = 'test_key';
 
     /**
-     * Test data
+     * Test value
      *
      * @var string
      */
@@ -47,7 +47,7 @@ class phpSemaphoreTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new phpSemaphore($this->test_lock_key);
+        $this->object = new phpSemaphore($this->test_mem_address);
     }
 
     /**
@@ -55,7 +55,7 @@ class phpSemaphoreTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLockKey()
     {
-        $this->assertInternalType('resource', $this->object->getLockKey($this->test_lock_key));
+        $this->assertInternalType('int', $this->object->getLockKey($this->test_key));
     }
 
     /**
@@ -63,8 +63,8 @@ class phpSemaphoreTest extends \PHPUnit_Framework_TestCase
      */
     public function testLock()
     {
-        $this->object->lock($this->test_key_id);
-        $this->assertTrue($this->object->locked($this->test_key_id));
+        $this->object->lock($this->test_key);
+        $this->assertTrue($this->object->locked($this->test_key));
     }
 
     /**
@@ -74,8 +74,8 @@ class phpSemaphoreTest extends \PHPUnit_Framework_TestCase
     public function testUnlock()
     {
         $this->testLock();
-        $this->object->unlock($this->test_key_id);
-        $this->assertFalse($this->object->locked($this->test_key_id));
+        $this->object->unlock($this->test_key);
+        $this->assertFalse($this->object->locked($this->test_key));
     }
 
     /**
@@ -85,12 +85,12 @@ class phpSemaphoreTest extends \PHPUnit_Framework_TestCase
     public function testLocked()
     {
         $this->testLock();
-        $this->assertTrue($this->object->locked($this->test_key_id));
-        $this->object->unlock($this->test_key_id);
-        $this->assertFalse($this->object->locked($this->test_key_id));
+        $this->assertTrue($this->object->locked($this->test_key));
+        $this->object->unlock($this->test_key);
+        $this->assertFalse($this->object->locked($this->test_key));
 
-        $not_cached_id = 222;
-        $this->assertFalse($this->object->locked($not_cached_id));
+        $not_cached_key = 'adfgasdf';
+        $this->assertFalse($this->object->locked($not_cached_key));
     }
 
     /**
@@ -98,7 +98,7 @@ class phpSemaphoreTest extends \PHPUnit_Framework_TestCase
      */
     public function testStoreLockedData()
     {
-        $lock_key = $this->object->getLockKey($this->test_lock_key);
+        $lock_key = $this->object->getLockKey($this->test_key);
         $this->object->storeLockedData($lock_key, $this->test_data);
     }
 
@@ -108,7 +108,7 @@ class phpSemaphoreTest extends \PHPUnit_Framework_TestCase
     public function testGetLockedData()
     {
         $this->testStoreLockedData();
-        $lock_key = $this->object->getLockKey($this->test_lock_key);
+        $lock_key = $this->object->getLockKey($this->test_key);
         $locked_data = $this->object->getLockedData($lock_key);
         $this->assertEquals($this->test_data, $locked_data);
     }

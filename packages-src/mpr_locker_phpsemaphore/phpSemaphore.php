@@ -29,24 +29,24 @@ implements interfaces\locker
      */
     public function __construct($shm_key = 1)
     {
-        $this->shm_int_key = $shm_key;
+        $this->shm_int_key = shm_attach($shm_key);
     }
 
     /**
      * Generate shared memory resource
      *
-     * @param int $key
+     * @param string $key
      * @return resource
      */
     public function getLockKey($key)
     {
-        return shm_attach($key);
+        return crc32($key);
     }
 
     /**
      * Lock method
      *
-     * @param int $key
+     * @param string $key
      * @param int $expire
      * @return bool
      */
@@ -54,32 +54,31 @@ implements interfaces\locker
     {
         log::put("lock expire {$expire} in phpSemaphore not used", config::getPackageName(__CLASS__));
         $shm_id = self::getLockKey($key);
-        return shm_put_var($shm_id, $this->shm_int_key, $key);
+        return shm_put_var($this->shm_int_key, $shm_id, true);
     }
 
     /**
      * Unlock method
      *
-     * @param int $key
+     * @param string $key
      * @return bool
      */
     public function unlock($key)
     {
         $shm_id = self::getLockKey($key);
-        shm_remove_var($shm_id, $this->shm_int_key);
-        return shm_remove($shm_id);
+        return shm_remove_var($this->shm_int_key, $shm_id);
     }
 
     /**
      * Check is method locked
      *
-     * @param int $key
+     * @param string $key
      * @return bool
      */
     public function locked($key)
     {
         $shm_id = self::getLockKey($key);
-        return shm_has_var($shm_id, $this->shm_int_key);
+        return shm_has_var($this->shm_int_key, $shm_id);
     }
 
     /**
@@ -93,7 +92,7 @@ implements interfaces\locker
     public function storeLockedData($lock_key, $data, $lock_expire = 10)
     {
         log::put("storeLockedData expire {$lock_expire} in phpSemaphore not used", config::getPackageName(__CLASS__));
-        return shm_put_var($lock_key, $this->shm_int_key, $data);
+        return shm_put_var($this->shm_int_key, $lock_key, $data);
     }
 
     /**
@@ -104,6 +103,11 @@ implements interfaces\locker
      */
     public function getLockedData($lock_key)
     {
-        return shm_get_var($lock_key, $this->shm_int_key);
+        return shm_get_var($this->shm_int_key, $lock_key);
+    }
+
+    public function __destruct()
+    {
+        shm_detach($this->shm_int_key);
     }
 }
