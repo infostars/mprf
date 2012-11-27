@@ -27,7 +27,7 @@ implements interfaces\locker
         static $resources = [];
         if(!isset($resources[$key])) {
             $file = config::getPackageConfig(__CLASS__)['path'] . "{$key}.sem";
-            $resources[$key] = fopen($file, 'r+');
+            $resources[$key] = fopen($file, 'w');
             chmod($file, 0777);
         }
         return $resources[$key];
