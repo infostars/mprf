@@ -6,12 +6,11 @@ use \mpr\debug\log;
 use \mpr\interfaces;
 
 /**
- * Locker package
+ * Locker driver
  *
- * Semaphore implementation using driver package name
+ * Semaphore implementation using file locks
  *
  * @author Ostrovskiy Grigoriy <greevex@gmail.com>
- * @author Diomin Piotr <demin@infostars.ru>
  */
 class file
 implements interfaces\locker
@@ -43,7 +42,7 @@ implements interfaces\locker
      */
     public function lock($method, $expire = 10)
     {
-        flock($this->getLockKey($method), LOCK_EX);
+        return flock($this->getLockKey($method), LOCK_EX);
     }
 
     /**
@@ -55,43 +54,7 @@ implements interfaces\locker
      */
     public function unlock($method)
     {
-        flock($this->getLockKey($method), LOCK_UN);
+        return flock($this->getLockKey($method), LOCK_UN);
     }
 
-    /**
-     * Check is method locked
-     *
-     * @static
-     * @param string $method
-     * @return bool
-     */
-    public function locked($method)
-    {
-        // TODO: Implement locked() method.
-    }
-
-    /**
-     * Store data by lock key
-     *
-     * @static
-     * @param string $lock_key
-     * @param mixed  $data
-     * @param int    $lock_expire
-     */
-    public function storeLockedData($lock_key, $data, $lock_expire = 10)
-    {
-        // TODO: Implement storeLockedData() method.
-    }
-
-    /**
-     * Get data by lock key
-     *
-     * @static
-     * @param string $lock_key
-     * @return mixed
-     */
-    public function getLockedData($lock_key)
-    {
-        // TODO: Implement getLockedData() method.
-    }
 }
