@@ -68,10 +68,14 @@ class log
      */
     public static function init()
     {
+        static $last_config;
         $config = config::getPackageConfig(__CLASS__);
-        self::$enabled = $config['enabled'];
-        if(self::$enabled) {
-            self::initResources($config);
+        $config_hash = md5(json_encode($config));
+        if($config_hash != $last_config) {
+            self::$enabled = $config['enabled'];
+            if(self::$enabled) {
+                self::initResources($config);
+            }
         }
         return self::$initialized = true;
     }
