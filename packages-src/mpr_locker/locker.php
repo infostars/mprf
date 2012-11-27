@@ -97,97 +97,6 @@ implements interfaces\locker
     }
 
     /**
-     * Check is method locked
-     *
-     * @param string $method
-     * @return bool
-     */
-    public function locked($method)
-    {
-        return $this->backend->locked($method);
-    }
-
-    /**
-     * Get data by lock key
-     *
-     * @param string $lock_key
-     * @return mixed
-     */
-    public function getLockedData($lock_key)
-    {
-        return $this->backend->getLockedData($lock_key);
-    }
-
-    /**
-     * Store data by lock key
-     *
-     * @param string $lock_key
-     * @param mixed $data
-     * @param int $lock_expire
-     */
-    public function storeLockedData($lock_key, $data, $lock_expire = 10)
-    {
-        $this->backend->storeLockedData($lock_key, $data, $lock_expire);
-    }
-
-    /**
-     * Call some function or closure with params as strict locked function (ala semaphore)
-     * Result may be cached
-     * Checks for lock every microsecond
-     *
-     * @param callable $callable closure, function or method
-     * @param mixed|null $input params
-     * @param string $method_name name of locked function
-     * @param bool $store_to_cache cache call result
-     * @param int $lock_expire Lock expire seconds
-     * @return mixed
-     */
-    public function strictLocked($callable, &$input, $method_name, $store_to_cache = false, $lock_expire = 5)
-    {
-        $lock_key = self::getLockKey($method_name);
-        $data = $store_to_cache ? self::getLockedData($lock_key) : null;
-        if(!$store_to_cache || $store_to_cache && $data == null) {
-            while(self::locked($method_name));
-            self::lock($method_name);
-            $data = call_user_func($callable, $input);
-            if($store_to_cache) {
-                self::storeLockedData($lock_key, $data, $lock_expire);
-            }
-            self::unlock($method_name);
-        }
-        return $data;
-    }
-
-    /**
-     * Call some function or closure with params as locked function (ala semaphore)
-     * Result will be cached
-     * Checks for lock every 100 microseconds
-     *
-     * @param callable $callable closure, function or method
-     * @param mixed|null $input params
-     * @param string $method_name name of locked function
-     * @param int $lock_expire
-     * @return mixed
-     */
-    public function cachedLockedFunction($callable, &$input, $method_name, $lock_expire = 5)
-    {
-        $lock_key = self::getLockKey($method_name);
-        $data = self::getLockedData($lock_key);
-        if($data == null) {
-            while(self::locked($method_name)) {
-                usleep(100);
-            }
-            self::lock($method_name);
-
-            $data = call_user_func($callable, $input);
-            self::storeLockedData($lock_key, $data, $lock_expire);
-
-            self::unlock($method_name);
-        }
-        return $data;
-    }
-
-    /**
      * Call some function or closure with params as locked function (ala semaphore)
      *
      * @param callable $callable closure, function or method
@@ -197,9 +106,6 @@ implements interfaces\locker
      */
     public function lockedFunction($callable, &$input, $method_name)
     {
-        while(self::locked($method_name)) {
-            usleep(10000);
-        }
         self::lock($method_name);
 
         $data = call_user_func($callable, $input);

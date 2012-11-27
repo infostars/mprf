@@ -1,0 +1,19 @@
+{
+    "name" : "mpr_locker",
+    "description" : "Base locker class. Requires at least one driver (e.g. mpr_locker_cache)",
+    "package" : {
+        "path" : "/mpr/",
+        "init" : "locker.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "semaphore,locker,lock"
+    },
+    "depends" : [
+        "mpr_config",
+        "mpr_cache",
+        "mpr_debug_log",
+        "mpr_interfaces_cache"
+    ]
+}

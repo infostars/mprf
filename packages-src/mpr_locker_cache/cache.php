@@ -37,8 +37,11 @@ implements interfaces\locker
      */
     public function lock($method, $expire = 10)
     {
-        $method = self::getLockKey($method);
-        return $this->set("{$method}:l", true, $expire);
+        $key = self::getLockKey($method);
+        do {
+            usleep(100000);
+        } while($this->get($key));
+        return $this->set("{$key}:l", true, $expire);
     }
 
     /**
@@ -53,38 +56,4 @@ implements interfaces\locker
         return $this->set("{$method}:l", false);
     }
 
-    /**
-     * Check is method locked
-     *
-     * @param string $method
-     * @return bool
-     */
-    public function locked($method)
-    {
-        $lock_key = self::getLockKey($method);
-        return $this->get("{$lock_key}:l") == true;
-    }
-
-    /**
-     * Get data by lock key
-     *
-     * @param string $lock_key
-     * @return mixed
-     */
-    public function getLockedData($lock_key)
-    {
-        return $this->get($lock_key);
-    }
-
-    /**
-     * Store data by lock key
-     *
-     * @param string $lock_key
-     * @param mixed $data
-     * @param int $lock_expire
-     */
-    public function storeLockedData($lock_key, $data, $lock_expire = 10)
-    {
-        $this->set($lock_key, $data, $lock_expire);
-    }
 }
