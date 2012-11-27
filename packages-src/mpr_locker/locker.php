@@ -14,7 +14,6 @@ use \mpr\interfaces;
  * @author Diomin Piotr <demin@infostars.ru>
  */
 class locker
-implements interfaces\locker
 {
     /**
      * Locker driver instances
@@ -61,17 +60,6 @@ implements interfaces\locker
     }
 
     /**
-     * Generate lock key
-     *
-     * @param string $key
-     * @return string
-     */
-    public function getLockKey($key)
-    {
-        return $this->backend->getLockKey($key);
-    }
-
-    /**
      * Lock method
      *
      * @param string $method
@@ -80,8 +68,9 @@ implements interfaces\locker
      */
     public function lock($method, $expire = 10)
     {
+        $result = $this->backend->lock($method, $expire);
         log::put("Lock method {$method}", config::getPackageName(__CLASS__));
-        return $this->backend->lock($method, $expire);
+        return $result;
     }
 
     /**
@@ -92,8 +81,9 @@ implements interfaces\locker
      */
     public function unlock($method)
     {
+        $result = $this->backend->unlock($method);
         log::put("Unlock method {$method}", config::getPackageName(__CLASS__));
-        return $this->backend->unlock($method);
+        return $result;
     }
 
     /**
@@ -106,11 +96,11 @@ implements interfaces\locker
      */
     public function lockedFunction($callable, &$input, $method_name)
     {
-        self::lock($method_name);
+        $this->lock($method_name);
 
         $data = call_user_func($callable, $input);
 
-        self::unlock($method_name);
+        $this->unlock($method_name);
 
         return $data;
     }
