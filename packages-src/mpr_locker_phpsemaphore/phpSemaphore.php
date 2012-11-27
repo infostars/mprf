@@ -25,7 +25,11 @@ implements interfaces\locker
      */
     public function getLockKey($key)
     {
-        return sem_get(crc32($key), 1, 0666, 10);
+        static $keys = [];
+        if(!isset($keys[$key])) {
+            $keys[$key] = sem_get(crc32($key), 1, 0666, 10);
+        }
+        return $keys[$key];
     }
 
     /**
