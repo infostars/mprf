@@ -1,8 +1,7 @@
 <?php
-namespace mpr;
+namespace mpr\locker;
 
 use \mpr\config;
-use \mpr\debug\log;
 use \mpr\interfaces;
 
 /**
