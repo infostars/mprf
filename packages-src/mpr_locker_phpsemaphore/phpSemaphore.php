@@ -15,99 +15,78 @@ use \mpr\interfaces;
 class phpSemaphore
 implements interfaces\locker
 {
-    /**
-     * PHP shared memory resource id
-     *
-     * @var int
-     */
-    private $shm_int_key = 1;
 
     /**
-     * Set shared memory integer identifier
+     * Generate lock key
      *
-     * @param int $shm_key
-     */
-    public function __construct($shm_key = 1)
-    {
-        $this->shm_int_key = shm_attach($shm_key);
-    }
-
-    /**
-     * Generate shared memory resource
-     *
+     * @static
      * @param string $key
-     * @return resource
+     * @return string
      */
     public function getLockKey($key)
     {
-        return crc32($key);
+        return sem_get(crc32($key), 1, 0666, 10);
     }
 
     /**
      * Lock method
      *
-     * @param string $key
-     * @param int $expire
-     * @return bool
+     * @static
+     * @param string $method
+     * @param int    $expire
+     * @return mixed
      */
-    public function lock($key, $expire = 10)
+    public function lock($method, $expire = 10)
     {
-        log::put("lock expire {$expire} in phpSemaphore not used", config::getPackageName(__CLASS__));
-        $shm_id = self::getLockKey($key);
-        return shm_put_var($this->shm_int_key, $shm_id, true);
+        sem_acquire($this->getLockKey($method));
     }
 
     /**
      * Unlock method
      *
-     * @param string $key
-     * @return bool
+     * @static
+     * @param string $method
+     * @return mixed
      */
-    public function unlock($key)
+    public function unlock($method)
     {
-        $shm_id = self::getLockKey($key);
-        return shm_remove_var($this->shm_int_key, $shm_id);
+        sem_release($this->getLockKey($method));
     }
 
     /**
      * Check is method locked
      *
-     * @param string $key
+     * @static
+     * @param string $method
      * @return bool
      */
-    public function locked($key)
+    public function locked($method)
     {
-        $shm_id = self::getLockKey($key);
-        return shm_has_var($this->shm_int_key, $shm_id);
+        return false;
     }
 
     /**
      * Store data by lock key
      *
-     * @param resource $lock_key
-     * @param mixed $data
-     * @param int $lock_expire
-     * @return bool
+     * @static
+     * @param string $lock_key
+     * @param mixed  $data
+     * @param int    $lock_expire
      */
     public function storeLockedData($lock_key, $data, $lock_expire = 10)
     {
-        log::put("storeLockedData expire {$lock_expire} in phpSemaphore not used", config::getPackageName(__CLASS__));
-        return shm_put_var($this->shm_int_key, $lock_key, $data);
+        throw new \Exception("Not implemented for this driver!");
     }
 
     /**
      * Get data by lock key
      *
-     * @param resource $lock_key
+     * @static
+     * @param string $lock_key
      * @return mixed
      */
     public function getLockedData($lock_key)
     {
-        return shm_get_var($this->shm_int_key, $lock_key);
-    }
-
-    public function __destruct()
-    {
-        shm_detach($this->shm_int_key);
+        throw new \Exception("Not implemented for this driver!");
     }
 }
