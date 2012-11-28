@@ -72,39 +72,29 @@ class httpInput
             $this->httpMethod = 'get';
         }
         if($all) {
-            $this->httpParams = [];
-            foreach(explode('&', file_get_contents('php://input')) as $pair) {
-                $item = explode('=', $pair);
-                if(count($item) == 2) {
-                    $this->httpParams[urldecode($item[0])] = urldecode($item[1]);
-                }
-            }
-            $this->httpParams = array_merge(
-                $_REQUEST, $_GET, $_POST, $this->httpParams, toolkit::getInstance()->getInput()->export()
+            parse_str(file_get_contents('php://input'), $items);
+            $this->httpParams = array_merge_recursive(
+                $_REQUEST, $_GET, $_POST, toolkit::getInstance()->getInput()->export(), $items
             );
         } else {
             switch ($this->httpMethod) {
-                case 'post':
-                    $this->httpParams = $_POST;
-                    break;
                 case 'get':
                     $this->httpParams = $_GET;
                     break;
-                case 'put':
-                case 'delete':
-                    foreach(explode('&', file_get_contents('php://input')) as $pair) {
-                        $item = explode('=', $pair);
-                        if(count($item) == 2) {
-                            $this->httpParams[urldecode($item[0])] = urldecode($item[1]);
-                        }
-                    }
+                case 'post':
+                    $this->httpParams = $_POST;
                     break;
-                default:
                 case 'cli':
                     $this->httpParams = toolkit::getInstance()->getInput()->export();
                     if(isset($this->httpParams['httpMethod'])) {
                         $this->httpMethod = $this->httpParams['httpMethod'];
                     }
+                    break;
+                case 'put':
+                case 'delete':
+                default:
+                    parse_str(file_get_contents('php://input'), $items);
+                    $this->httpParams = array_merge_recursive($this->httpParams, $items);
                     break;
 
             }
