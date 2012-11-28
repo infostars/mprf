@@ -39,7 +39,7 @@ implements interfaces\locker
     {
         $key = self::getLockKey($method);
         do {
-            usleep(100000);
+            usleep(rand(100000,500000));
         } while($this->get($key));
         return $this->set("{$key}:l", true, $expire);
     }
