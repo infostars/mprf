@@ -74,7 +74,7 @@ class httpInput
         if($all) {
             $input_str = file_get_contents('php://input');
             parse_str($input_str, $items);
-            $this->httpParams = array_merge_recursive(
+            $this->httpParams = array_merge(
                 $_REQUEST, $_GET, $_POST, toolkit::getInstance()->getInput()->export(), $items
             );
         } else {
