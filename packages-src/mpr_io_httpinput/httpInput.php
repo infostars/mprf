@@ -72,7 +72,8 @@ class httpInput
             $this->httpMethod = 'get';
         }
         if($all) {
-            parse_str(file_get_contents('php://input'), $items);
+            $input_str = file_get_contents('php://input');
+            parse_str($input_str, $items);
             $this->httpParams = array_merge_recursive(
                 $_REQUEST, $_GET, $_POST, toolkit::getInstance()->getInput()->export(), $items
             );
@@ -93,8 +94,9 @@ class httpInput
                 case 'put':
                 case 'delete':
                 default:
-                    parse_str(file_get_contents('php://input'), $items);
-                    $this->httpParams = array_merge_recursive($this->httpParams, $items);
+                    $input_str = file_get_contents('php://input');
+                    parse_str($input_str, $items);
+                    $this->httpParams = $items;
                     break;
 
             }
