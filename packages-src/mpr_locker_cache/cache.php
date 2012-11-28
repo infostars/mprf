@@ -39,9 +39,9 @@ implements interfaces\locker
     {
         $key = self::getLockKey($method);
         do {
-            usleep(rand(100000,500000));
+            usleep(50000);
         } while($this->get($key));
-        return $this->set("{$key}:l", true, $expire);
+        return $this->set($key, true, $expire);
     }
 
     /**
@@ -52,8 +52,8 @@ implements interfaces\locker
      */
     public function unlock($method)
     {
-        $method = self::getLockKey($method);
-        return $this->set("{$method}:l", false);
+        $key = self::getLockKey($method);
+        return $this->set($key, false);
     }
 
 }
