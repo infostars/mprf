@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_time",
+    "description" : "Time package to parse and normalize it.",
+    "package" : {
+        "path" : "/mpr/",
+        "init" : "time.php",
+        "version" : "1.0"
+    },
+    "meta" : {
+        "type" : "lib",
+        "tags" : "time,parse,normalization"
+    },
+    "depends" : [
+
+    ]
+}
