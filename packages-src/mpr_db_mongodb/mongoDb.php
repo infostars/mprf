@@ -101,8 +101,19 @@ class mongoDb
     {
         $data = $this->db
                     ->selectCollection($collection)
-                    ->find($criteria, $fields);
+                    ->find($criteria, $this->checkFields($fields));
         return $data;
+    }
+
+    protected function checkFields($fields)
+    {
+        $result = [];
+        if(count($fields) && 0 === array_keys($fields)[0]) {
+            foreach($fields as $field) {
+                $result[$field] = true;
+            }
+        }
+        return $result;
     }
 
     /**
@@ -118,7 +129,7 @@ class mongoDb
 
         $data = $this->db
                     ->selectCollection($collection)
-                    ->findOne($criteria, $fields);
+                    ->findOne($criteria, $this->checkFields($fields));
         return $data;
     }
 
@@ -174,7 +185,7 @@ class mongoDb
      */
     public function getCountBy($collection, $criteria)
     {
-        return $this->select($collection, $criteria)->count();
+        return $this->select($collection, $criteria, ['_id' => true])->count();
     }
 
     /**
