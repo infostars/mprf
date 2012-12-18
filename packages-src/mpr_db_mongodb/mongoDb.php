@@ -82,11 +82,31 @@ class mongoDb
         if(!isset($data['_id'])) {
             $data['_id'] = new \MongoId();
         } elseif(!is_object($data['_id'])) {
-            $data['_id'] = new \MongoId($data['_id']);
+            $data['_id'] = new \MongoId((string)$data['_id']);
         }
         return $this->db
                     ->selectCollection($collection)
                     ->insert($data, $options);
+    }
+
+    /**
+     * Save object to MongoDB
+     *
+     * @param string $collection collection name
+     * @param array $data Data to save
+     * @param array $options MongoDB options
+     * @return array|bool result
+     */
+    public function save($collection, &$data, $options = [])
+    {
+        if(!isset($data['_id'])) {
+            $data['_id'] = new \MongoId();
+        } elseif(!is_object($data['_id'])) {
+            $data['_id'] = new \MongoId((string)$data['_id']);
+        }
+        return $this->db
+            ->selectCollection($collection)
+            ->save($data, $options);
     }
 
     /**

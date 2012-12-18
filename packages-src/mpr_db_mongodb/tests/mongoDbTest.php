@@ -89,4 +89,15 @@ class mongoDbTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(0, $this->object->getCount('test'));
     }
+
+    /**
+     * @covers mpr\db\mongoDb::save
+     */
+    public function testSave()
+    {
+        $this->tearDown();
+        $this->object->save('test', $this->testObject);
+        $this->assertInstanceOf('\\MongoId', $this->testObject['_id']);
+        $this->assertEquals($this->testObject, $this->object->selectOne('test', ['_id' => $this->testObject['_id']]));
+    }
 }
