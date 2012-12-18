@@ -125,6 +125,12 @@ class mongoDb
         return $data;
     }
 
+    /**
+     * Validate fields
+     *
+     * @param array $fields
+     * @return array result
+     */
     protected function checkFields($fields)
     {
         $result = [];
