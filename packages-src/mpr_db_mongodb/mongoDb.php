@@ -101,7 +101,7 @@ class mongoDb
     {
         if(!isset($data['_id'])) {
             $data['_id'] = new \MongoId();
-        } elseif(!is_object($data['_id'])) {
+        } elseif(!($data['_id'] instanceof \MongoId)) {
             $data['_id'] = new \MongoId((string)$data['_id']);
         }
         return $this->db
