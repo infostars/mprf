@@ -29,7 +29,7 @@ abstract class application
     /**
      * Get toolkit object
      *
-     * @return object
+     * @return \mpr\toolkit
      */
     protected function getToolkit()
     {
