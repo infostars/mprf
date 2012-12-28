@@ -54,7 +54,7 @@ class mongoDb
         $config = $packageConfig[$configName];
         $this->mongo = new \Mongo($config['host']);
         $this->db = $this->mongo
-                ->selectDB($config['dbname']);
+            ->selectDB($config['dbname']);
     }
 
     /**
@@ -85,8 +85,8 @@ class mongoDb
             $data['_id'] = new \MongoId((string)$data['_id']);
         }
         return $this->db
-                    ->selectCollection($collection)
-                    ->insert($data, $options);
+            ->selectCollection($collection)
+            ->insert($data, $options);
     }
 
     /**
@@ -110,18 +110,18 @@ class mongoDb
     }
 
     /**
-    * Select array of data from collection
-    *
-    * @param string $collection Collection name
-    * @param array $criteria Criteria for select by
-    * @param array $fields Needle fields of object
-    * @return \MongoCursor Native mongocursor object
-    */
+     * Select array of data from collection
+     *
+     * @param string $collection Collection name
+     * @param array $criteria Criteria for select by
+     * @param array $fields Needle fields of object
+     * @return \MongoCursor Native mongocursor object
+     */
     public function select($collection, $criteria = [], $fields = [])
     {
         $data = $this->db
-                    ->selectCollection($collection)
-                    ->find($criteria, $this->checkFields($fields));
+            ->selectCollection($collection)
+            ->find($criteria, $this->checkFields($fields));
         return $data;
     }
 
@@ -134,8 +134,10 @@ class mongoDb
     protected function checkFields($fields)
     {
         $result = [];
-        if(count($fields) && 0 === array_keys($fields)[0]) {
-            foreach($fields as $field) {
+        foreach($fields as $field_key => $field) {
+            if(is_bool($field)) {
+                $result[$field_key] = $field;
+            } else {
                 $result[$field] = true;
             }
         }
@@ -154,8 +156,8 @@ class mongoDb
     {
 
         $data = $this->db
-                    ->selectCollection($collection)
-                    ->findOne($criteria, $this->checkFields($fields));
+            ->selectCollection($collection)
+            ->findOne($criteria, $this->checkFields($fields));
         return $data;
     }
 
@@ -170,8 +172,8 @@ class mongoDb
     public function update($collection, $criteria = [], $update_data = [])
     {
         $data = $this->db
-                    ->selectCollection($collection)
-                    ->update($criteria, $update_data);
+            ->selectCollection($collection)
+            ->update($criteria, $update_data);
         return $data;
     }
 
@@ -186,8 +188,8 @@ class mongoDb
     public function remove($collection, $criteria, $options = [])
     {
         $data = $this->db
-                    ->selectCollection($collection)
-                    ->remove($criteria, $options);
+            ->selectCollection($collection)
+            ->remove($criteria, $options);
         return $data;
     }
 
