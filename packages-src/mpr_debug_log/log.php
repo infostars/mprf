@@ -46,10 +46,10 @@ class log
      * @param array $config
      * @return bool is initialized
      */
-    protected static function initResources($config)
+    protected static function initResources($config, $force = false)
     {
         static $initialized;
-        if($initialized == null) {
+        if($initialized == null || $force) {
             $initialized = true;
             if($config['output'] == 'stdout') {
                 self::$output = new output(false, output::OUT_STDOUT);
@@ -72,12 +72,13 @@ class log
         $config = config::getPackageConfig(__CLASS__);
         $config_hash = md5(json_encode($config));
         if($config_hash != $last_config) {
+            $last_config = $config_hash;
             self::$enabled = $config['enabled'];
             if(self::$enabled) {
                 self::initResources($config);
             }
         }
-        return self::$initialized = true;
+        return self::$initialized == true;
     }
 
     /**
