@@ -75,7 +75,7 @@ class log
             $last_config = $config_hash;
             self::$enabled = $config['enabled'];
             if(self::$enabled) {
-                self::initResources($config);
+                self::initResources($config, true);
             }
         }
         return self::$initialized == true;
