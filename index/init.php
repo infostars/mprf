@@ -54,6 +54,9 @@ spl_autoload_register(function ($package_name) {
             foreach ($GLOBALS['PACKAGES_PATH'] as $dev_packages_path) {
                 $packagePath = $dev_packages_path . "/" . strtolower($package_name);
                 $manifest_file = "{$packagePath}/manifest.mpr.json";
+                if(class_exists('\mpr\debug\log', false)) {
+                    \mpr\debug\log::put("Searching {$packagePath}", "init");
+                }
                 if (file_exists($manifest_file)) {
                     $initFile = json_decode(file_get_contents($manifest_file), 1)['package']['init'];
                     $packagePath .= "/{$initFile}";
@@ -65,7 +68,7 @@ spl_autoload_register(function ($package_name) {
         require_once $packagePath;
         \mpr\debug\log::put("Loaded {$package_name}", "init");
     } else {
-        \mpr\debug\log::put("Skipped {$package_name}", "init");
+        \mpr\debug\log::put("ERROR LOADING {$package_name}", "init");
     }
 });
 
