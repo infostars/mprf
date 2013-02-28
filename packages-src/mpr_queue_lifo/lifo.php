@@ -83,9 +83,17 @@ class lifo
     {
         $this->connectOutput();
         $string = preg_replace("/[\n]+/", "<br \/>", $string);
-        $bytes = fwrite($this->output_handle, $string . "\n");
+        $chunks = str_split($string, 4096);
+        $totalChunks = count($chunks);
+        $bytesSent = 0;
+        for($c = 0; $c < $totalChunks; $c++) {
+            if ($c == $totalChunks - 1) {
+                $chunks[$c] .= "\n";
+            }
+            $bytesSent += fwrite($this->output_handle, $chunks[$c]);
+        }
         $this->disconnectOutput();
-        return $bytes;
+        return $bytesSent;
     }
 
     /**
@@ -97,7 +105,10 @@ class lifo
     public function read($bytes)
     {
         $this->connectInput();
-        $content = fread($this->input_handle, $bytes);
+        $content = "";
+        while(!feof($this->input_handle)) {
+            $content .= fread($this->input_handle, $bytes);
+        }
         $this->disconnectInput();
         return $content;
     }
