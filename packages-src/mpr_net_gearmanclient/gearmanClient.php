@@ -62,7 +62,7 @@ class gearmanClient
      */
     public function addToTasks($function, $workload, $start = false)
     {
-        $result = $this->gearmanInstance->addTask($function, json_encode($workload));
+        $result = $this->gearmanInstance->addTask($function, json_encode($workload, JSON_UNESCAPED_UNICODE));
         if($start) {
             $result = $this->gearmanInstance->runTasks();
         }
@@ -89,7 +89,7 @@ class gearmanClient
      */
     public function sendToBackground($function, $workload, $start = true)
     {
-        $result = $this->gearmanInstance->addTaskBackground($function, json_encode($workload));
+        $result = $this->gearmanInstance->addTaskBackground($function, json_encode($workload, JSON_UNESCAPED_UNICODE));
         if($start) {
             $result = $this->gearmanInstance->runTasks();
         }
