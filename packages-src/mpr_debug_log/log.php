@@ -95,9 +95,9 @@ class log
             self::init();
         }
         if(self::$enabled) {
-            $mtime = explode('.', microtime(true));
-            $date = date("Y-m-d H:i:s.", $mtime[0]) . sprintf('%-4d', isset($mtime[1]) ? round($mtime[1], 4) : 0);
-            $string = sprintf("<%4s> [%-30s] %s", $date, $prefix, $comment);
+            $time = explode('.', number_format(microtime(true), 4, '.', ''));
+            $date = date("Y-m-d H:i:s.", $time[0]) . $time[1];
+            $string = sprintf("<%s> [%-30s] %s", $date, $prefix, $comment);
             if(self::$logfile) {
                 self::$logfile->writeLn($string);
             }
