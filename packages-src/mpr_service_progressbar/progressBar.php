@@ -11,6 +11,7 @@ use \mpr\toolkit;
  * @subpackage service
  * @version 0.7
  * @author GreeveX <greevex@gmail.com>
+ * @author Yancharuk Alexander <yancharuk@infostars.ru>
  */
 class progressBar
 {
@@ -22,6 +23,13 @@ class progressBar
     protected $data_counter = 0;
 
     /**
+     * One percent of total amount of data
+     *
+     * @var float
+     */
+    protected $percent = 0;
+
+    /**
      * The length of the progress bar to draw
      *
      * @var int
@@ -29,18 +37,18 @@ class progressBar
     protected $pb_width = 60;
 
     /**
+     * One percent of progress bar length
+     *
+     * @var float
+     */
+    protected $pb_percent = 0;
+
+    /**
      * Time when progressbar starts
      *
      * @var float
      */
     protected $time_start = 0;
-
-    /**
-     * Last progressbar update time
-     *
-     * @var float
-     */
-    protected $last_update = 0;
 
     /**
      * Elapsed time when progressbar starts
@@ -54,14 +62,14 @@ class progressBar
      *
      * @var float
      */
-    protected $stat_percent = 0;
+    protected $done = 0;
 
     /**
      * How many seconds are left to wait
      *
      * @var float
      */
-    protected $stat_estimatedTime = 0;
+    protected $time_estimated = 0;
 
     /**
      * Output progressbar format
@@ -77,62 +85,53 @@ class progressBar
      * @param int $data_counter - the amount of data
      * @param int $pb_width - progressbar width
      */
-    public function __construct($data_counter, $pb_width = 60) {
+    public function __construct($data_counter, $pb_width = 60)
+    {
+        stream_set_blocking(STDIN, false);
+
         $this->time_start = microtime(true);
-        $this->last_update = $this->time_start;
-        $this->data_counter = $data_counter;
+        $this->data_counter = (int) max($data_counter, 1);
+        $this->percent = $data_counter / 100;
         $this->speed = 0;
         $this->pb_width = $pb_width;
+        $this->pb_percent = $pb_width / 100;
     }
 
     /**
-     * Update progressbar for calculating elapsed time, statistics percent, speed, esimated time and last update time
+     * Update progressbar for calculating elapsed time, done percent, speed and estimated time
      *
      * @param int $curr_element - how many items already passed
+     * @return progressBar
      */
-    public function update($curr_element) {
-        if($this->data_counter < 1) {
-            $this->data_counter = 1;
-        }
+    public function update($curr_element)
+    {
         $this->time_elapsed = microtime(true) - $this->time_start;
-        $this->stat_percent = round((($curr_element * 100) / $this->data_counter), 3);
+        $this->done = $curr_element / $this->percent;
         $this->speed = $curr_element / $this->time_elapsed;
-        $this->stat_estimatedTime = ($this->data_counter - $curr_element) / $this->speed;
-        $this->last_update = microtime(true);
-    }
+        $this->time_estimated = ($this->data_counter - $curr_element) / $this->speed;
 
-    /**
-     * Progressbar data
-     * Ключи массива:
-     *   done => (float) percentage of completion
-     *   time_elapsed => (float unix_timestamp) elapsed time
-     *   time_estimated => (float unix_timestamp) estimated time for completion
-     *   speed => (float) how much elements completed in one second
-     *
-     * @return array
-     */
-    public function getData() {
-        return array(
-            'done' => number_format($this->stat_percent, 2),
-            'time_elapsed' => $this->time_elapsed,
-            'time_estimated' => $this->stat_estimatedTime,
-            'speed' => number_format($this->speed, 2),
-        );
+        return $this;
     }
 
     /**
      * Draw a progressbar in the console, there should be no line breaks between "frames"!
      * Before each new "frame" call an update to the latest information
      */
-    public function draw() {
-        $data = $this->getData();
-        if ($data['done'] > 100) {
-            $data['done'] = 100;
+    public function draw()
+    {
+        if ($this->done < 100) {
+            $position = floor($this->pb_percent * $this->done);
+            $end = "\033[K\r";
+        } else {
+            $position = $this->pb_width;
+            $end = "\033[K\n\033[?25h";
         }
-        $done = ceil($this->pb_width / 100 * $data['done']);
-        if ($done < 1) {
-            $done = 1;
-        }
+
+        $space_length = $this->pb_width - $position;
+        $bar = "\033[?25l" . str_repeat('=', $position) . '>';
+
+        $space_length && $bar .= "\033[{$space_length}C";
+
         $search = array(
             '{progress}',
             '{done}',
@@ -141,14 +140,17 @@ class progressBar
             '{ram}'
         );
         $replace = array(
-            (str_repeat('=', $done - 1) . ">" . str_repeat(' ', $this->pb_width - ($done - 1))),
-            $data['done'],
-            $data['speed'],
-            date("i:s", $data['time_estimated']),
+            $bar,
+            number_format($this->done, 2),
+            number_format($this->speed, 2),
+            date("i:s", $this->time_estimated),
             round(memory_get_usage(true)/1024/1024, 4)
         );
-        $string = str_replace($search, $replace, $this->output_format);
-        toolkit::getInstance()->getOutput()->write("\r{$string}");
+        $string = str_replace($search, $replace, $this->output_format) . $end;
+
+        self::stdinCleanup();
+
+        toolkit::getInstance()->getOutput()->write($string);
     }
 
     /**
@@ -159,6 +161,18 @@ class progressBar
     public function setOutputFormat($string)
     {
         $this->output_format = $string;
+    }
+
+    /**
+     * Cleanup user input
+     */
+    private static function stdinCleanup()
+    {
+        if (!fgets(STDIN)) {
+            return;
+        }
+
+        echo "\033[K\033[1A";
     }
 
 }
