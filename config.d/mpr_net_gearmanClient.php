@@ -6,7 +6,7 @@
 
 \mpr\config::$package['mpr_net_gearmanClient'] = [
     'default' => [
-        //'host' => 'gearmand01.sdstream.ru',
+        //'hosts' => 'gearmand01.sdstream.ru:4730,gearmand02.sdstream.ru:4730'
         'host' => 'localhost',
         //'port' => 1234 //optional
     ]
