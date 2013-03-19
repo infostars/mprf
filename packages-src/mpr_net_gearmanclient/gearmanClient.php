@@ -32,23 +32,11 @@ class gearmanClient
         $this->gearmanInstance = new \GearmanClient();
         log::put("Loading config {$configName}...", config::getPackageName(__CLASS__));
         $config = config::getPackageConfig(__CLASS__)[$configName];
-        log::put("Connecting using {$configName}...", config::getPackageName(__CLASS__));
-        switch (true) {
-            case (isset($config['hosts'])):
-                $this->gearmanInstance->addServers($config['hosts']);
-                break;
-            case (isset($config['host'])):
-                if (isset($config['port'])) {
-                    $this->gearmanInstance->addServer($config['host'], $config['port']);
-                } else {
-                    $this->gearmanInstance->addServer($config['host']);
-                }
-                break;
-            default:
-                $msg = "WARNING! Not found host configuration in '{$configName}' section! Connecting to 127.0.0.1:4730";
-                log::put($msg, config::getPackageName(__CLASS__));
-                $this->gearmanInstance->addServer();
-                break;
+        if(!isset($config['port'])) {
+            log::put("Connecting using {$configName}...", config::getPackageName(__CLASS__));
+            $this->gearmanInstance->addServer($config['host']);
+        } else {
+            $this->gearmanInstance->addServer($config['host'], $config['port']);
         }
     }
 
