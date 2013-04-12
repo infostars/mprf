@@ -83,7 +83,18 @@ class curl
      */
     public function useProxy($initial, $proxy_type = 'http', $auth_type = 'basic')
     {
-        $this->options[CURLOPT_PROXYTYPE] = $proxy_type == 'socks5' ? CURLPROXY_SOCKS5 : CURLPROXY_HTTP;
+        switch($proxy_type) {
+            case 'http':
+            case 'https':
+                $this->options[CURLOPT_PROXYTYPE] = CURLPROXY_HTTP;
+                break;
+            case 'socks4':
+                $this->options[CURLOPT_PROXYTYPE] = CURLPROXY_SOCKS4;
+                break;
+            case 'socks5':
+                $this->options[CURLOPT_PROXYTYPE] = CURLPROXY_SOCKS5;
+                break;
+        }
         $this->options[CURLOPT_PROXY] = $initial;
         if(strpos($initial, '@') !== false) {
             $this->options[CURLOPT_PROXYAUTH] = $auth_type == 'ntlm' ? CURLAUTH_NTLM : CURLAUTH_BASIC;
