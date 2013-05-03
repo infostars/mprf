@@ -5,5 +5,7 @@
  */
 
 \mpr\config::$package['mpr_cache_file'] = [
-    'cache_dir' => '/tmp/'
+    'default' => [
+        'cache_dir' => '/tmp/'
+    ]
 ];

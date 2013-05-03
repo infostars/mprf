@@ -5,5 +5,27 @@
  */
 
 \mpr\config::$package['mpr_cache'] = [
-    'default' => 'mpr_cache_redis' // driver package name
+    // driver package name
+    'redis' => [
+        'driver' => 'mpr_cache_redis',
+        'config_section' => 'default'
+    ],
+    'redis01' => [
+        'driver' => 'mpr_cache_redis',
+        'config_section' => 'r01'
+    ],
+    'redis02' => [
+        'driver' => 'mpr_cache_redis',
+        'config_section' => 'r02'
+    ],
+    'memcached' => [
+        'driver' => 'mpr_cache_memcached',
+        'config_section' => 'default'
+    ],
+    'file' => [
+        'driver' => 'mpr_cache_file',
+        'config_section' => 'default'
+    ]
 ];
+
+\mpr\config::$package['mpr_cache']['default'] =& \mpr\config::$package['mpr_cache']['redis'];

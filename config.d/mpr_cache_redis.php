@@ -5,12 +5,28 @@
  */
 
 \mpr\config::$package['mpr_cache_redis'] = [
-    'server' => [
-        //'host' => 'memcached01.sdstream.ru',
-        'host' => 'localhost',
-        'port' => 6379,
-        'timeout' => 0,
-        // 'prefix' => 'p:' //d = dev, p = prod
-        'prefix' => 'd:' //d = dev, p = prod
+    'default' => [
+        'server' => [
+            'host' => 'memcached01.sdstream.ru',
+            'port' => 6379,
+            'timeout' => 0,
+            'prefix' => 'p:' //d = dev, p = prod
+        ]
+    ],
+    'r01' => [
+        'server' => [
+            'host' => 'localhost',
+            'port' => 6379,
+            'timeout' => 0,
+            'prefix' => 'p:' //d = dev, p = prod
+        ]
+    ],
+    'r02' => [
+        'server' => [
+            'host' => '192.168.10.37',
+            'port' => 6379,
+            'timeout' => 0,
+            'prefix' => 'p:' //d = dev, p = prod
+        ]
     ]
 ];

@@ -5,11 +5,12 @@
  */
 
 \mpr\config::$package['mpr_cache_memcached'] = [
-    'servers' => [
-        [
-            //'host' => 'memcached01.sdstream.ru',
-            'host' => 'localhost',
-            'port' => 11211
+    'default' => [
+        'servers' => [
+            [
+                'host' => 'localhost',
+                'port' => 11211
+            ]
         ]
     ]
 ];
