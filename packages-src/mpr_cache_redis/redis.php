@@ -56,10 +56,12 @@ implements interfaces\cache
 
     /**
      * Initialize driver and connect to host
+     *
+     * @param string $configSection
      */
-    public function __construct()
+    public function __construct($configSection = 'default')
     {
-        $config = config::getPackageConfig(__CLASS__);
+        $config = config::getPackageConfig(__CLASS__)[$configSection];
         $this->instance = new \Redis();
         $this->instance->pconnect($config['server']['host'], $config['server']['port'], $config['server']['timeout']);
         $this->instance->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP);

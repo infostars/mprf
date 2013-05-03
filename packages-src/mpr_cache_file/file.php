@@ -29,6 +29,8 @@ implements cache_interface
      */
     private $autoCommit = true;
 
+    private $config_section = 'default';
+
     /**
      * Build cache filename
      *
@@ -38,7 +40,7 @@ implements cache_interface
     {
         static $cache_filename;
         if($cache_filename == null) {
-            $cache_path = config::getPackageConfig(__CLASS__)['cache_dir'];
+            $cache_path = config::getPackageConfig(__CLASS__)[$this->config_section]['cache_dir'];
             $cache_filename = $cache_path . "mpr_file_cache.json";
         }
         return $cache_filename;
@@ -58,8 +60,9 @@ implements cache_interface
     /**
      * Initialize driver and load data
      */
-    public function __construct()
+    public function __construct($configSection = 'default')
     {
+        $this->config_section = $configSection;
         $this->loadData();
     }
 

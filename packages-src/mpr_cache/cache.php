@@ -39,15 +39,12 @@ implements interfaces\cache
      * @see \mpr\interfaces\cache
      * @return self
      */
-    public static function factory($driver_packageName = null)
+    public static function factory($configSection = 'default')
     {
-        if($driver_packageName == null) {
-            $driver_packageName = config::getPackageConfig(__CLASS__)['default'];
+        if(!isset(self::$instances[$configSection])) {
+            self::$instances[$configSection] = new self($configSection);
         }
-        if(!isset(self::$instances[$driver_packageName])) {
-            self::$instances[$driver_packageName] = new self($driver_packageName);
-        }
-        return self::$instances[$driver_packageName];
+        return self::$instances[$configSection];
     }
 
     /**
@@ -55,10 +52,11 @@ implements interfaces\cache
      *
      * @param $driver_packageName
      */
-    public function __construct($driver_packageName)
+    public function __construct($configSection)
     {
-        $driver = config::getClassName($driver_packageName);
-        $this->backend = new $driver();
+        $config = config::getPackageConfig(__CLASS__)[$configSection];
+        $driver = config::getClassName($config['driver']);
+        $this->backend = new $driver($config['config_section']);
     }
 
     /**

@@ -56,10 +56,12 @@ implements cache_interface
 
     /**
      * Initialize driver and connect to host
+     *
+     * @var string $configSection
      */
-    public function __construct()
+    public function __construct($configSection = 'default')
     {
-        $config = config::getPackageConfig(__CLASS__);
+        $config = config::getPackageConfig(__CLASS__)[$configSection];
         $this->memcached = new \Memcached();
         foreach($config['servers'] as $server) {
             $this->memcached->addServer($server['host'], $server['port']);
