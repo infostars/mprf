@@ -120,6 +120,8 @@ class input
         $input = trim(readline($requestMessage));
         if(empty($input)) {
             $input = $defaultValue;
+        } else {
+            readline_add_history($input);
         }
         return $input;
     }
