@@ -1,5 +1,5 @@
 {
-    "name" : "mpr_locker_sharedmemory",
+    "name" : "mpr_locker_shareMemory",
     "description" : "Locker on cache",
     "package" : {
         "path" : "/mpr/locker/",
@@ -8,7 +8,7 @@
     },
     "meta" : {
         "type" : "lib",
-        "tags" : "locker,shared,memory,sharedmemory"
+        "tags" : "locker,shared,memory,sharedMemory"
     },
     "depends" : [
         "mpr_config",
