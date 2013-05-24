@@ -52,7 +52,7 @@ spl_autoload_register(function ($package_name) {
         default:
             $packagePath = APP_ROOT;
             foreach ($GLOBALS['PACKAGES_PATH'] as $dev_packages_path) {
-                $packagePath = $dev_packages_path . "/" . strtolower($package_name);
+                $packagePath = $dev_packages_path . "/" . $package_name;
                 $manifest_file = "{$packagePath}/manifest.mpr.json";
                 if(class_exists('\mpr\debug\log', false)) {
                     \mpr\debug\log::put("Searching {$packagePath}", "init");
