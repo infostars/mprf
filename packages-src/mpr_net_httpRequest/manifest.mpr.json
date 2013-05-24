@@ -1,5 +1,5 @@
 {
-    "name" : "mpr_net_httprequest",
+    "name" : "mpr_net_httpRequest",
     "description" : "NOT USED, BECAUSE HttpRequest not in the standard package, and must be installed separately!",
     "package" : {
         "path" : "/mpr/net/",
@@ -8,7 +8,7 @@
     },
     "meta" : {
         "type" : "lib",
-        "tags" : "mpr_net_httprequest,net,httprequest"
+        "tags" : "mpr_net_httpRequest,net,httpRequest"
     },
     "depends" : [
     ]
