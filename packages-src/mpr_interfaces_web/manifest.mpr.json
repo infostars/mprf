@@ -1,0 +1,16 @@
+{
+    "name":"mpr_interfaces_web",
+    "description":"web app",
+    "package":{
+        "path":"/mpr/interfaces/",
+        "init":"web.php",
+        "version":"1.0"
+    },
+    "meta":{
+        "type":"application",
+        "tags":"interface,web,app"
+    },
+    "depends":[
+        "mpr_system_application"
+    ]
+}

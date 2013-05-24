@@ -1,0 +1,16 @@
+{
+    "name":"mpr_app_web",
+    "description":"web app",
+    "package":{
+        "path":"/mpr/app/",
+        "init":"web.php",
+        "version":"1.0"
+    },
+    "meta":{
+        "type":"application",
+        "tags":"web,app"
+    },
+    "depends":[
+        "mpr_system_application"
+    ]
+}
