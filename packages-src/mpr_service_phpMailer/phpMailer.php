@@ -7,7 +7,7 @@ namespace mpr\service;
  *
  * @author GreeveX <greevex@gmail.com>
  */
-class mailer
+class phpMailer
 {
     /**
      * mailer class instance

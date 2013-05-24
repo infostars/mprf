@@ -3,7 +3,7 @@
     "description" : "Mailer service based on PhpMailer library.",
     "package" : {
         "path" : "/mpr/service/",
-        "init" : "mailer.php",
+        "init" : "phpMailer.php",
         "version" : "2.2"
     },
     "meta" : {
