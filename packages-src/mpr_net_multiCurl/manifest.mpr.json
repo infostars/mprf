@@ -8,7 +8,7 @@
     },
     "meta" : {
         "type" : "lib",
-        "tags" : "curl,curl_multi,multi_curl"
+        "tags" : "curl,curl_multi,multi_curl,multiCurl"
     },
     "depends" : [
         "mpr_net_curl"
