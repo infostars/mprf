@@ -1,5 +1,5 @@
 {
-    "name" : "mpr_locker_phpsemaphore",
+    "name" : "mpr_locker_phpSemaphore",
     "description" : "Locker on cache",
     "package" : {
         "path" : "/mpr/locker/",
