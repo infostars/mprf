@@ -13,7 +13,7 @@ class cacheTest extends \PHPUnit_Framework_TestCase
      *
      * @var string
      */
-    protected $driver_name = "mpr_cache_memcached";
+    protected $driver_name = "memcached";
 
     /**
      * Test method name
@@ -47,7 +47,7 @@ class cacheTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new \mpr\locker\cache($this->driver_name);
+        $this->object = new cache($this->driver_name);
     }
 
     /**
@@ -56,9 +56,9 @@ class cacheTest extends \PHPUnit_Framework_TestCase
     public function testGetLockKey()
     {
         $lock_key = $this->object->getLockKey($this->test_method);
-        $this->assertContains("locked:", $lock_key);
+        $this->assertContains("lck:", $lock_key);
         $this->assertContains($this->test_method, $lock_key);
-        $this->assertEquals("locked:{$this->test_method}", $lock_key);
+        $this->assertEquals("lck:{$this->test_method}", $lock_key);
     }
 
     /**
@@ -93,26 +93,5 @@ class cacheTest extends \PHPUnit_Framework_TestCase
 
         $not_cached_method = "not_cached_method";
         $this->assertFalse($this->object->locked($not_cached_method));
-    }
-
-    /**
-     * @covers mpr\locker\cache::storeLockedData
-     */
-    public function testStoreLockedData()
-    {
-        /**
-         * @note always return true if locked or unlocked
-         */
-        $this->object->storeLockedData($this->test_method, $this->test_data, $this->test_lock_time);
-    }
-
-    /**
-     * @covers mpr\locker\cache::getLockedData
-     */
-    public function testGetLockedData()
-    {
-        $this->testStoreLockedData();
-        $locked_data = $this->object->getLockedData($this->test_method);
-        $this->assertEquals($this->test_data, $locked_data);
     }
 }

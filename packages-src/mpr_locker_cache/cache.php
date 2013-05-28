@@ -33,15 +33,22 @@ implements interfaces\locker
      * Lock method
      *
      * @param string $method
+     * @param int    $expire
      * @return mixed
      */
     public function lock($method, $expire = 10)
     {
         $key = self::getLockKey($method);
-        do {
+        while($this->exists($key)) {
             usleep(50000);
-        } while($this->get($key));
+        }
         return $this->set($key, true, $expire);
+    }
+
+    public function locked($method)
+    {
+        $key = self::getLockKey($method);
+        return $this->get($key) === true;
     }
 
     /**

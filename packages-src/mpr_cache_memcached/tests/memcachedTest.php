@@ -31,7 +31,7 @@ class memcachedTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new memcached;
+        $this->object = new memcached();
         $this->assertInstanceOf("\\mpr\\cache\\memcached", $this->object);
     }
 

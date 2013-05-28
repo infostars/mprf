@@ -20,7 +20,7 @@ class cacheTest extends \PHPUnit_Framework_TestCase
      *
      * @var string
      */
-    protected $driver_name = "mpr_cache_memcached";
+    protected $driver_name = "memcached";
 
     /**
      * Base class name

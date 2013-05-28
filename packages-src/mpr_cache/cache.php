@@ -35,8 +35,9 @@ implements interfaces\cache
      * Factory cache by driver package name
      *
      * @static
-     * @param null $driver_packageName
-     * @see \mpr\interfaces\cache
+     * @param string $configSection
+     * @internal param null $driver_packageName
+     * @see      \mpr\interfaces\cache
      * @return self
      */
     public static function factory($configSection = 'default')
@@ -50,7 +51,8 @@ implements interfaces\cache
     /**
      * Build cache by driver's package name
      *
-     * @param $driver_packageName
+     * @param $configSection
+     * @internal param $driver_packageName
      */
     public function __construct($configSection)
     {
