@@ -8,17 +8,17 @@
     'default' => [
         // driver package name
         'driver' => 'mpr_locker_cache',
-        'backend_section' => 'mpr_cache_memcached'
+        'backend_section' => 'memcached'
     ],
-    'cache_memcache' => [
+    'cache_memcached' => [
         // driver package name
         'driver' => 'mpr_locker_cache',
-        'backend_section' => 'mpr_cache_memcached'
+        'backend_section' => 'memcached'
     ],
     'cache_redis' => [
         // driver package name
         'driver' => 'mpr_locker_cache',
-        'backend_section' => 'mpr_cache_redis'
+        'backend_section' => 'redis'
     ],
     'cache_semaphore' => [
         // driver package name

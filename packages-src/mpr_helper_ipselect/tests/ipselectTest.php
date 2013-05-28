@@ -16,7 +16,7 @@ class ipselectTest extends \PHPUnit_Framework_TestCase
     /**
      * @var $network_interface_prefix
      */
-    private $network_interface_prefix = 'venet0:';
+    private $network_interface_regexp = '/^\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}$/';
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -62,7 +62,7 @@ class ipselectTest extends \PHPUnit_Framework_TestCase
         $network_interfaces_list = $this->object->getList();
         $this->assertTrue(count($network_interfaces_list) > 0);
         foreach($network_interfaces_list as $interface) {
-            $this->assertContains($this->network_interface_prefix, $interface);
+            $this->assertRegExp($this->network_interface_regexp, $interface);
         }
 
         $this->assertTrue($this->object->GetCount() > 0);
