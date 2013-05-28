@@ -10,19 +10,19 @@
         'driver' => 'mpr_locker_cache',
         'backend_section' => 'memcached'
     ],
-    'cache_memcached' => [
+    'memcached' => [
         // driver package name
         'driver' => 'mpr_locker_cache',
         'backend_section' => 'memcached'
     ],
-    'cache_redis' => [
+    'redis' => [
         // driver package name
         'driver' => 'mpr_locker_cache',
         'backend_section' => 'redis'
     ],
-    'cache_semaphore' => [
+    'semaphore' => [
         // driver package name
-        'driver' => 'mpr_locker_phpsemaphore',
+        'driver' => 'mpr_locker_phpSemaphore',
         'backend_section' => ''
     ]
 ];

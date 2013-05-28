@@ -15,7 +15,7 @@ class request
     /**
      * Loading driver
      *
-     * @param string $driver - curl | httprequest
+     * @param string $driver - curl | httpRequest
      */
     public function __construct($driver = 'curl')
     {
@@ -31,7 +31,7 @@ class request
      * @param string $method
      * @return mixed
      */
-    public function makeRequest($url, $params = array(), $method = 'GET')
+    public function makeRequest($url, $params = [], $method = 'GET')
     {
         $this->instance->reset();
         $this->instance->prepare($url, $params, $method);

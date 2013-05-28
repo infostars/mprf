@@ -1,4 +1,5 @@
 <?php
+
 namespace mpr;
 
 /**
@@ -19,7 +20,7 @@ class lockerTest extends \PHPUnit_Framework_TestCase
      *
      * @var string
      */
-    protected $driver_name = "cache_memcached";
+    protected $driver_name = "memcached";
 
     /**
      * Test method name

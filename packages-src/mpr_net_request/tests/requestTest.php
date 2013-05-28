@@ -54,7 +54,7 @@ class requestTest extends \PHPUnit_Framework_TestCase
         $this->object = new request('curl');
         $this->object->setConnectTimeout(10);
 
-        $this->object = new request('httprequest');
+        $this->object = new request('httpRequest');
         $this->object->setConnectTimeout(10);
     }
 
@@ -69,7 +69,7 @@ class requestTest extends \PHPUnit_Framework_TestCase
         $this->object = new request('curl');
         $this->object->setTimeout(60);
 
-        $this->object = new request('httprequest');
+        $this->object = new request('httpRequest');
         $this->object->setTimeout(60);
     }
 }
