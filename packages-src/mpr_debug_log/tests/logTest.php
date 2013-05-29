@@ -17,6 +17,8 @@ class logTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        \mpr\config::$package['mpr_debug_log']['logfile'] = stream_get_meta_data(tmpfile())['uri'];
+
         log::init();
     }
 
