@@ -164,16 +164,18 @@ class mongoDb
     /**
      * Update data in collection
      *
-     * @param string $collection Collection name
-     * @param array $criteria Criteria for update by
-     * @param array $update_data New data
+     * @param string $collection  Collection name
+     * @param array  $criteria    Criteria for update by
+     * @param array  $update_data New data
+     * @param array  $options Options
+     *
      * @return bool Result
      */
-    public function update($collection, $criteria = [], $update_data = [])
+    public function update($collection, $criteria = [], $update_data = [], $options = [])
     {
         $data = $this->db
             ->selectCollection($collection)
-            ->update($criteria, $update_data);
+            ->update($criteria, $update_data, $options);
         return $data;
     }
 
