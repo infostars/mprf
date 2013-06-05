@@ -34,8 +34,8 @@ class preLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddPackage()
     {
-        $this->object->addPackage('mpr_consolekit_colors');
-        $this->assertContains('\\mpr\\consolekit\\colors', $this->object->getPreloadList(), print_r($this->object->getPreloadList(), true));
+        $this->object->addPackage('mpr_ConsoleKit_Colors');
+        $this->assertContains('\\mpr\\ConsoleKit\\Colors', $this->object->getPreloadList(), print_r($this->object->getPreloadList(), true));
     }
 
     /**
@@ -43,8 +43,8 @@ class preLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddClass()
     {
-        $this->object->addClass('\\mpr\\consolekit\\colors');
-        $this->assertContains('\\mpr\\consolekit\\colors', $this->object->getPreloadList(), print_r($this->object->getPreloadList(), true));
+        $this->object->addClass('\\mpr\\ConsoleKit\\Colors');
+        $this->assertContains('\\mpr\\ConsoleKit\\Colors', $this->object->getPreloadList(), print_r($this->object->getPreloadList(), true));
     }
 
     /**
@@ -52,14 +52,14 @@ class preLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoad()
     {
-        $this->assertFalse(class_exists('\\mpr\\consolekit\\colors', false));
+        $this->assertFalse(class_exists('\\mpr\\ConsoleKit\\Colors', false));
         $this->testAddClass();
         $this->object->load();
-        $this->assertTrue(class_exists('\\mpr\\consolekit\\colors', false));
+        $this->assertTrue(class_exists('\\mpr\\ConsoleKit\\Colors', false));
         $this->tearDown();
         $this->setUp();
         $this->testAddPackage();
         $this->object->load();
-        $this->assertTrue(class_exists('\\mpr\\consolekit\\colors', false));
+        $this->assertTrue(class_exists('\\mpr\\ConsoleKit\\Colors', false));
     }
 }
