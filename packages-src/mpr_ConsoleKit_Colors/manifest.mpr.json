@@ -1,9 +1,9 @@
 {
-    "name" : "mpr_consolekit_colors",
+    "name" : "mpr_ConsoleKit_Colors",
     "description" : "Tool to colorize console output",
     "package" : {
-        "path" : "/mpr/consolekit/",
-        "init" : "colors.php",
+        "path" : "/mpr/ConsoleKit/",
+        "init" : "Colors.php",
         "version" : "1.0",
         "author" : "maximebf",
         "url" : "https://github.com/greevex/ConsoleKit/blob/master/src/ConsoleKit/Colors.php"
