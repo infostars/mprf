@@ -67,6 +67,7 @@ class web
         $view->setTemplateDir($this->appClass->getTemplateDirectory());
 
         if(is_array($call)) {
+            $call[0] = config::getClassName($call[0]);
             $vars = call_user_func($call, $params);
         } else {
             $vars = $this->appClass->$call($params);
