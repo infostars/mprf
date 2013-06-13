@@ -66,7 +66,11 @@ class web
         $view->clearAllCache();
         $view->setTemplateDir($this->appClass->getTemplateDirectory());
 
-        $vars = $this->appClass->$call($params);
+        if(is_array($call)) {
+            $vars = call_user_func($call, $params);
+        } else {
+            $vars = $this->appClass->$call($params);
+        }
 
         foreach($vars as $var => $value) {
             $view->assign($var, $value);
