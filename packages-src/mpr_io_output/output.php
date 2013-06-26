@@ -57,6 +57,11 @@ class output
     {
         $this->outputBuffering = $buffering;
         $this->outputType = in_array($type, [self::OUT_OUTPUT, self::OUT_STDOUT]) ? $type : self::OUT_STDOUT;
+        $this->initResource();
+    }
+
+    protected function initResource()
+    {
         $this->outputResource = fopen($this->outputType == self::OUT_STDOUT ? 'php://stdout' : 'php://output', 'w');
     }
 
@@ -78,6 +83,8 @@ class output
      * Write data to output
      *
      * @param string $string
+     *
+     * @throws \Exception
      * @return \mpr\io\output
      */
     public function write($string)
@@ -86,7 +93,7 @@ class output
             $this->buffer .= $string;
         } else {
             if(!is_resource($this->outputResource)) {
-                throw new \Exception("Output resource is closed!");
+                $this->initResource();
             }
             fwrite($this->outputResource, $string);
         }

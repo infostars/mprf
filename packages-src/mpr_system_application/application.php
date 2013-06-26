@@ -4,6 +4,7 @@ namespace mpr\system;
 
 use \mpr\debug\log;
 use \mpr\config;
+use mpr\toolkit;
 
 /**
  * Description of application
@@ -29,13 +30,13 @@ abstract class application
     /**
      * Get toolkit object
      *
-     * @return \mpr\toolkit
+     * @return toolkit
      */
     protected function getToolkit()
     {
         static $toolkit;
         if($toolkit == null) {
-            $toolkit = new \mpr\toolkit();
+            $toolkit = new toolkit();
         }
         return $toolkit;
     }
@@ -57,7 +58,7 @@ abstract class application
     {
         log::put("Starting application...", config::getPackageName(__CLASS__));
         $this->handle();
-        log::put("Ending application...", config::getPackageName(__CLASS__));
+       log::put("Ending application...", config::getPackageName(__CLASS__));
     }
 
     /**
