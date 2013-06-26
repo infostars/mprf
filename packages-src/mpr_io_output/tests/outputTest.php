@@ -65,13 +65,12 @@ class outputTest extends \PHPUnit_Framework_TestCase
      */
     public function testClose()
     {
-        $e = null;
+        $test_string = "some text";
+        ob_start();
         $this->object->close();
-        try {
-            $this->object->writeLn("some text");
-        } catch(\Exception $e) {
-
-        }
-        $this->assertInstanceOf("\\Exception", $e);
+        $this->object->writeLn($test_string);
+        $result = ob_get_contents();
+        ob_end_clean();
+        $this->assertContains($test_string, $result);
     }
 }
