@@ -76,7 +76,9 @@ class web
         foreach($vars as $var => $value) {
             $view->assign($var, $value);
         }
-        return $view->render($tpl, false, microtime(1));
+
+        $cache_id = "{$tpl}-" . crc32(json_encode([$call, $params]));
+        return $view->render($tpl, false, $cache_id);
     }
 
     /**
