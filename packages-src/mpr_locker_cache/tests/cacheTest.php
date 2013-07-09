@@ -34,7 +34,7 @@ class cacheTest extends \PHPUnit_Framework_TestCase
      *
      * @var string
      */
-    protected $test_lock_time = 1;
+    protected $test_lock_time = 2;
 
     /**
      * @var cache
