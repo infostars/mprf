@@ -22,6 +22,17 @@ interface cache
     public function set($key, $value, $expire = '600');
 
     /**
+     * Similar to `set` method, but fails, if key already exists
+     *
+     * @abstract
+     * @param $key
+     * @param $value
+     * @param string $expire
+     * @return mixed
+     */
+    public function add($key, $value, $expire = '600');
+
+    /**
      * Get value from cache by key
      *
      * @abstract

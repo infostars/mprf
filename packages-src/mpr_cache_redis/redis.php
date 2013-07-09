@@ -74,10 +74,28 @@ implements interfaces\cache
      * @param string $key
      * @param mixed $value
      * @param int $expire
-     * @return bool|mixed
+     *
+     * @return mixed
      */
     public function set($key, $value, $expire = 60)
     {
+        return $this->instance->setex($key, $expire, $value);
+    }
+
+    /**
+     * Add value by key
+     *
+     * @param string $key
+     * @param mixed $value
+     * @param int $expire
+     *
+     * @return bool|mixed
+     */
+    public function add($key, $value, $expire = 60)
+    {
+        if($this->exists($key)) {
+            return false;
+        }
         return $this->instance->setex($key, $expire, $value);
     }
 

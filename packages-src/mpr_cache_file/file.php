@@ -122,6 +122,23 @@ implements cache_interface
     }
 
     /**
+     * Add value by key
+     *
+     * @param string $key
+     * @param mixed $value
+     * @param int $expire
+     * @return bool
+     */
+    public function add($key, $value, $expire = 0)
+    {
+        if($this->exists($key)) {
+            return false;
+        }
+        $this->set($key, $value, $expire);
+        return true;
+    }
+
+    /**
      * Get value by key
      *
      * @param string $key

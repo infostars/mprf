@@ -67,11 +67,25 @@ implements interfaces\cache
      * @param $key
      * @param $value
      * @param int $expire
+     *
      * @return mixed
      */
     public function set($key, $value, $expire = 3600)
     {
         return $this->backend->set($key, $value, $expire);
+    }
+
+    /**
+     * Add value by key
+     *
+     * @param $key
+     * @param $value
+     * @param int $expire
+     * @return mixed
+     */
+    public function add($key, $value, $expire = 3600)
+    {
+        return $this->backend->add($key, $value, $expire);
     }
 
     /**

@@ -74,11 +74,26 @@ implements cache_interface
      * @param string $key
      * @param mixed $value
      * @param int $expire
+     *
      * @return bool|mixed
      */
     public function set($key, $value, $expire = 60)
     {
         return $this->memcached->set($key, $value, $expire);
+    }
+
+    /**
+     * Add value by key
+     *
+     * @param string $key
+     * @param mixed $value
+     * @param int $expire
+     *
+     * @return bool|mixed
+     */
+    public function add($key, $value, $expire = 60)
+    {
+        return $this->memcached->add($key, $value, $expire);
     }
 
     /**

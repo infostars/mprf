@@ -39,7 +39,7 @@ implements interfaces\locker
     public function lock($method, $expire = 10)
     {
         $key = self::getLockKey($method);
-        while($this->exists($key)) {
+        while(!$this->add($key, true, $expire)) {
             usleep(50000);
         }
         return $this->set($key, true, $expire);
