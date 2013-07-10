@@ -1,9 +1,9 @@
 <?php
 namespace mpr\locker;
 
-use \mpr\config;
-use \mpr\debug\log;
-use \mpr\interfaces;
+use mpr\config;
+use mpr\debug\log;
+use mpr\interfaces;
 
 /**
  * Locker package
@@ -39,7 +39,7 @@ class cache
     public function lock($method, $expire = 10)
     {
         $key = self::getLockKey($method);
-        while(!$result = $this->add($key, true, $expire)) {
+        while(!($result = $this->add($key, true, $expire))) {
             usleep(50000);
         }
         return $result;
