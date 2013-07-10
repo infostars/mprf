@@ -61,7 +61,6 @@ class lockerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnlock()
     {
-        $this->testLock();
         $result = $this->object->unlock($this->test_method_name);
         $this->assertTrue($result);
     }
