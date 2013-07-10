@@ -60,7 +60,7 @@ class cache
     public function unlock($method)
     {
         $key = self::getLockKey($method);
-        return $this->set($key, false);
+        return $this->remove($key);
     }
 
 }
