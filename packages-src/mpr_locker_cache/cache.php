@@ -14,8 +14,8 @@ use \mpr\interfaces;
  * @author Diomin Piotr <demin@infostars.ru>
  */
 class cache
-extends \mpr\cache
-implements interfaces\locker
+    extends \mpr\cache
+    implements interfaces\locker
 {
 
     /**
@@ -39,10 +39,10 @@ implements interfaces\locker
     public function lock($method, $expire = 10)
     {
         $key = self::getLockKey($method);
-        while(!$this->add($key, true, $expire)) {
+        while(!$result = $this->add($key, true, $expire)) {
             usleep(50000);
         }
-        return $this->set($key, true, $expire);
+        return $result;
     }
 
     public function locked($method)
