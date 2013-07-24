@@ -52,7 +52,7 @@ class daemonization
 
     public static function check()
     {
-        if(!self::$daemonized) {
+        if(!self::$daemonized && isset($GLOBALS['argv'])) {
             if(in_array('--daemonize', $GLOBALS['argv'])) {
                 self::daemonize();
             }
