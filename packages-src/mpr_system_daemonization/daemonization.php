@@ -1,8 +1,7 @@
 <?php
 namespace mpr\system;
 
-use \mpr\debug\log;
-use \mpr\config;
+use mpr\config;
 
 /**
  * Description of daemonization
@@ -19,27 +18,6 @@ class daemonization
     protected static $daemonized = false;
 
     /**
-     * STDIN
-     *
-     * @var resource
-     */
-    protected static $STDIN;
-
-    /**
-     * STDOUT
-     *
-     * @var resource
-     */
-    protected static $STDOUT;
-
-    /**
-     * STDERR
-     *
-     * @var resource
-     */
-    protected static $STDERR;
-
-    /**
      * Daemonize current process
      *
      * @throws \Exception
@@ -51,31 +29,34 @@ class daemonization
 
         $options = config::getPackageConfig(__CLASS__);
 
-        log::put("Daemonizing...", config::getPackageName(__CLASS__));
-
         if(strtolower(php_sapi_name()) != 'cli') {
             throw new \Exception("Can't daemonize in non-cli sapi");
         }
         $pid = pcntl_fork();
 
         if ($pid < 0) { // Fail
-            log::put("Daemonization failed!", config::getPackageName(__CLASS__));
-            exit();
+            exit("Daemonization failed!");
         } elseif ($pid > 0) { // Parent
-            log::put("Daemonized! PID: {$pid}", config::getPackageName(__CLASS__));
-            exit();
+            exit(0);
         } // Child
 
         posix_setsid();
-
         fclose(STDIN);
         fclose(STDOUT);
         fclose(STDERR);
-        self::$STDIN = fopen($options['stdin'], 'r');
-        self::$STDOUT = fopen($options['stdout'], 'ab');
-        self::$STDERR = fopen($options['stderr'], 'ab');
-
+        $STDIN = fopen($options['stdin'], 'r');
+        $STDOUT = fopen($options['stdout'], 'ab');
+        $STDERR = fopen($options['stderr'], 'ab');
         self::$daemonized = true;
+    }
+
+    public static function check()
+    {
+        if(!self::$daemonized) {
+            if(in_array('--daemonize', $GLOBALS['argv'])) {
+                self::daemonize();
+            }
+        }
     }
 
     /**
@@ -83,7 +64,7 @@ class daemonization
      *
      * @return bool
      */
-    public function isDaemonized()
+    public static function isDaemonized()
     {
         return self::$daemonized;
     }
