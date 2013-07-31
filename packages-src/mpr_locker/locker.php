@@ -104,4 +104,17 @@ class locker
 
         return $data;
     }
+
+    /**
+     * Check method lock status
+     *
+     * @param string $method
+     * @return mixed
+     */
+    public function locked($method)
+    {
+        $result = $this->backend->locked($method);
+        log::put("Method {$method} " . ($result ? 'locked' : 'unlocked'), config::getPackageName(__CLASS__));
+        return $result;
+    }
 }
