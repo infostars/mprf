@@ -179,7 +179,7 @@ class socketClient
         if(socket_select($read, $write, $except, 0, 100)) {
             if(count($read)) {
                 try {
-                    if(!$this->recvData(1, false)) {
+                    if(!$this->recvData(1, false, true)) {
                         $this->shutdown();
                         return false;
                     }
@@ -299,13 +299,17 @@ class socketClient
     /**
      * Get data from a connected socket
      *
-     * @param int $length
+     * @param int  $length
      * @param bool $wait
+     * @param bool $peek
+     *
      * @return mixed
      */
-    public function recvData($length, $wait = false)
+    public function recvData($length, $wait = false, $peek = false)
     {
-        socket_recv($this->sock, $data, $length, $wait ? MSG_WAITALL : MSG_DONTWAIT);
+        $flags = $wait ? MSG_WAITALL : MSG_DONTWAIT;
+        $flags |= ($peek) ? MSG_PEEK : 0;
+        socket_recv($this->sock, $data, $length, $flags);
         return $data;
     }
 
