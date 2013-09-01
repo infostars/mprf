@@ -188,8 +188,8 @@ class thread
         }
         else {
             $arguments = func_get_args();
-            pcntl_signal(SIGTERM, array($this, 'signalHandler'));
-            register_shutdown_function(array($this, 'signalHandler'));
+            pcntl_signal(SIGTERM, array(__CLASS__, 'signalHandler'));
+            register_shutdown_function(array(__CLASS__, 'signalHandler'));
             pcntl_signal_dispatch();
             call_user_func_array($this->runnable, $arguments);
             exit(0);
@@ -257,7 +257,7 @@ class thread
      *
      * @param integer $_signal
      */
-    protected function signalHandler($_signal = SIGTERM)
+    public static function signalHandler($_signal = SIGTERM)
     {
         switch($_signal) {
             case SIGTERM:
