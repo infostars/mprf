@@ -64,7 +64,7 @@ class gearmanClient
     {
         $result = $this->gearmanInstance->addTask($function, json_encode($workload, JSON_UNESCAPED_UNICODE));
         if($start) {
-            $result = $this->gearmanInstance->runTasks();
+            $this->gearmanInstance->runTasks();
         }
         return $result;
     }
