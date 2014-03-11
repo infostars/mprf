@@ -207,7 +207,8 @@ class socketClient
                 if(!$this->sock) {
                     log::put("Error Creating Socket: " . socket_strerror(socket_last_error()), __METHOD__);
                 }
-                socket_set_option($this->sock, SOL_SOCKET, SO_RCVTIMEO, array("sec" => 1, "usec" => 0));
+                socket_set_option($this->sock, SOL_SOCKET, SO_RCVTIMEO, array("sec" => $this->timeout_read, "usec" => 0));
+                socket_set_option($this->sock, SOL_SOCKET, SO_SNDTIMEO, array("sec" => $this->timeout_write, "usec" => 0));
                 socket_connect($this->sock, $this->host, $this->port);
                 if(!$this->sock) {
                     log::put("Unable to connect to Socket: " . socket_strerror(socket_last_error()), __METHOD__);
