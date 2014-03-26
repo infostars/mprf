@@ -15,6 +15,8 @@ class gearmanClient
 {
     use abstractFactory;
 
+    const DEFAULT_PORT = 4730;
+
     /**
      * Gearman client instance
      *
@@ -36,7 +38,15 @@ class gearmanClient
         log::put("Loading config {$this->configSection}...", config::getPackageName(__CLASS__));
         $this->config = config::getPackageConfig(__CLASS__)[$this->configSection];
     }
-    
+
+    public function getConnectionInfo()
+    {
+        return [
+            'host' => $this->config['host'],
+            'port' => isset($this->config['port']) ? $this->config['port'] : self::DEFAULT_PORT,
+        ];
+    }
+
     protected function init()
     {
         $this->gearmanInstance = new \GearmanClient();
@@ -117,7 +127,7 @@ class gearmanClient
     public function gearmandInfo()
     {
         $host =& $this->config['host'];
-        $port =& $this->config['port'];
+        $port = isset($this->config['port']) ? $this->config['port'] : self::DEFAULT_PORT;
         static $expression = '/([^\t]+)\t(\d+)\t(\d+)\t(\d+)/';
         log::put("Requesting data by {$host}:{$port}", __METHOD__);
         $socketClient = new socketClient($host, $port);
