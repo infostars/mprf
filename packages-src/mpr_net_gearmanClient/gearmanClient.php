@@ -22,6 +22,9 @@ class gearmanClient
      */
     private $gearmanInstance;
 
+    private $config = [];
+    private $configSection = 'default';
+
     /**
      * Create new gearman client by config name.
      *
@@ -29,14 +32,19 @@ class gearmanClient
      */
     public function __construct($configName = 'default')
     {
+        $this->configSection =& $configName;
+        log::put("Loading config {$this->configSection}...", config::getPackageName(__CLASS__));
+        $this->config = config::getPackageConfig(__CLASS__)[$this->configSection];
+    }
+    
+    protected function init()
+    {
         $this->gearmanInstance = new \GearmanClient();
-        log::put("Loading config {$configName}...", config::getPackageName(__CLASS__));
-        $config = config::getPackageConfig(__CLASS__)[$configName];
-        if(!isset($config['port'])) {
-            log::put("Connecting using {$configName}...", config::getPackageName(__CLASS__));
-            $this->gearmanInstance->addServer($config['host']);
+        log::put("Connecting using {$this->configSection}...", config::getPackageName(__CLASS__));
+        if(!isset($this->config['port'])) {
+            $this->gearmanInstance->addServer($this->config['host']);
         } else {
-            $this->gearmanInstance->addServer($config['host'], $config['port']);
+            $this->gearmanInstance->addServer($this->config['host'], $this->config['port']);
         }
     }
 
@@ -104,5 +112,59 @@ class gearmanClient
     public function getBackend()
     {
         return $this->gearmanInstance;
+    }
+
+    public function gearmandInfo()
+    {
+        $host =& $this->config['host'];
+        $port =& $this->config['port'];
+        static $expression = '/([^\t]+)\t(\d+)\t(\d+)\t(\d+)/';
+        log::put("Requesting data by {$host}:{$port}", __METHOD__);
+        $socketClient = new socketClient($host, $port);
+        $socketClient->setName('Gearman connector');
+        $socketClient->setReadTimeout(10);
+        $socketClient->setWriteTimeout(10);
+        $socketClient->connect();
+        $socketClient->setBlocking();
+        $socketClient->writeData("status\n");
+        $raw_status = '';
+        $timeoutAt = time() + 10;
+        do {
+            $read = $socketClient->readData(4096);
+            $raw_status .= $read;
+        } while(empty($read) && $timeoutAt > time());
+
+        log::put("Parsing data from {$host}:{$port}", __METHOD__);
+        preg_match_all($expression, $raw_status, $matches);
+
+        $status = $this->buildStatus($matches);
+
+        log::put("Disconnecting {$host}:{$port}", __METHOD__);
+        $socketClient->disconnect();
+
+        return $status;
+    }
+
+    /**
+     * Build status
+     *
+     * @param $matches
+     *
+     * @return array
+     */
+    protected function buildStatus(&$matches)
+    {
+        $status = [];
+        foreach ($matches[0] as $key => $match) {
+            $funcName = trim($matches[1][$key]);
+            $status[$funcName] = [
+                'function' => $funcName,
+                'total' => (int)$matches[2][$key],
+                'running' => (int)$matches[3][$key],
+                'workers' => (int)$matches[4][$key]
+            ];
+        }
+
+        return $status;
     }
 }

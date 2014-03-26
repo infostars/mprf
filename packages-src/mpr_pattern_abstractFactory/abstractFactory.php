@@ -18,6 +18,10 @@ trait abstractFactory
 
     /**
      * @static
+     *
+     * @param string $configName
+     *
+     * @return static
      */
     final public static function factory($configName = 'default')
     {
