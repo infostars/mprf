@@ -26,6 +26,7 @@ class gearmanClient
 
     private $config = [];
     private $configSection = 'default';
+    private $initialized = false;
 
     /**
      * Create new gearman client by config name.
@@ -49,6 +50,9 @@ class gearmanClient
 
     protected function init()
     {
+        if($this->initialized) {
+            return;
+        }
         $this->gearmanInstance = new \GearmanClient();
         log::put("Connecting using {$this->configSection}...", config::getPackageName(__CLASS__));
         if(!isset($this->config['port'])) {
@@ -56,6 +60,7 @@ class gearmanClient
         } else {
             $this->gearmanInstance->addServer($this->config['host'], $this->config['port']);
         }
+        $this->initialized = true;
     }
 
     /**
@@ -80,6 +85,7 @@ class gearmanClient
      */
     public function addToTasks($function, $workload, $start = false)
     {
+        $this->init();
         $result = $this->gearmanInstance->addTask($function, json_encode($workload, JSON_UNESCAPED_UNICODE));
         if($start) {
             $this->gearmanInstance->runTasks();
@@ -94,6 +100,7 @@ class gearmanClient
      */
     public function runTasks()
     {
+        $this->init();
         return $this->gearmanInstance->runTasks();
     }
 
@@ -107,6 +114,7 @@ class gearmanClient
      */
     public function sendToBackground($function, $workload, $start = true)
     {
+        $this->init();
         $result = $this->gearmanInstance->addTaskBackground($function, json_encode($workload, JSON_UNESCAPED_UNICODE));
         if($start) {
             $result = $this->gearmanInstance->runTasks();
@@ -121,6 +129,7 @@ class gearmanClient
      */
     public function getBackend()
     {
+        $this->init();
         return $this->gearmanInstance;
     }
 
