@@ -18,6 +18,11 @@ class gearmanClient
     const DEFAULT_PORT = 4730;
 
     /**
+     * @var socketClient
+     */
+    private $socketClient;
+
+    /**
      * Gearman client instance
      *
      * @var \GearmanClient
@@ -135,21 +140,23 @@ class gearmanClient
 
     public function gearmandInfo()
     {
+        static $expression = '/([^\t]+)\t(\d+)\t(\d+)\t(\d+)/';
         $host =& $this->config['host'];
         $port = isset($this->config['port']) ? $this->config['port'] : self::DEFAULT_PORT;
-        static $expression = '/([^\t]+)\t(\d+)\t(\d+)\t(\d+)/';
-        log::put("Requesting data by {$host}:{$port}", __METHOD__);
-        $socketClient = new socketClient($host, $port);
-        $socketClient->setName('Gearman connector');
-        $socketClient->setReadTimeout(10);
-        $socketClient->setWriteTimeout(10);
-        $socketClient->connect();
-        $socketClient->setBlocking();
-        $socketClient->writeData("status\n");
+        if(!isset($this->socketClient)) {
+            log::put("Requesting data by {$host}:{$port}", __METHOD__);
+            $this->socketClient = new socketClient($host, $port);
+            $this->socketClient->setName('Gearman connector');
+            $this->socketClient->setReadTimeout(10);
+            $this->socketClient->setWriteTimeout(10);
+            $this->socketClient->connect();
+            $this->socketClient->setBlocking();
+            $this->socketClient->writeData("status\n");
+        }
         $raw_status = '';
         $timeoutAt = time() + 10;
         do {
-            $read = $socketClient->readData(4096);
+            $read = $this->socketClient->readData(4096);
             $raw_status .= $read;
         } while(empty($read) && $timeoutAt > time());
 
@@ -159,7 +166,6 @@ class gearmanClient
         $status = $this->buildStatus($matches);
 
         log::put("Disconnecting {$host}:{$port}", __METHOD__);
-        $socketClient->disconnect();
 
         return $status;
     }
