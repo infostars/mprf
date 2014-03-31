@@ -151,8 +151,8 @@ class gearmanClient
             $this->socketClient->setWriteTimeout(10);
             $this->socketClient->connect();
             $this->socketClient->setBlocking();
-            $this->socketClient->writeData("status\n");
         }
+        $this->socketClient->writeData("status\n");
         $raw_status = '';
         $timeoutAt = time() + 10;
         do {
