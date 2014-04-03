@@ -2,8 +2,6 @@
 
 namespace mpr\net;
 
-use mpr\debug\log;
-
 /**
  * Curl wrapper
  *
@@ -18,6 +16,8 @@ class curl
      */
     private $curl;
 
+    private $onErrors = [];
+
     /**
      * Default options array
      *
@@ -29,7 +29,7 @@ class curl
         CURLOPT_FOLLOWLOCATION      => 10,
         CURLOPT_SSL_VERIFYPEER      => false,
         CURLOPT_USERAGENT           => 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_7; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.205 Safari/534.16',
-        CURLOPT_CONNECTTIMEOUT      => 10,
+        CURLOPT_CONNECTTIMEOUT      => 30,
         CURLOPT_TIMEOUT             => 90,
         CURLOPT_CUSTOMREQUEST       => 'GET',
         CURLOPT_HTTP_VERSION        => CURL_HTTP_VERSION_1_0,
@@ -72,16 +72,14 @@ class curl
     {
         $this->curl = curl_init();
         $this->options = $this->_defaultoptions;
+        $this->onErrors = [];
         return true;
     }
 
     /**
-     * @param string        $type       http - for HTTP type & socks5 for SOCKS5 proxy type
-     * @param string        $ip
-     * @param int           $port
-     * @param null|string   $user
-     * @param null|string   $pass
-     * @param string        $auth_type  ntlm - use NTLM auth type, otherwise basic being used
+     * @param string $initial Connection initial, example: 'user:pass@127.0.0.1:8080'
+     * @param string $proxy_type http - for HTTP type & socks5 for SOCKS5 proxy type
+     * @param string $auth_type ntlm - use NTLM auth type, otherwise basic being used
      */
     public function useProxy($initial, $proxy_type = 'http', $auth_type = 'basic')
     {
@@ -101,6 +99,19 @@ class curl
         if(strpos($initial, '@') !== false) {
             $this->options[CURLOPT_PROXYAUTH] = $auth_type == 'ntlm' ? CURLAUTH_NTLM : CURLAUTH_BASIC;
         }
+    }
+
+    /**
+     * Set onError callback.
+     *
+     * Example: function(\mpr\net\curl $curl) { exit; }
+     *
+     * @param int $errno
+     * @param callable $callback
+     */
+    public function setOnErrorCallback($errno, $callback)
+    {
+        $this->onErrors[$errno] = $callback;
     }
 
     /**
@@ -203,9 +214,11 @@ class curl
             if($curl_errno == CURLE_COULDNT_CONNECT) {
                 $this->setConnectTimeout(2);
             }
+            if(isset($this->onErrors[$curl_errno])) {
+                call_user_func($this->onErrors[$curl_errno], $this);
+            }
             $curl_error = curl_error($this->curl);
-            if(strpos($curl_error, 'bind') !== false || $curl_errno == CURLE_OPERATION_TIMEOUTED) {
-                log::put("{$curl_error}", __METHOD__);
+            if(strpos($curl_error, 'bind') !== false) {
                 static $default_ip;
                 if($default_ip == null) {
                     $default_ip = trim(shell_exec("ip a s | grep 'inet' | grep -v '127.0.0' | grep -v '::' | awk '{print $2}' | sed 's#/[0-9][0-9]##' | head -n 1"));
