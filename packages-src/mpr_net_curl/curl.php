@@ -214,9 +214,6 @@ class curl
             if($curl_errno == CURLE_COULDNT_CONNECT) {
                 $this->setConnectTimeout(2);
             }
-            if(isset($this->onErrors[$curl_errno])) {
-                call_user_func($this->onErrors[$curl_errno], $this);
-            }
             $curl_error = curl_error($this->curl);
             if(strpos($curl_error, 'bind') !== false) {
                 static $default_ip;
@@ -225,6 +222,8 @@ class curl
                 }
                 $this->selectInterface($default_ip);
                 $result = $this->execute();
+            } elseif(isset($this->onErrors[$curl_errno])) {
+                $result = call_user_func($this->onErrors[$curl_errno], $this);
             } else {
                 curl_close($this->curl);
                 $this->curl = null;
