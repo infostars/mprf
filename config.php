@@ -9,6 +9,8 @@
 // Path to app root
 define('APP_ROOT', __DIR__);
 
+define('MPR_DEBUG', true);
+
 // dev | prod
 $GLOBALS['APP_ENV'] = 'dev';
 

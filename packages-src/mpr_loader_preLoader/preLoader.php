@@ -52,7 +52,7 @@ class preLoader
     public function addClass($class)
     {
         if(!isset($this->classes[$class])) {
-            log::put("Add to preload list class `{$class}`", config::getPackageName(__CLASS__));
+            MPR_DEBUG && log::put("Add to preload list class `{$class}`", config::getPackageName(__CLASS__));
             $this->classes[$class] = 1;
             return true;
         }
@@ -64,12 +64,12 @@ class preLoader
      */
     public function load()
     {
-        log::put("Starting preload", config::getPackageName(__CLASS__));
+        MPR_DEBUG && log::put("Starting preload", config::getPackageName(__CLASS__));
         foreach($this->classes as $class => $v) {
             class_exists($class);
             unset($v, $this->classes[$class]);
         }
-        log::put("Preloading success!", config::getPackageName(__CLASS__));
+        MPR_DEBUG && log::put("Preloading success!", config::getPackageName(__CLASS__));
     }
 
 }
