@@ -1,0 +1,16 @@
+{
+    "name" : "mpr_pattern_factory",
+    "description" : "MPR trait that loads package configuration by current section.",
+    "package" : {
+        "path" : "/mpr/pattern/",
+        "init" : "factory.php",
+        "version" : "1.1"
+    },
+    "meta" : {
+        "type" : "pattern",
+        "tags" : "pattern,factory,trait"
+    },
+    "depends" : [
+        "mpr_config"
+    ]
+}

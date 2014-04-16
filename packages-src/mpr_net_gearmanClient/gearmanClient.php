@@ -4,16 +4,19 @@ namespace mpr\net;
 
 use \mpr\config;
 use \mpr\debug\log;
-use \mpr\pattern\abstractFactory;
+use \mpr\pattern\factory;
 
 /**
  * Client for Gearman queue server
  *
  * @author Ostrovskiy Grigoriy <greevex@gmail.com>
+ * @author Borovikov Maxim <maxim.mahi@gmail.com>
  */
 class gearmanClient
 {
-    use abstractFactory;
+    use factory {
+        factory::__construct as factoryConstruct;
+    }
 
     const DEFAULT_PORT = 4730;
 
@@ -40,9 +43,8 @@ class gearmanClient
      */
     public function __construct($configName = 'default')
     {
-        $this->configSection =& $configName;
-        log::put("Loading config {$this->configSection}...", config::getPackageName(__CLASS__));
-        $this->config = config::getPackageConfig(__CLASS__)[$this->configSection];
+        $this->factoryConstruct($configName);
+        $this->config = $this->getPackageConfig();
     }
 
     public function getConnectionInfo()
