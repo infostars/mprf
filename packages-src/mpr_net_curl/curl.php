@@ -234,6 +234,19 @@ class curl
         return $result;
     }
 
+    public function getCharsetFromHeader()
+    {
+        static $pattern = '/charset\s*=\s*(?:\'|")?\s*([^\'"\s]+)\s*(?:\'|")?$/i';
+        $result = null;
+        if (isset($this->curl) && is_resource($this->curl)) {
+            if (preg_match($pattern, curl_getinfo($this->curl)['content_type'], $match)) {
+                $result = $match['charset'];
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Set connect timeout seconds
      *
