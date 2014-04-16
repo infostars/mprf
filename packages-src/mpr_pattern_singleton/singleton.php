@@ -3,12 +3,13 @@
 namespace mpr\pattern;
 
 /**
- * Singleton pattern class
+ * Singleton pattern trait
  *
- * @version 1.0
+ * @version 1.1
  * @author greevex <greevex@gmail.com>
+ * @author Borovikov Maxim <maxim.mahi@gmail.com>
  */
-abstract class singleton
+trait singleton
 {
     /**
      * Class instance
@@ -22,14 +23,14 @@ abstract class singleton
      * Get the one and only instance of this object
      *
      * @static
-     * @return \mpr\toolkit
+     * @return static
      */
     final public static function getInstance()
     {
-        if(self::$instance == null) {
-            $class = get_called_class();
-            self::$instance = new $class();
+        if (self::$instance == null) {
+            self::$instance = new self();
         }
+
         return self::$instance;
     }
 }

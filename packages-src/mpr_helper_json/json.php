@@ -1,8 +1,6 @@
 <?php
 namespace mpr\helper;
 
-use \mpr\pattern\singleton;
-
 /**
  * Json package
  *

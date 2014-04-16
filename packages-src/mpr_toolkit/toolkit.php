@@ -11,8 +11,9 @@ use \mpr\io\output;
  * @author GreeveX <greevex@gmail.com>
  */
 class toolkit
-extends singleton
 {
+
+    use singleton;
 
     /**
      * Instance of input object

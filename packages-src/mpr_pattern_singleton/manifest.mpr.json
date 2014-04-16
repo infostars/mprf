@@ -1,16 +1,15 @@
 {
     "name" : "mpr_pattern_singleton",
-    "description" : "Singleton pattern. You can extend your class from this package and call getInstance() to initialize singleton",
+    "description" : "Singleton pattern. Use this trait in your class and call getInstance() to initialize and get it's instance.",
     "package" : {
         "path" : "/mpr/pattern/",
         "init" : "singleton.php",
-        "version" : "1.0"
+        "version" : "1.1"
     },
     "meta" : {
         "type" : "lib",
-        "tags" : "pattern,singleton"
+        "tags" : "pattern,singleton,trait"
     },
     "depends" : [
-
     ]
 }
