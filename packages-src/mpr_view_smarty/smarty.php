@@ -9,7 +9,7 @@ require_once __DIR__ . '/Smarty/libs/Smarty.class.php';
  * Smarty template engine driver wrapper
  */
 class smarty
-extends \Smarty
+    extends \Smarty
 {
     /**
      * Construct new object of template engine
@@ -17,7 +17,9 @@ extends \Smarty
     public function __construct()
     {
         parent::__construct();
-        define(SMARTY_MBSTRING, true);
+        if(!defined('SMARTY_MBSTRING')) {
+            define(SMARTY_MBSTRING, true);
+        }
         $options = config::getPackageConfig(__CLASS__);
         $this->smarty->force_compile = $options['force_compile'];
         $this->smarty->debugging = $options['debugging'];
