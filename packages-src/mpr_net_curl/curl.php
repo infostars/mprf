@@ -271,4 +271,12 @@ class curl
     {
         return $this->options[CURLOPT_TIMEOUT] = intval($seconds);
     }
+
+    /**
+     * @return resource
+     */
+    public function getResource()
+    {
+        return $this->curl;
+    }
 }
