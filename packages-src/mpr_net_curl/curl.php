@@ -71,7 +71,7 @@ class curl
     public function reset()
     {
         $this->curl = curl_init();
-        if ($this->curl === false) {
+        if ($this->curl == false) {
             return false;
         }
         $this->options = $this->_defaultoptions;
