@@ -89,7 +89,7 @@ class threadPool
         /**
          * @note add threads in pool from queue
          */
-        while(count($this->queue) > 0 && count($this->pool) <= $this->max_threads) {
+        while(count($this->queue) > 0 && count($this->pool) < $this->max_threads) {
             list($thread, $params) = array_shift($this->queue);
             $this->pool[] = $thread->start($params);
         }
