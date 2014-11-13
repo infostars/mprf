@@ -165,6 +165,9 @@ class thread
      */
     public function isAlive()
     {
+        if(!isset($this->pid)) {
+            return false;
+        }
         $pid = pcntl_waitpid( $this->pid, $status, WNOHANG );
         return ( $pid === 0 );
     }
