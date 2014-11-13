@@ -71,6 +71,9 @@ class curl
     public function reset()
     {
         $this->curl = curl_init();
+        if ($this->curl == false) {
+            return false;
+        }
         $this->options = $this->_defaultoptions;
         $this->onErrors = [];
         return true;
@@ -267,5 +270,13 @@ class curl
     public function setTimeout($seconds)
     {
         return $this->options[CURLOPT_TIMEOUT] = intval($seconds);
+    }
+
+    /**
+     * @return resource
+     */
+    public function getResource()
+    {
+        return $this->curl;
     }
 }
