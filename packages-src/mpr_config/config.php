@@ -137,7 +137,16 @@ class config
             if(!$mprRootPath) {
                 return false;
             }
-            $localConfigFilePath = "{$mprRootPath}/config.local.php";
+            $rioEnv = toolkit::getInstance()->getInput()->getString('rio-env');
+            if ($rioEnv !== null) {
+                $localConfigFilePath = "{$mprRootPath}/config.{$rioEnv}.php";
+                if (!file_exists($localConfigFilePath)) {
+                    error_log("ERROR: Couldn't find {$localConfigFilePath}!");
+                    exit(1);
+                }
+            } else {
+                $localConfigFilePath = "{$mprRootPath}/config.local.php";
+            }
         }
         return $localConfigFilePath;
     }
