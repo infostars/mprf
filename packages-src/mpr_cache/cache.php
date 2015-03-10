@@ -2,7 +2,6 @@
 namespace mpr;
 
 use \mpr\debug\log;
-use \mpr\config;
 use \mpr\interfaces;
 
 /**
@@ -164,5 +163,26 @@ implements interfaces\cache
     {
         log::put("Transaction - Commiting...", config::getPackageName(__CLASS__));
         return $this->backend->commit();
+    }
+
+
+    /**
+     * Return last error
+     *
+     * @return mixed
+     */
+    public function getResultCode()
+    {
+        return $this->backend->getResultCode();
+    }
+
+    /**
+     * Cache driver backend
+     *
+     * @return mixed
+     */
+    public function getBackend()
+    {
+        return $this->backend->getBackend();
     }
 }

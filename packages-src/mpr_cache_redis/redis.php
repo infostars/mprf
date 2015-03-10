@@ -141,4 +141,24 @@ implements interfaces\cache
     {
         return $this->instance->flushDB();
     }
+
+    /**
+     * Return last error
+     *
+     * @return mixed
+     */
+    public function getResultCode()
+    {
+        return $this->instance->getLastError();
+    }
+
+    /**
+     * Cache driver backend
+     *
+     * @return mixed
+     */
+    public function getBackend()
+    {
+        return $this->instance;
+    }
 }
