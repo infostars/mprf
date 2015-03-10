@@ -196,4 +196,24 @@ implements cache_interface
         $this->commit();
         return true;
     }
+
+    /**
+     * Return last error
+     *
+     * @return mixed
+     */
+    public function getResultCode()
+    {
+        // TODO: Implement getResultCode() method.
+    }
+
+    /**
+     * Cache driver backend
+     *
+     * @return mixed
+     */
+    public function getBackend()
+    {
+        // TODO: Implement getBackend() method.
+    }
 }

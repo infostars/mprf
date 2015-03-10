@@ -139,4 +139,24 @@ implements cache_interface
     {
         return $this->memcached->flush();
     }
+
+    /**
+     * Return last error
+     *
+     * @return mixed
+     */
+    public function getResultCode()
+    {
+        return $this->memcached->getResultCode();
+    }
+
+    /**
+     * Cache driver backend
+     *
+     * @return mixed
+     */
+    public function getBackend()
+    {
+        return $this->memcached;
+    }
 }

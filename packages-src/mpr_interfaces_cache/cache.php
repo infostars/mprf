@@ -96,4 +96,20 @@ interface cache
      * @return mixed
      */
     public function commit();
+
+    /**
+     * Return last error
+     *
+     * @abstract
+     * @return mixed
+     */
+    public function getResultCode();
+
+    /**
+     * Cache driver backend
+     *
+     * @abstract
+     * @return mixed
+     */
+    public function getBackend();
 }

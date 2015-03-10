@@ -165,14 +165,24 @@ implements interfaces\cache
         return $this->backend->commit();
     }
 
+
+    /**
+     * Return last error
+     *
+     * @return mixed
+     */
+    public function getResultCode()
+    {
+        return $this->backend->getResultCode();
+    }
+
     /**
      * Cache driver backend
      *
-     * @see interfaces\cache
-     * @return cache
+     * @return mixed
      */
     public function getBackend()
     {
-        return $this->backend;
+        return $this->backend->getBackend();
     }
 }
