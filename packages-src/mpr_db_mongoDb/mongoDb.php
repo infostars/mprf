@@ -52,7 +52,7 @@ class mongoDb
             throw new \Exception("[{$packageName}] Config section for package `{$configName}` not found in config!");
         }
         $config = $packageConfig[$configName];
-        $this->mongo = new \Mongo($config['host']);
+        $this->mongo = new \MongoClient($config['host']);
         $this->db = $this->mongo
             ->selectDB($config['dbname']);
     }
