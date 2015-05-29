@@ -28,7 +28,7 @@ class curl
         CURLOPT_RETURNTRANSFER      => true,
         CURLOPT_FOLLOWLOCATION      => 10,
         CURLOPT_SSL_VERIFYPEER      => false,
-        CURLOPT_USERAGENT           => 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_7; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.205 Safari/534.16',
+        CURLOPT_USERAGENT           => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.81 Safari/537.36',
         CURLOPT_CONNECTTIMEOUT      => 30,
         CURLOPT_TIMEOUT             => 90,
         CURLOPT_CUSTOMREQUEST       => 'GET',
@@ -232,6 +232,10 @@ class curl
                 $this->curl = null;
                 throw new curlException($curl_error, $curl_errno);
             }
+        }
+
+        if(!is_array($result) && bin2hex(substr($result, 0, 4)) === '1f8b0800') {
+            $result = gzdecode($result);
         }
 
         return $result;
