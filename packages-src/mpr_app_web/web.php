@@ -77,8 +77,23 @@ class web
             $view->assign($var, $value);
         }
 
-        $cache_id = "{$tpl}-" . crc32(json_encode([$call, $params]));
-        return $view->render($tpl, false, $cache_id);
+        try {
+            return $view->render($tpl, false);
+        } catch(\Exception $e) {
+            if(strpos($e->getMessage(), 'unable to write file') !== false) {
+                $smartyConfig = config::getPackageConfig('mpr_view_smarty');
+                @chmod($smartyConfig['cache_dir'], 0777);
+                @chown($smartyConfig['cache_dir'], get_current_user());
+                if (!is_writable($smartyConfig['cache_dir'])) {
+                    $tmpdir = '/tmp/smarty_for_' . get_current_user();
+                    @mkdir($tmpdir, 0777, true);
+                    $view->setCacheDir($tmpdir);
+                    $view->setCompileDir($tmpdir);
+                }
+
+                return $view->render($tpl, false);
+            }
+        }
     }
 
     /**
