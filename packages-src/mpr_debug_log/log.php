@@ -91,7 +91,7 @@ class log
      */
     public static function put($comment, $prefix)
     {
-        if(!self::$initialized) {
+        if(!isset(self::$initialized)) {
             self::init();
         }
         if(self::$enabled) {
