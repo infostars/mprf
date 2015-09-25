@@ -71,6 +71,7 @@ class log
         static $last_config;
         $config = config::getPackageConfig(__CLASS__);
         $config_hash = md5(json_encode($config));
+        self::$initialized = true;
         if($config_hash != $last_config) {
             $last_config = $config_hash;
             self::$enabled = $config['enabled'];
@@ -92,6 +93,7 @@ class log
     public static function put($comment, $prefix)
     {
         if(!isset(self::$initialized)) {
+            self::$initialized = true;
             self::init();
         }
         if(self::$enabled) {
