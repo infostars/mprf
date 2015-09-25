@@ -92,7 +92,7 @@ class log
      */
     public static function put($comment, $prefix)
     {
-        if(!isset(self::$initialized)) {
+        if(!isset(self::$initialized) || !self::$initialized) {
             self::$initialized = true;
             self::init();
         }
