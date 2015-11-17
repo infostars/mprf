@@ -194,7 +194,12 @@ class thread
             pcntl_signal(SIGTERM, array(__CLASS__, 'signalHandler'));
             register_shutdown_function(array(__CLASS__, 'signalHandler'));
             pcntl_signal_dispatch();
-            call_user_func_array($this->runnable, $arguments);
+            try {
+                call_user_func_array($this->runnable, $arguments);
+            } catch (\Exception $exception) {
+                log::put("[EXCEPTION] {$exception->getMessage()} in {$exception->getFile()}:{$exception->getLine()}", config::getPackageName(__CLASS__));
+                MPR_DEBUG && error_log("Stack trace:\n{$exception->getTraceAsString()}");
+            }
             exit(0);
         }
         return $this;
