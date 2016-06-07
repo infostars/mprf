@@ -35,7 +35,7 @@ implements interfaces\cache
      *
      * @static
      * @param string $configSection
-     * @internal param null $driver_packageName
+     * 
      * @see      \mpr\interfaces\cache
      * @return self
      */
@@ -106,8 +106,7 @@ implements interfaces\cache
      */
     public function exists($key)
     {
-        $exists = $this->backend->exists($key);
-        return $exists;
+        return $this->backend->exists($key);
     }
 
     /**
@@ -128,7 +127,7 @@ implements interfaces\cache
      */
     public function clear()
     {
-        log::put("WARNING! CLEARING ALL CACHE!", config::getPackageName(__CLASS__));
+        log::put('WARNING! CLEARING ALL CACHE!', config::getPackageName(__CLASS__));
         return $this->backend->clear();
     }
 
@@ -139,7 +138,7 @@ implements interfaces\cache
      */
     public function enableAutoCommit()
     {
-        log::put("Transaction - autoCommit enabled", config::getPackageName(__CLASS__));
+        log::put('Transaction - autoCommit enabled', config::getPackageName(__CLASS__));
         return $this->backend->enableAutoCommit();
     }
 
@@ -150,7 +149,7 @@ implements interfaces\cache
      */
     public function disableAutoCommit()
     {
-        log::put("Transaction - autoCommit disabled", config::getPackageName(__CLASS__));
+        log::put('Transaction - autoCommit disabled', config::getPackageName(__CLASS__));
         return $this->backend->disableAutoCommit();
     }
 
@@ -161,7 +160,7 @@ implements interfaces\cache
      */
     public function commit()
     {
-        log::put("Transaction - Commiting...", config::getPackageName(__CLASS__));
+        log::put('Transaction - Committing...', config::getPackageName(__CLASS__));
         return $this->backend->commit();
     }
 
