@@ -10,8 +10,8 @@ use \mpr\interfaces\cache as cache_interface;
  * @author GreeveX <greevex@gmail.com>
  */
 class memcached
-extends \mpr\cache
-implements cache_interface
+    extends \mpr\cache
+    implements cache_interface
 {
 
     /**
@@ -105,7 +105,7 @@ implements cache_interface
      */
     public function set($key, $value, $expire = 60)
     {
-        $this-> $this->checkConnection();
+        $this->checkConnection();
 
         return $this->memcached->set($key, $value, $expire);
     }
@@ -121,7 +121,7 @@ implements cache_interface
      */
     public function add($key, $value, $expire = 60)
     {
-        $this-> $this->checkConnection();
+        $this->checkConnection();
 
         return $this->memcached->add($key, $value, $expire);
     }
@@ -134,7 +134,7 @@ implements cache_interface
      */
     public function get($key)
     {
-        $this-> $this->checkConnection();
+        $this->checkConnection();
 
         return $this->memcached->get($key);
     }
@@ -147,7 +147,7 @@ implements cache_interface
      */
     public function exists($key)
     {
-        $this-> $this->checkConnection();
+        $this->checkConnection();
         $data = $this->memcached->get($key);
 
         return !($data === false || $data === null);
@@ -161,7 +161,7 @@ implements cache_interface
      */
     public function remove($key)
     {
-        $this-> $this->checkConnection();
+        $this->checkConnection();
 
         return $this->memcached->delete($key);
     }
@@ -173,7 +173,7 @@ implements cache_interface
      */
     public function clear()
     {
-        $this-> $this->checkConnection();
+        $this->checkConnection();
 
         return $this->memcached->flush();
     }
@@ -185,7 +185,7 @@ implements cache_interface
      */
     public function getResultCode()
     {
-        $this-> $this->checkConnection();
+        $this->checkConnection();
 
         return $this->memcached->getResultCode();
     }
@@ -197,7 +197,7 @@ implements cache_interface
      */
     public function getBackend()
     {
-        $this-> $this->checkConnection();
+        $this->checkConnection();
 
         return $this->memcached;
     }
