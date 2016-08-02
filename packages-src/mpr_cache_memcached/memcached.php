@@ -21,6 +21,8 @@ implements cache_interface
      */
     protected $memcached;
 
+    protected $configSection;
+
     /**
      * Commit changes
      *
@@ -62,9 +64,33 @@ implements cache_interface
     public function __construct($configSection = 'default')
     {
         $config = config::getPackageConfig(__CLASS__)[$configSection];
+        $this->configSection = $configSection;
         $this->memcached = new \Memcached();
         foreach($config['servers'] as $server) {
             $this->memcached->addServer($server['host'], $server['port']);
+        }
+    }
+
+    protected function reconnect()
+    {
+        $config = config::getPackageConfig(__CLASS__)[$this->configSection];
+        $this->memcached = new \Memcached();
+        foreach ($config['servers'] as $server) {
+            $this->memcached->addServer($server['host'], $server['port']);
+        }
+    }
+
+    protected function checkConnection()
+    {
+        static $pid, $srvPid;
+        $currentPid = getmypid();
+        if($currentPid !== $pid) {
+            $pid = $currentPid;
+            $srvCurPid = reset($this->memcached->getStats())['pid'];
+            if($srvPid !== $srvCurPid) {
+                $srvPid = $srvCurPid;
+                $this->reconnect();
+            }
         }
     }
 
@@ -79,6 +105,8 @@ implements cache_interface
      */
     public function set($key, $value, $expire = 60)
     {
+        $this-> $this->checkConnection();
+
         return $this->memcached->set($key, $value, $expire);
     }
 
@@ -93,6 +121,8 @@ implements cache_interface
      */
     public function add($key, $value, $expire = 60)
     {
+        $this-> $this->checkConnection();
+
         return $this->memcached->add($key, $value, $expire);
     }
 
@@ -104,6 +134,8 @@ implements cache_interface
      */
     public function get($key)
     {
+        $this-> $this->checkConnection();
+
         return $this->memcached->get($key);
     }
 
@@ -115,7 +147,9 @@ implements cache_interface
      */
     public function exists($key)
     {
+        $this-> $this->checkConnection();
         $data = $this->memcached->get($key);
+
         return !($data === false || $data === null);
     }
 
@@ -127,6 +161,8 @@ implements cache_interface
      */
     public function remove($key)
     {
+        $this-> $this->checkConnection();
+
         return $this->memcached->delete($key);
     }
 
@@ -137,6 +173,8 @@ implements cache_interface
      */
     public function clear()
     {
+        $this-> $this->checkConnection();
+
         return $this->memcached->flush();
     }
 
@@ -147,6 +185,8 @@ implements cache_interface
      */
     public function getResultCode()
     {
+        $this-> $this->checkConnection();
+
         return $this->memcached->getResultCode();
     }
 
@@ -157,6 +197,8 @@ implements cache_interface
      */
     public function getBackend()
     {
+        $this-> $this->checkConnection();
+
         return $this->memcached;
     }
 }
