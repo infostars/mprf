@@ -86,7 +86,12 @@ class memcached
         $currentPid = getmypid();
         if($currentPid !== $pid) {
             $pid = $currentPid;
-            $srvCurPid = reset($this->memcached->getStats())['pid'];
+            $stats = $this->memcached->getStats();
+            $srvStats = reset($stats);
+            $srvCurPid = -5;
+            if (isset($srvStats['pid'])) {
+                $srvCurPid = $srvStats['pid'];
+            }
             if($srvPid !== $srvCurPid) {
                 $srvPid = $srvCurPid;
                 $this->reconnect();
