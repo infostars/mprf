@@ -162,8 +162,8 @@ class curl
         switch(strtoupper($method)) {
             case 'GET':
                 $this->options[CURLOPT_CUSTOMREQUEST] = 'GET';
-                if($params !== null) {
-                    $url .= strpos($url, '?') === false ? "?$params" : "&$params";
+                if($params !== null && strlen($params) > 0) {
+                    $url .= strpos($url, '?') === false ? "?{$params}" : "&{$params}";
                 }
                 break;
             case 'POST':
