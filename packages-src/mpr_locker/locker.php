@@ -44,6 +44,7 @@ class locker
         if(!isset(self::$instances[$configSection])) {
             self::$instances[$configSection] = new self($configSection);
         }
+
         return self::$instances[$configSection];
     }
 
@@ -70,6 +71,7 @@ class locker
     {
         $result = $this->backend->lock($method, $expire);
         log::put("Lock method {$method}", config::getPackageName(__CLASS__));
+
         return $result;
     }
 
@@ -98,6 +100,7 @@ class locker
     {
         $result = $this->backend->unlock($method);
         log::put("Unlock method {$method}", config::getPackageName(__CLASS__));
+
         return $result;
     }
 
@@ -130,6 +133,7 @@ class locker
     {
         $result = $this->backend->locked($method);
         log::put("Method {$method} " . ($result ? 'locked' : 'unlocked'), config::getPackageName(__CLASS__));
+
         return $result;
     }
 }
