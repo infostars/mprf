@@ -24,9 +24,19 @@ interface locker
      * @static
      * @param string $method
      * @param int $expire
-     * @return mixed
+     * @return bool
      */
     public function lock($method, $expire = 10);
+
+    /**
+     * Lock more method
+     *
+     * @static
+     * @param string $method
+     * @param int $expire
+     * @return bool
+     */
+    public function lockMore($method, $expire = 10);
 
     /**
      * Unlock method

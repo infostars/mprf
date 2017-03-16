@@ -64,12 +64,27 @@ class locker
      *
      * @param string $method
      * @param int $expire
-     * @return mixed
+     * @return bool
      */
     public function lock($method, $expire = 10)
     {
         $result = $this->backend->lock($method, $expire);
         log::put("Lock method {$method}", config::getPackageName(__CLASS__));
+        return $result;
+    }
+
+    /**
+     * Lock more method
+     *
+     * @param string $method
+     * @param int $expire
+     * @return bool
+     */
+    public function lockMore($method, $expire = 10)
+    {
+        $result = $this->backend->lockMore($method, $expire);
+        log::put("Lock more method {$method}", config::getPackageName(__CLASS__));
+
         return $result;
     }
 
