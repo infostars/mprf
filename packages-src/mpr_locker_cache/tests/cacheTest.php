@@ -94,4 +94,17 @@ class cacheTest extends \PHPUnit_Framework_TestCase
         $not_cached_method = "not_cached_method";
         $this->assertFalse($this->object->locked($not_cached_method));
     }
+
+    /**
+     * @covers mpr\locker\cache::lockMore
+     */
+    public function testLockMore()
+    {
+        $this->assertFalse($this->object->lockMore($this->test_method, $this->test_lock_time));
+
+        $this->object->lock($this->test_method, $this->test_lock_time);
+        $this->assertTrue($this->object->lockMore($this->test_method, $this->test_lock_time));
+
+        $this->object->unlock($this->test_method);
+    }
 }

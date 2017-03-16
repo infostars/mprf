@@ -34,7 +34,7 @@ class cache
      *
      * @param string $method
      * @param int    $expire
-     * @return mixed
+     * @return bool
      */
     public function lock($method, $expire = 10)
     {
@@ -43,6 +43,25 @@ class cache
             usleep(50000);
         }
         return $result;
+    }
+
+    /**
+     * Lock more method
+     *
+     * @static
+     * @param string $method
+     * @param int $expire
+     * @return bool
+     */
+    public function lockMore($method, $expire = 10)
+    {
+        $key = self::getLockKey($method);
+        if ($this->get($key) === false) {
+
+            return false;
+        }
+
+        return $this->set($key, true, $expire);
     }
 
     public function locked($method)
@@ -62,5 +81,4 @@ class cache
         $key = self::getLockKey($method);
         return $this->remove($key);
     }
-
 }

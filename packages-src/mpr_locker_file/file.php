@@ -42,11 +42,45 @@ implements interfaces\locker
      * @static
      * @param string $method
      * @param int    $expire
-     * @return mixed
+     * @return bool
      */
     public function lock($method, $expire = 10)
     {
         return flock($this->getLockKey($method), LOCK_EX);
+    }
+
+    /**
+     * Lock more method
+     *
+     * @static
+     * @param string $method
+     * @param int $expire
+     * @return bool
+     */
+    public function lockMore($method, $expire = 10)
+    {
+        $key = $this->getLockKey($method);
+        $status = flock($key, LOCK_EX | LOCK_NB);
+        if ($status === true) {
+            flock($key, LOCK_UN);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public function locked($method)
+    {
+        $key = $this->getLockKey($method);
+        $status = flock($key, LOCK_EX | LOCK_NB);
+        if ($status === true) {
+            flock($key, LOCK_UN);
+
+            return false;
+        }
+
+        return true;
     }
 
     /**

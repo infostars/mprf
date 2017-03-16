@@ -46,6 +46,20 @@ implements interfaces\locker
     }
 
     /**
+     * Lock more method
+     *
+     * @static
+     * @param string $method
+     * @param int $expire
+     * @return bool
+     */
+    public function lockMore($method, $expire = 10)
+    {
+        //until php5.6.1
+        return false;
+    }
+
+    /**
      * Unlock method
      *
      * @static
