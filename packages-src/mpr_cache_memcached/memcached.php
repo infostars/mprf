@@ -23,6 +23,9 @@ class memcached
 
     protected $configSection;
 
+    protected $pid;
+    protected $srvPid;
+
     /**
      * Commit changes
      *
@@ -82,18 +85,17 @@ class memcached
 
     protected function checkConnection()
     {
-        static $pid, $srvPid;
         $currentPid = getmypid();
-        if($currentPid !== $pid) {
-            $pid = $currentPid;
+        if($currentPid !== $this->pid) {
+            $this->pid = $currentPid;
             $stats = $this->memcached->getStats();
             $srvStats = reset($stats);
             $srvCurPid = -5;
             if (isset($srvStats['pid'])) {
                 $srvCurPid = $srvStats['pid'];
             }
-            if($srvPid !== $srvCurPid) {
-                $srvPid = $srvCurPid;
+            if($this->srvPid !== $srvCurPid) {
+                $this->srvPid = $srvCurPid;
                 $this->reconnect();
             }
         }
