@@ -24,7 +24,6 @@ class memcached
     protected $configSection;
 
     protected $pid;
-    protected $srvPid;
 
     /**
      * Commit changes
@@ -88,16 +87,7 @@ class memcached
         $currentPid = getmypid();
         if($currentPid !== $this->pid) {
             $this->pid = $currentPid;
-            $stats = $this->memcached->getStats();
-            $srvStats = reset($stats);
-            $srvCurPid = -5;
-            if (isset($srvStats['pid'])) {
-                $srvCurPid = $srvStats['pid'];
-            }
-            if($this->srvPid !== $srvCurPid) {
-                $this->srvPid = $srvCurPid;
-                $this->reconnect();
-            }
+            $this->reconnect();
         }
     }
 
