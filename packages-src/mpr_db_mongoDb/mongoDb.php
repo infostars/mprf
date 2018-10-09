@@ -1,4 +1,5 @@
 <?php
+
 namespace mpr\db;
 
 use \mpr\config;
@@ -26,35 +27,68 @@ class mongoDb
     private $db;
 
     /**
+     * Config name of instance
+     *
+     * @var string
+     */
+    private $configName;
+
+    /**
+     * PID for fork-safe
+     *
+     * @var int
+     */
+    private $pid;
+
+    /**
      * Factory object with config
      *
      * @param string $configName `default` - is default value
+     *
      * @return self
      */
     public static function factory($configName = 'default')
     {
         static $instances = [];
-        if(!isset($instances[$configName])) {
+
+        if (!isset($instances[$configName])) {
             $instances[$configName] = new self($configName);
         }
+
         return $instances[$configName];
     }
 
     /**
      * Construct new object
+     *
+     * @param string $configName
      */
     public function __construct($configName = 'default')
     {
-        $packageConfig = config::getPackageConfig(__CLASS__);
-        if(!isset($packageConfig[$configName])) {
-            $packageName = config::getPackageName(__CLASS__);
-            \mpr\debug\log::put("Config section for package `{$configName}` not found in config!", $packageName);
-            throw new \Exception("[{$packageName}] Config section for package `{$configName}` not found in config!");
+        $this->configName = $configName;
+    }
+
+    protected function getMongo($force = false)
+    {
+        if ($this->mongo === null || $force === true) {
+            $config = $this->getConfig();
+            $this->mongo = new \MongoClient($config['host']);
         }
-        $config = $packageConfig[$configName];
-        $this->mongo = new \MongoClient($config['host']);
-        $this->db = $this->mongo
-            ->selectDB($config['dbname']);
+
+        return $this->mongo;
+    }
+
+    protected function getDb()
+    {
+        $currentPid = getmypid();
+
+        if ($this->db === null || $this->pid !== $currentPid) {
+            $config = $this->getConfig();
+            $this->db = $this->getMongo(true)->selectDB($config['dbname']);
+            $this->pid = $currentPid;
+        }
+
+        return $this->db;
     }
 
     /**
@@ -66,6 +100,7 @@ class mongoDb
     {
         $this->mongo->connect();
         $this->db->resetError();
+
         return true;
     }
 
@@ -73,18 +108,20 @@ class mongoDb
      * Insert new object in collection
      *
      * @param string $collection Collection name
-     * @param array $data Data to save
-     * @param array $options MongoDB options
+     * @param array  $data       Data to save
+     * @param array  $options    MongoDB options
+     *
      * @return array|bool Result
      */
     public function insert($collection, &$data, $options = [])
     {
-        if(!isset($data['_id'])) {
+        if (!isset($data['_id'])) {
             $data['_id'] = new \MongoId();
-        } elseif(!is_object($data['_id'])) {
+        } elseif (!is_object($data['_id'])) {
             $data['_id'] = new \MongoId((string)$data['_id']);
         }
-        return $this->db
+
+        return $this->getDb()
             ->selectCollection($collection)
             ->insert($data, $options);
     }
@@ -93,18 +130,19 @@ class mongoDb
      * Save object to MongoDB
      *
      * @param string $collection collection name
-     * @param array $data Data to save
-     * @param array $options MongoDB options
+     * @param array  $data       Data to save
+     * @param array  $options    MongoDB options
+     *
      * @return array|bool result
      */
     public function save($collection, &$data, $options = [])
     {
-        if(!isset($data['_id'])) {
+        if (!isset($data['_id'])) {
             $data['_id'] = new \MongoId();
-        } elseif(!($data['_id'] instanceof \MongoId)) {
+        } elseif (!($data['_id'] instanceof \MongoId)) {
             $data['_id'] = new \MongoId((string)$data['_id']);
         }
-        return $this->db
+        return $this->getDb()
             ->selectCollection($collection)
             ->save($data, $options);
     }
@@ -113,15 +151,17 @@ class mongoDb
      * Select array of data from collection
      *
      * @param string $collection Collection name
-     * @param array $criteria Criteria for select by
-     * @param array $fields Needle fields of object
+     * @param array  $criteria   Criteria for select by
+     * @param array  $fields     Needle fields of object
+     *
      * @return \MongoCursor Native mongocursor object
      */
     public function select($collection, $criteria = [], $fields = [])
     {
-        $data = $this->db
+        $data = $this->getDb()
             ->selectCollection($collection)
             ->find($criteria, $this->checkFields($fields));
+
         return $data;
     }
 
@@ -129,18 +169,20 @@ class mongoDb
      * Validate fields
      *
      * @param array $fields
+     *
      * @return array result
      */
     protected function checkFields($fields)
     {
         $result = [];
-        foreach($fields as $field_key => $field) {
-            if(is_bool($field)) {
+        foreach ($fields as $field_key => $field) {
+            if (is_bool($field)) {
                 $result[$field_key] = $field;
             } else {
                 $result[$field] = true;
             }
         }
+
         return $result;
     }
 
@@ -148,16 +190,18 @@ class mongoDb
      * Select one row from collection
      *
      * @param string $collection Collection name
-     * @param array $criteria Criteria for select by
-     * @param array $fields Needle fields of object
+     * @param array  $criteria   Criteria for select by
+     * @param array  $fields     Needle fields of object
+     *
      * @return array|null Result
      */
     public function selectOne($collection, $criteria = [], $fields = [])
     {
 
-        $data = $this->db
+        $data = $this->getDb()
             ->selectCollection($collection)
             ->findOne($criteria, $this->checkFields($fields));
+
         return $data;
     }
 
@@ -167,15 +211,16 @@ class mongoDb
      * @param string $collection  Collection name
      * @param array  $criteria    Criteria for update by
      * @param array  $update_data New data
-     * @param array  $options Options
+     * @param array  $options     Options
      *
      * @return bool Result
      */
     public function update($collection, $criteria = [], $update_data = [], $options = [])
     {
-        $data = $this->db
+        $data = $this->getDb()
             ->selectCollection($collection)
             ->update($criteria, $update_data, $options);
+
         return $data;
     }
 
@@ -183,15 +228,17 @@ class mongoDb
      * Remove data from collection
      *
      * @param string $collection Collection name
-     * @param array $criteria Criteria to remove by
-     * @param array $options MongoDB options
+     * @param array  $criteria   Criteria to remove by
+     * @param array  $options    MongoDB options
+     *
      * @return mixed
      */
     public function remove($collection, $criteria, $options = [])
     {
-        $data = $this->db
+        $data = $this->getDb()
             ->selectCollection($collection)
             ->remove($criteria, $options);
+
         return $data;
     }
 
@@ -199,18 +246,20 @@ class mongoDb
      * Get count objects for collection
      *
      * @param string $collection Collection name
+     *
      * @return int Count
      */
     public function getCount($collection)
     {
-        return $this->db->selectCollection($collection)->count();
+        return $this->getDb()->selectCollection($collection)->count();
     }
 
     /**
      * Get count objects for collection by criteria
      *
      * @param string $collection Collection name
-     * @param array $criteria Criteria for count by
+     * @param array  $criteria   Criteria for count by
+     *
      * @return int Count
      */
     public function getCountBy($collection, $criteria)
@@ -225,6 +274,28 @@ class mongoDb
      */
     public function getDatabase()
     {
-        return $this->db;
+        return $this->getDb();
+    }
+
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    protected function getConfig()
+    {
+        static $packageConfig;
+
+        if ($packageConfig === null) {
+            $packageConfig = config::getPackageConfig(__CLASS__);
+
+            if (!isset($packageConfig[$this->configName])) {
+                $packageName = config::getPackageName(__CLASS__);
+                \mpr\debug\log::put("Config section for package `{$this->configName}` not found in config!", $packageName);
+
+                throw new \Exception("[{$packageName}] Config section for package `{$this->configName}` not found in config!");
+            }
+        }
+
+        return $packageConfig[$this->configName];
     }
 }
