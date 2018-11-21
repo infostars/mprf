@@ -188,6 +188,9 @@ class thread
         if( $pid ) {
             $this->pid = $pid;
             $status = null;
+            pcntl_signal(SIGTERM, array(__CLASS__, 'masterSignalHandler'));
+            register_shutdown_function(array(__CLASS__, 'masterSignalHandler'));
+            pcntl_signal_dispatch();
         }
         else {
             $arguments = func_get_args();
@@ -271,6 +274,21 @@ class thread
             case SIGTERM:
                 log::put(__METHOD__ . ":exit()", config::getPackageName(__CLASS__));
                 exit();
+                break;
+        }
+    }
+
+    /**
+     * signal handler
+     *
+     * @param integer $_signal
+     */
+    public function masterSignalHandler($_signal = SIGTERM)
+    {
+        switch ($_signal) {
+            case SIGTERM:
+                log::put('[' . posix_getpid() . '] ' . __METHOD__ . ':killchild()', config::getPackageName(__CLASS__));
+                $this->kill($_signal);
                 break;
         }
     }
