@@ -71,15 +71,15 @@ class httpInput
         } else {
             $this->httpMethod = 'get';
         }
+        $input_str = file_get_contents('php://input');
         $contentType = strtolower($_SERVER['CONTENT_TYPE']);
         $jsonParams = [];
         if ($contentType === 'application/json') {
-            $jsonParams = (array)json_decode(file_get_contents('php://input'), true);
+            $jsonParams = (array)json_decode($input_str, true);
         }
         if($all) {
             $items = [];
             if (empty($jsonParams)) {
-                $input_str = file_get_contents('php://input');
                 parse_str($input_str, $items);
             }
             $this->httpParams = array_merge(
@@ -102,7 +102,6 @@ class httpInput
                 case 'put':
                 case 'delete':
                 default:
-                    $input_str = file_get_contents('php://input');
                     parse_str($input_str, $items);
                     $this->httpParams = $items;
                     break;
