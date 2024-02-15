@@ -71,11 +71,19 @@ class httpInput
         } else {
             $this->httpMethod = 'get';
         }
+        $input_str = file_get_contents('php://input');
+        $contentType = strtolower($_SERVER['CONTENT_TYPE']);
+        $jsonParams = [];
+        if ($contentType === 'application/json') {
+            $jsonParams = (array)json_decode($input_str, true);
+        }
         if($all) {
-            $input_str = file_get_contents('php://input');
-            parse_str($input_str, $items);
+            $items = [];
+            if (empty($jsonParams)) {
+                parse_str($input_str, $items);
+            }
             $this->httpParams = array_merge(
-                $_REQUEST, $_GET, $_POST, toolkit::getInstance()->getInput()->export(), $items
+                $_REQUEST, $_GET, $_POST, toolkit::getInstance()->getInput()->export(), $items, $jsonParams
             );
         } else {
             switch ($this->httpMethod) {
@@ -83,7 +91,7 @@ class httpInput
                     $this->httpParams = $_GET;
                     break;
                 case 'post':
-                    $this->httpParams = $_POST;
+                    $this->httpParams = !empty($jsonParams) ? $jsonParams : $_POST;
                     break;
                 case 'cli':
                     $this->httpParams = toolkit::getInstance()->getInput()->export();
@@ -94,7 +102,6 @@ class httpInput
                 case 'put':
                 case 'delete':
                 default:
-                    $input_str = file_get_contents('php://input');
                     parse_str($input_str, $items);
                     $this->httpParams = $items;
                     break;
